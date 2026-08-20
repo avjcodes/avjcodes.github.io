@@ -843,7 +843,10 @@
   }
   .embed-play:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
   .embed-play:focus-visible { outline: 2px solid var(--accent-500); outline-offset: 3px; }
-  .shot-frame { width: 100%; aspect-ratio: 16 / 9; border: 0; display: block; background: #000; }
+  .game-hero.playing { grid-template-columns: 1fr; }
+  .game-hero.playing .shot { max-height: none; }
+  .embed-scale { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: #000; }
+  .embed-scale iframe { position: absolute; top: 0; left: 0; width: 1280px; height: 720px; border: 0; transform-origin: top left; }
   @media (prefers-reduced-motion: reduce) { .embed-play { transition: none; } .embed-play:hover { transform: none; } }
   .game-hero .body { padding: 28px; align-self: center; }
   .game-hero h3 { font-size: 1.7rem; }
@@ -1592,13 +1595,24 @@
   var b=document.getElementById('socPlayBtn'), box=document.getElementById('socEmbed');
   if(!b||!box) return;
   b.addEventListener('click', function(){
+    var card=box.closest('.game-hero');
+    if(card) card.classList.add('playing');
+    var wrap=document.createElement('div');
+    wrap.className='embed-scale';
     var f=document.createElement('iframe');
-    f.className='shot-frame';
     f.src='https://itch.io/embed-upload/18733202?color=f9f3e0';
     f.setAttribute('allowfullscreen','');
     f.setAttribute('title','Sleight of Claw, playable');
+    wrap.appendChild(f);
     box.innerHTML='';
-    box.appendChild(f);
+    box.appendChild(wrap);
+    function fit(){
+      var w=wrap.clientWidth;
+      f.style.transform='scale('+(w/1280)+')';
+    }
+    fit();
+    if(window.ResizeObserver){ new ResizeObserver(fit).observe(wrap); }
+    else { window.addEventListener('resize', fit); }
     f.focus();
   });
 })();
