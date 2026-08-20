@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Angel Valle Jr. San Francisco developer. Apps, tools and games. Everything labeled Live opens.">
+<meta name="description" content="Angel Valle Jr. San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
 <meta property="og:title" content="Angel Valle Jr. · Apps, tools and games">
-<meta property="og:description" content="San Francisco developer. Apps, tools and games. Everything labeled Live opens.">
+<meta property="og:description" content="San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
 <meta property="og:url" content="https://avjcodes.github.io/">
 <meta property="og:image" content="https://avjcodes.github.io/assets/01_sleight_of_claw.png">
 <meta property="og:image:alt" content="Sleight of Claw gameplay: a crab running a shell game on the beach">
@@ -444,6 +444,7 @@
   .tier-title { font-family: var(--display); font-size: 1.1rem; font-weight: 600; letter-spacing: -0.005em; }
   .tier-sub { font-size: 0.85rem; color: var(--ink-3); }
   .work-grid {
+    margin-top: 32px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -485,6 +486,14 @@
     border: 1px dashed var(--hairline);
     background: var(--surface-2);
   }
+  .ptype {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
   .badge-live {
     color: var(--badge-live-ink);
     background: var(--badge-live-bg);
@@ -520,12 +529,6 @@
   }
   .card h3 a:hover .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
   .card > p, .card .overview { margin-top: 8px; font-size: 0.9rem; color: var(--ink-2); }
-  .card .tech {
-    margin-top: 12px;
-    font-family: var(--mono);
-    font-size: 0.73rem;
-    color: var(--ink-3);
-  }
   section, #live, .card[id], .lab-item[id] { scroll-margin-top: 88px; }
 
   /* ================= Receipts ================= */
@@ -548,6 +551,31 @@
   .rcpt:hover { color: var(--accent-600); }
   .rcpt .rno { color: var(--accent-600); padding: 0 5px 0 6px; }
   .rcpt .rdir { padding-right: 6px; }
+
+  /* ================= More tools (compact rows) ================= */
+  .tool-list {
+    margin-top: 16px;
+    list-style: none;
+    max-width: 760px;
+  }
+  .tool-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 12px 0;
+    border-top: 1px solid var(--hairline-soft);
+    font-size: 0.88rem;
+    color: var(--ink-2);
+  }
+  .tool-list li:last-child { border-bottom: 1px solid var(--hairline-soft); }
+  .tool-name {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink);
+    flex: 0 0 210px;
+  }
+  .tool-list .rcpt { margin: -12px 0 -12px auto; }
 
   /* ================= Case-study disclosure ================= */
   .case-details { margin-top: 16px; border-top: 1px solid var(--hairline-soft); }
@@ -672,7 +700,7 @@
   .game-grid {
     margin-top: 32px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     align-items: start;
   }
@@ -747,6 +775,28 @@
     .play-btn:hover { transform: none; }
   }
 
+  /* Dominant game card */
+  .game-hero {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .game-hero .shot {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 300px;
+    border-bottom: 0;
+    border-right: 1px solid var(--hairline-soft);
+  }
+  .game-hero .body { padding: 28px; align-self: center; }
+  .game-hero h3 { font-size: 1.7rem; }
+  .game-hero .name-row { flex-wrap: wrap; }
+  /* Secondary game cards */
+  .game-sub { background: var(--surface-2); }
+  .game-sub .shot { aspect-ratio: 16 / 9; }
+  .game-sub h3 { font-size: 1.05rem; }
+  .game-sub p { margin-top: 6px; font-size: 0.84rem; }
+
   /* ================= Ship log ================= */
   .shiplog {
     margin-top: 24px;
@@ -805,6 +855,18 @@
     font-size: 0.98rem;
   }
   .contact-card .cta { margin-top: 28px; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+  button.btn { cursor: pointer; font-family: var(--sans); }
+  .copy-btn { display: none; }
+  .js .copy-btn { display: inline-flex; }
+  .visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   footer {
     margin-top: 60px;
@@ -910,9 +972,22 @@
   @media (max-width: 860px) {
     .cap-grid { grid-template-columns: repeat(2, 1fr); }
     .game-grid { grid-template-columns: 1fr; }
+    .game-hero { grid-template-columns: 1fr; }
+    .game-hero .shot {
+      aspect-ratio: 16 / 10;
+      height: auto;
+      min-height: 0;
+      border-right: 0;
+      border-bottom: 1px solid var(--hairline-soft);
+    }
+    .game-hero .body { padding: 20px; }
+    .game-hero h3 { font-size: 1.4rem; }
   }
   @media (max-width: 620px) {
     .cap-grid, .work-grid, .lab-grid, .now-list { grid-template-columns: 1fr; }
+    .tool-list li { flex-wrap: wrap; row-gap: 4px; }
+    .tool-name { flex: 1 1 auto; }
+    .tool-desc { flex: 1 1 100%; order: 3; }
     .nav-links a { padding: 12px 8px; }
     .palette-btn .pb-txt { display: none; }
     .js .palette-btn { padding: 12px 8px; }
@@ -945,16 +1020,10 @@
   <header class="hero">
     <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
     <h1 class="reveal" style="--d:1">I build useful software <span class="accent">and weird little games.</span></h1>
-    <p class="sub reveal" style="--d:2">Custom-built, every one of them. Everything labeled Live opens.</p>
+    <p class="sub reveal" style="--d:2">Custom-built, tested and shipped by me, start to finish.</p>
     <div class="cta reveal" style="--d:3">
-      <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-        theangelvallejr@gmail.com
-      </a>
-      <a class="btn btn-ghost" href="https://github.com/avjcodes" target="_blank" rel="noopener">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-        github.com/avjcodes
-      </a>
+      <a class="btn btn-solid" href="#work">View work <span aria-hidden="true">&#8595;</span></a>
+      <a class="btn btn-ghost" href="#contact">Work with me <span aria-hidden="true">&#8594;</span></a>
     </div>
   </header>
 
@@ -964,8 +1033,8 @@
     <ul class="now-list reveal" style="--d:1">
       <li><span class="now-label">Building</span><span>Pocket Adventurer, heading to Steam</span></li>
       <li><span class="now-label">Prototyping</span><span>Gus Makes Games</span></li>
-      <li><span class="now-label">Shipping</span><span>small tools and client builds</span></li>
-      <li><span class="now-label">Learning</span><span>Computer science at WGU</span></li>
+      <li><span class="now-label">Shipping</span><span>Small tools and client builds</span></li>
+      <li><span class="now-label">Studying</span><span>Computer Science at WGU</span></li>
     </ul>
   </section>
 
@@ -985,8 +1054,8 @@
     <div class="cap-grid">
       <div class="cap reveal" style="--d:0">
         <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <h3>AI assistants and document Q&amp;A</h3>
-        <p>Chat interfaces that answer from your actual documents, not from thin air.</p>
+        <h3>Document retrieval and AI assistants</h3>
+        <p>Systems that answer from your documents instead of guessing.</p>
         <a class="receipt" href="#kestrel">receipt: Kestrel</a>
       </div>
       <div class="cap reveal" style="--d:1">
@@ -1028,18 +1097,61 @@
     <h2 class="reveal" style="--d:1">What's live, what's a sample</h2>
     <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category. Open a case study on any card for the how and the why.</p>
 
-    <div class="tier-head reveal" id="live">
-      <span class="tier-title">Live on GitHub</span>
-      <span class="tier-sub">public repos, open now</span>
-    </div>
     <div class="work-grid">
 
-      <article class="card reveal" style="--d:0">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
+      <article class="card reveal" style="--d:0" id="kestrel">
+        <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
+        <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
+        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">Why I built it</span>To show clients what a real document-grounded assistant looks like without hand-waving. The page IS the demo.</p>
+            <p class="blk"><span class="blk-label">The build</span>Sixteen policy chunks embedded in the page; your question is scored against them client-side; the best chunks become the answer, with the source document cited under every reply.</p>
+            <p class="blk"><span class="blk-label">Failure behavior, by design</span>Ask something outside the documents and it says "I don't have that in my documents, so I won't guess" and gives you the office contact instead. An assistant that guesses is worse than no assistant.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, no libraries, no API. The production version of this pattern runs on an LLM with the same retrieval discipline.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="fogline">
+        <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
+        <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
+        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>Repair shops book work over the phone and track it on paper tags. The customer finds out what it costs at the counter, and the shop copies the same details onto three different pieces of paper.</p>
+            <p class="blk"><span class="blk-label">The build</span>Customer side: service selection, availability that only offers slots the shop has open, bike intake with a photo, and estimate authorization before any work starts. Booking done, you get a printable work tag. Shop side: flip to the shop demo and your booking is on the schedule board with your bike's details.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>One dataset drives both views, so the customer flow and the shop board can never disagree about a booking. Work orders carry the authorized estimate with them, because "who approved this" is the question that starts arguments at real counters.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies. Invented shop, and the page says so.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:2" id="ninthhill">
+        <div class="card-top"><span class="ptype">Data / dashboard</span><span class="badge badge-sample">Sample</span></div>
+        <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
+        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">Why I built it</span>Every small business has the Monday spreadsheet. I wanted a before/after you can actually scroll.</p>
+            <p class="blk"><span class="blk-label">The build</span>567 rows of invented-but-realistic wholesale data, charts drawn in hand-rolled SVG, KPIs recomputed from the raw rows and hand-verified, a sortable customer table.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>No chart library. Every number on screen is derived from the visible dataset, and the claimed insight (a seasonal blend overtaking decaf) is genuinely in the data, checked to the week.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:3">
+        <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</p>
-        <p class="tech">python</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1053,64 +1165,10 @@
         </details>
       </article>
 
-      <article class="card reveal" style="--d:1">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3><a href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">steam-comp-tracker <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">Tracks comparable Steam games over time: review velocity, price moves, tag overlap.</p>
-        <p class="tech">python</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The problem</span>I'm bringing my own game to Steam. I wanted to know how games like mine actually move: review pace, price changes, what tags they share. Steam shows you today; it doesn't show you change over time.</p>
-            <p class="blk"><span class="blk-label">The build</span>Snapshots public stats into plain JSONL files, one per game, then generates an HTML report. Run <code>snap</code> on a schedule and the history builds itself.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>Python standard library only. No installs, no database, no API key. Fetching is isolated in one function; everything downstream takes plain dicts, which is what makes it testable.</p>
-            <p class="blk"><span class="blk-label">Honest data note</span>Review counts are solid; owner numbers come from SteamSpy and are estimates with wide ranges. Reviews-per-week is the closest public proxy for sales, and the tool says so instead of pretending otherwise.</p>
-            <p class="blk"><span class="blk-label">Built with</span>Python stdlib. CI on GitHub Actions. MIT.</p>
-          </div>
-        </details>
-      </article>
-
-      <article class="card reveal" style="--d:2">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3><a href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">markdown-task-dashboard <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A local dashboard for solo projects with a real deadline.</p>
-        <p class="tech">python · template repo</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The problem</span>My game has a fixed festival date. Task lists tell you what's left; they don't tell you whether you'll make it. I wanted one number: hours remaining at my actual pace, and the finish date that implies.</p>
-            <p class="blk"><span class="blk-label">The build</span>Reads plain markdown task files you already own, adds up the unchecked work, divides by the focused hours per day you really do. One Python file, one HTML page, localhost.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>The tool writes back to your notes when you check things off, so the writeback tests are the ones that matter: there are tests proving a checkbox click changes exactly one line of your file and nothing else.</p>
-            <p class="blk"><span class="blk-label">Built with</span>Python stdlib. Template repo, so you can start from it. MIT.</p>
-          </div>
-        </details>
-      </article>
-
-      <article class="card reveal" style="--d:3">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3><a href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">pourcost <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">Bar math from the command line: pour cost percent, menu pricing, inventory value.</p>
-        <p class="tech">typescript</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The problem</span>I spent years behind a bar. The numbers every bar program runs on (what a drink costs to make, what to charge, what the shelf is worth) usually live in somebody's spreadsheet, wrong.</p>
-            <p class="blk"><span class="blk-label">Why I built it</span>This is the tool I wish I had when I was buying from vendors. One JSON file describing bottles and recipes; the math comes out right every time.</p>
-            <p class="blk"><span class="blk-label">The build</span>Commands for costing a recipe, back-solving a menu price from a target pour cost, and valuing inventory counts, partial bottles included, because real bars count tenths.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>The JSON is validated on load, so mistakes get named before any math runs. TypeScript on Node 23+ native type stripping: no dependencies, no build step.</p>
-            <p class="blk"><span class="blk-label">Built with</span>TypeScript, Node's built-in test runner, CI. MIT.</p>
-          </div>
-        </details>
-      </article>
-
       <article class="card reveal" style="--d:4">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A structure linter for Obsidian vaults: broken wikilinks, missing anchors, orphan notes, frontmatter rules.</p>
-        <p class="tech">typescript</p>
         <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
@@ -1125,47 +1183,27 @@
 
     </div>
 
-    <div class="tier-head reveal">
-      <span class="tier-title">Flagship samples</span>
-      <span class="tier-sub">invented businesses, real code, each page says so on it</span>
+    <div class="tier-head reveal" id="live">
+      <span class="tier-title">More tools</span>
+      <span class="tier-sub">public repos, open now</span>
     </div>
-    <div class="work-grid">
-
-      <article class="card reveal" style="--d:0" id="kestrel">
-        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
-        <p class="tech">client-side retrieval</p>
-        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">Why I built it</span>To show clients what a real document-grounded assistant looks like without hand-waving. The page IS the demo.</p>
-            <p class="blk"><span class="blk-label">The build</span>Sixteen policy chunks embedded in the page; your question is scored against them client-side; the best chunks become the answer, with the source document cited under every reply.</p>
-            <p class="blk"><span class="blk-label">Failure behavior, by design</span>Ask something outside the documents and it says "I don't have that in my documents, so I won't guess" and gives you the office contact instead. An assistant that guesses is worse than no assistant.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, no libraries, no API. The production version of this pattern runs on an LLM with the same retrieval discipline.</p>
-          </div>
-        </details>
-      </article>
-
-      <article class="card reveal" style="--d:1" id="ninthhill">
-        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
-        <p class="tech">SVG charts from a cleaned dataset</p>
-        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">Why I built it</span>Every small business has the Monday spreadsheet. I wanted a before/after you can actually scroll.</p>
-            <p class="blk"><span class="blk-label">The build</span>567 rows of invented-but-realistic wholesale data, charts drawn in hand-rolled SVG, KPIs recomputed from the raw rows and hand-verified, a sortable customer table.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>No chart library. Every number on screen is derived from the visible dataset, and the claimed insight (a seasonal blend overtaking decaf) is genuinely in the data, checked to the week.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies.</p>
-          </div>
-        </details>
-      </article>
-
-    </div>
+    <ul class="tool-list reveal" style="--d:1">
+      <li>
+        <span class="tool-name">steam-comp-tracker</span>
+        <span class="tool-desc">Tracks comparable Steam games over time: review velocity, price moves, tag overlap.</span>
+        <a class="rcpt" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
+      </li>
+      <li>
+        <span class="tool-name">markdown-task-dashboard</span>
+        <span class="tool-desc">A local dashboard for solo projects with a real deadline.</span>
+        <a class="rcpt" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
+      </li>
+      <li>
+        <span class="tool-name">pourcost</span>
+        <span class="tool-desc">Bar math from the command line: pour cost percent, menu pricing, inventory value.</span>
+        <a class="rcpt" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
+      </li>
+    </ul>
   </section>
 
   <!-- ============ LAB ============ -->
@@ -1175,27 +1213,20 @@
     <p class="section-note reveal" style="--d:2">Experiments, prototypes and internal tooling. Rougher on purpose.</p>
     <div class="lab-grid">
 
-      <article class="lab-item reveal" style="--d:0" id="fogline">
-        <p class="lab-tag">Sample build</p>
-        <h3>Fog Line Cycles booking flow</h3>
-        <p>A repair-shop booking system, both sides of it: service selection, live availability, bike intake with photo, estimate authorization, and a printable work tag. Then flip to the shop demo and your booking is on the schedule board with your bike details. One dataset, two views. Invented shop, and the page says so.</p>
-        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
-      </article>
-
-      <article class="lab-item reveal" style="--d:1" id="pelican">
+      <article class="lab-item reveal" style="--d:0" id="pelican">
         <p class="lab-tag">Sample build</p>
         <h3>The Brass Pelican</h3>
         <p>A dive-bar site that knows what is on tonight: events generate from weekly templates relative to today, an owner demo adds a real show to the calendar in under a minute, and the back room takes private-event inquiries. Built because three real bars I researched had empty calendars on their sites.</p>
-        <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">RECEIPT<span class="rno">09</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">DEMO<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+      </article>
+
+      <article class="lab-item reveal" style="--d:1">
+        <p class="lab-tag">Internal tool</p>
+        <h3>Portfolio QA pipeline</h3>
+        <p>Automated review passes check claims, responsive layouts, accessibility regressions, broken links, and content consistency before deployment.</p>
       </article>
 
       <article class="lab-item reveal" style="--d:2">
-        <p class="lab-tag">Internal tool</p>
-        <h3>This site's build process</h3>
-        <p>This portfolio went through an adversarial judge loop before shipping: independent review passes compared it against a named gold standard and returned fail-with-corrections or ship-it. It failed three times before it passed. The judges caught a factually wrong tech label, a 375px nav overflow, and two sentences I'd accidentally lifted from a site I admire.</p>
-      </article>
-
-      <article class="lab-item reveal" style="--d:3">
         <p class="lab-tag">Internal tool</p>
         <h3>AI video to sprite pipeline</h3>
         <p>The generation-to-game-asset workflow sprite-chroma-key ships from: generate animation frames with video AI over green, key per frame, pack sheets. The keyer is the public piece; the pipeline is the reason it exists.</p>
@@ -1213,37 +1244,36 @@
     <h2 class="reveal" style="--d:1">Made under lowpolysaint</h2>
     <p class="section-note reveal" style="--d:2">Desktop games built in Godot. Same developer, different hat.</p>
     <div class="game-grid">
-      <article class="game reveal" style="--d:0">
+      <article class="game game-hero reveal" style="--d:0">
         <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/01_sleight_of_claw.png" alt="Sleight of Claw gameplay: a crab running a shell game on the beach" loading="lazy"></div>
         <div class="body">
-          <div class="name-row"><h3>Sleight of Claw</h3><span class="badge badge-live">Live</span></div>
-          <p class="status">Play now · free browser prototype</p>
+          <div class="name-row"><h3>Sleight of Claw</h3><span class="badge badge-live">Live · Play now</span></div>
           <p>You're the hustler, not the mark: hide the pearl, shuffle the shells, read the tourist. Live online leaderboard that records every session, not just your best.</p>
           <a class="play-btn" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Play it in your browser
+            Play in your browser
           </a>
-          <div class="rcpt-row"><a class="rcpt" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">RECEIPT<span class="rno">10</span><span class="rdir" aria-hidden="true">&#8599;</span>PLAY</a></div>
+          <div class="rcpt-row"><a class="rcpt" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>PLAY</a></div>
         </div>
       </article>
-      <article class="game reveal" style="--d:1">
+      <article class="game game-sub reveal" style="--d:1">
         <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/02_gus_makes_games.png" alt="Gus Makes Games: a pixel-art bedroom where a solo developer works" loading="lazy"></div>
         <div class="body">
           <h3>Gus Makes Games</h3>
-          <p class="status">In development · nothing public to open yet</p>
-          <p>A game about a solo developer making games, made by a solo developer making games. Playable end to end in its first build.</p>
+          <p class="status">In development · nothing public yet</p>
+          <p>A game about a solo developer making games, made by a solo developer making games. First playable build in development.</p>
           <p class="studio">lowpolysaint</p>
         </div>
       </article>
-      <article class="game reveal" style="--d:2">
+      <article class="game game-sub reveal" style="--d:2">
         <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/03_pocket_adventurer.png" alt="Pocket Adventurer: a tiny companion revealed at the edge of a desktop screen" loading="lazy"></div>
         <div class="body">
           <h3>Pocket Adventurer</h3>
-          <p class="status">Coming to Steam · store page not live yet</p>
-          <p>A desktop companion idle RPG: a tiny adventurer lives on your screen while you work. In production now, heading to Steam.</p>
+          <p class="status">In development · Steam</p>
+          <p>A desktop companion idle RPG: a tiny adventurer lives on your screen while you work.</p>
           <p class="studio">lowpolysaint</p>
         </div>
       </article>
@@ -1269,7 +1299,7 @@
     <p class="eyebrow reveal">06 · About</p>
     <h2 class="reveal" style="--d:1">The short version</h2>
     <div class="about-card reveal" style="--d:2">
-      <p>I'm a developer in San Francisco. I build and fix things for people: websites, tools, automations, and agentic systems that carry real work on their own. All of it designed, tested and shipped by me, start to finish. I'm also a computer science student at WGU.</p>
+      <p>I'm a developer in San Francisco. I build and fix things for people: websites, tools, automations, and agentic systems that carry real work on their own. I do the whole job myself, design through deployment. I'm also studying Computer Science at WGU.</p>
     </div>
   </section>
 
@@ -1278,17 +1308,22 @@
     <div class="contact-card reveal">
       <p class="eyebrow" style="justify-content:center">07 · Contact</p>
       <h2 style="margin-top:12px">Have something in mind?</h2>
-      <p class="line">Describe what you need in a paragraph. If I'm not the right fit for it, my first reply will say so.</p>
+      <p class="line">Tell me what you're trying to build. Rough notes are fine. If I'm not the right fit, my first reply will say so.</p>
       <div class="cta">
         <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
           theangelvallejr@gmail.com
         </a>
+        <button type="button" class="btn btn-ghost copy-btn" id="copy-email">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span class="copy-txt">Copy email</span>
+        </button>
         <a class="btn btn-ghost" href="https://github.com/avjcodes" target="_blank" rel="noopener">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
           github.com/avjcodes
         </a>
       </div>
+      <p class="visually-hidden" id="copy-status" aria-live="polite"></p>
     </div>
   </section>
 
@@ -1332,6 +1367,47 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
   items.forEach(function (el) { io.observe(el); });
+})();
+
+(function () {
+  var btn = document.getElementById('copy-email');
+  var live = document.getElementById('copy-status');
+  if (!btn) return;
+  var EMAIL = 'theangelvallejr@gmail.com';
+  var label = btn.querySelector('.copy-txt');
+  var timer = null;
+
+  function copied() {
+    label.textContent = 'Copied';
+    if (live) live.textContent = 'Email address copied to clipboard';
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(function () {
+      label.textContent = 'Copy email';
+      if (live) live.textContent = '';
+      timer = null;
+    }, 1500);
+  }
+  function fallbackCopy() {
+    var ta = document.createElement('textarea');
+    ta.value = EMAIL;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+    document.body.removeChild(ta);
+    if (ok) copied();
+    btn.focus();
+  }
+  btn.addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(EMAIL).then(copied, fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  });
 })();
 
 (function () {
