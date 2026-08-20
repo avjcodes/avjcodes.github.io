@@ -4,21 +4,27 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fog Line Cycles | Book a repair (sample)</title>
+<script>document.documentElement.classList.add("js")</script>
 <style>
   /* ============================================================
-     FOG LINE CYCLES - visual system v2
+     FOG LINE CYCLES - visual system v3
      Layered neutrals, hairline borders, soft shadows.
      Workshop character carried by the accent orange, the mono
      labels, one restrained caution stripe, and the shop tag.
+     v3 adds: bike intake, estimate authorization, upgraded work
+     tag (window / stamp / .ics / print), and the shop demo board.
      ============================================================ */
   :root{
+    color-scheme:light dark;
     --accent:#e04f1d;
     --accent-hi:#c2410c;
+    --btn-top:#cf460e;
+    --btn-ink:#ffffff;
     --accent-soft:rgba(224,79,29,.08);
     --accent-ring:rgba(224,79,29,.28);
     --ink:#1a1c1f;
     --ink-soft:#5d6167;
-    --ink-faint:#8b9097;
+    --ink-faint:#63686e;
     --bg:#f1efeb;
     --bg-deep:#e9e6e0;
     --card:#ffffff;
@@ -35,8 +41,9 @@
     --tag-paper:#f6ecd6;
     --tag-paper-2:#efe1c2;
     --tag-ink:#3a2f1c;
-    --tag-soft:#7c6c4d;
+    --tag-soft:#6f5f40;
     --tag-line:#dccfa9;
+    --stamp:#1c6e38;
     --sh-1:0 1px 2px rgba(21,20,18,.05),0 1px 1px rgba(21,20,18,.04);
     --sh-2:0 1px 2px rgba(21,20,18,.05),0 10px 30px -8px rgba(21,20,18,.12);
     --sh-3:0 2px 4px rgba(21,20,18,.08),0 18px 50px -12px rgba(21,20,18,.22);
@@ -51,11 +58,13 @@
     :root{
       --accent:#ff6a35;
       --accent-hi:#ff7f52;
+      --btn-top:var(--accent);
+      --btn-ink:#1a0c05;
       --accent-soft:rgba(255,106,53,.1);
       --accent-ring:rgba(255,106,53,.34);
       --ink:#ebecee;
       --ink-soft:#a6abb2;
-      --ink-faint:#767c84;
+      --ink-faint:#868d96;
       --bg:#101214;
       --bg-deep:#0b0d0e;
       --card:#191c1f;
@@ -74,13 +83,16 @@
       --tag-ink:#ecdcba;
       --tag-soft:#a3936f;
       --tag-line:#4a3f28;
+      --stamp:#6fcf97;
       --sh-1:0 1px 2px rgba(0,0,0,.3);
       --sh-2:0 1px 2px rgba(0,0,0,.35),0 10px 30px -8px rgba(0,0,0,.5);
       --sh-3:0 2px 4px rgba(0,0,0,.4),0 18px 50px -12px rgba(0,0,0,.65);
     }
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  [hidden]{display:none!important}
   html{scroll-behavior:smooth}
+  html:not(.js) .needs-js{display:none}
   body{
     font-family:var(--sans);
     background:
@@ -183,15 +195,15 @@
     font-family:var(--sans);font-weight:650;font-size:.98rem;
     letter-spacing:.01em;
     padding:13px 26px;
-    color:#fff;
-    background:linear-gradient(180deg,var(--accent),var(--accent-hi));
+    color:var(--btn-ink);
+    background:linear-gradient(180deg,var(--btn-top),var(--accent-hi));
     border:1px solid var(--accent-hi);
     border-radius:var(--r-md);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(21,20,18,.2),0 8px 20px -6px var(--accent-ring);
     transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+    text-decoration:none;
   }
   .btn:hover{
-    filter:brightness(1.06);
     transform:translateY(-1px);
     box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 4px rgba(21,20,18,.2),0 12px 26px -6px var(--accent-ring);
   }
@@ -243,7 +255,7 @@
   }
 
   .owner-note{
-    margin:16px 0 26px;padding:14px 18px;
+    margin:16px 0 22px;padding:14px 18px;
     background:var(--card);
     border:1px solid var(--line);
     border-left:3px solid var(--accent);
@@ -252,6 +264,32 @@
     font-size:.94rem;color:var(--ink-soft);
   }
   .owner-note b{color:var(--ink)}
+
+  /* ---------- view switch (customer / shop demo) ---------- */
+  .viewswitch{
+    display:inline-flex;align-items:center;
+    background:var(--raise);
+    border:1px solid var(--line-strong);
+    border-radius:999px;padding:3px;gap:2px;
+    box-shadow:var(--sh-1);
+    margin-bottom:6px;
+  }
+  .viewswitch button{
+    cursor:pointer;border:none;background:transparent;
+    color:var(--ink-soft);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:10px 16px;min-height:44px;border-radius:999px;
+    transition:background .15s ease,color .15s ease;
+  }
+  .viewswitch button[aria-pressed="true"]{
+    background:var(--ink);color:var(--card);
+    box-shadow:var(--sh-1);
+  }
+  .vs-note{
+    font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);
+    margin:0 0 18px;
+  }
 
   /* ---------- flow panel ---------- */
   .panel-box{
@@ -305,6 +343,9 @@
     background:linear-gradient(180deg,var(--accent),var(--accent-hi));
     border-color:var(--accent-hi);color:#fff;
     box-shadow:0 0 0 4px var(--accent-soft),0 4px 12px -2px var(--accent-ring);
+  }
+  @media(max-width:400px){
+    .progress{font-size:9px;letter-spacing:.03em}
   }
 
   /* step panels: slide + fade on entry */
@@ -360,7 +401,7 @@
   }
   .svc .pr b{display:block;font-size:.95rem;color:var(--accent);font-weight:700;margin-bottom:1px}
 
-  /* step 2: days + slots */
+  /* steps 2 + 3: chips */
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
   .chip{
     cursor:pointer;font-family:var(--mono);font-size:.78rem;
@@ -369,6 +410,7 @@
     border:1px solid var(--line);
     border-radius:var(--r-sm);
     padding:9px 12px;text-align:center;color:var(--ink);min-width:82px;
+    min-height:44px;
     box-shadow:var(--sh-1);
     transition:border-color .15s ease,background .15s ease,box-shadow .15s ease,transform .15s ease;
   }
@@ -381,24 +423,38 @@
     color:var(--accent);
   }
   .chip.sel b{color:var(--ink)}
-  .chip:disabled,.chip.taken{
+  .chip:disabled{
     cursor:not-allowed;
     color:var(--ink-faint);
+    background:var(--raise);
+    border-color:var(--line);
+    border-style:dashed;
+    box-shadow:none;transform:none;
+  }
+  .chip.taken{
     background:
       repeating-linear-gradient(-45deg,transparent 0 5px,rgba(128,128,128,.05) 5px 6px),
       var(--raise);
-    border-color:var(--line);
-    border-style:dashed;
     text-decoration:line-through;
     text-decoration-color:var(--ink-faint);
-    box-shadow:none;transform:none;
   }
+  .chip.held::after{content:" \00b7 held"}
   .slot-hint{font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);margin-bottom:12px}
+  .next-avail{
+    font-family:var(--mono);font-size:.82rem;color:var(--ink);
+    background:var(--raise);border:1px solid var(--line);
+    border-radius:var(--r-sm);padding:9px 12px;margin-bottom:16px;
+    font-variant-numeric:tabular-nums;
+  }
+  .next-avail b{color:var(--accent-hi)}
+  @media(prefers-color-scheme:dark){
+    .next-avail b{color:var(--accent)}
+  }
   .legend{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);margin-top:2px}
 
-  /* step 3: form */
+  /* forms */
   .field{margin-bottom:18px}
-  .field label{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px;letter-spacing:-.005em}
+  .field label,.field .lbl{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px;letter-spacing:-.005em}
   .field .hint{font-weight:400;color:var(--ink-soft);font-size:.8rem}
   .field input,.field textarea{
     width:100%;font-family:var(--sans);font-size:1rem;color:var(--ink);
@@ -423,8 +479,58 @@
   }
   .err{display:none;color:var(--bad);font-size:.84rem;margin-top:6px}
   .field.bad .err{display:block}
+  .grid3{display:grid;gap:12px;grid-template-columns:1fr}
+  .grid3 .field{margin-bottom:0}
+  @media(min-width:560px){
+    .grid3{grid-template-columns:2fr 2fr 1fr}
+  }
+  .grid3-wrap{margin-bottom:18px}
 
-  /* step 4: the work tag, rendered like the physical thing */
+  /* photo input */
+  .file-hide{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);white-space:nowrap;
+  }
+  .file-btn{cursor:pointer}
+  #fPhoto:focus-visible + .file-btn{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+  .photo-prev{
+    margin-top:12px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;
+  }
+  .photo-prev img{
+    max-width:180px;max-height:130px;display:block;
+    border-radius:var(--r-sm);border:1px solid var(--line-strong);
+    box-shadow:var(--sh-1);
+  }
+  .photo-meta{font-family:var(--mono);font-size:.74rem;color:var(--ink-soft);max-width:26ch;overflow-wrap:break-word}
+  .photo-meta button{margin-top:8px}
+
+  /* estimate authorization radios */
+  fieldset.auth{border:none;margin-bottom:18px}
+  fieldset.auth legend{
+    font-weight:650;font-size:.92rem;margin-bottom:2px;letter-spacing:-.005em;
+  }
+  fieldset.auth .hint{display:block;font-weight:400;color:var(--ink-soft);font-size:.8rem;margin-bottom:8px}
+  .radios{display:flex;flex-direction:column;gap:6px}
+  .radio{
+    display:flex;align-items:center;gap:10px;cursor:pointer;
+    padding:10px 12px;min-height:44px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-sm);
+    box-shadow:var(--sh-1);
+    font-size:.95rem;
+    transition:border-color .15s ease,background .15s ease;
+  }
+  .radio input{accent-color:var(--accent);width:18px;height:18px;flex:none}
+  .radio:hover{border-color:var(--line-strong)}
+  .radio:has(input:checked){
+    border-color:var(--accent);
+    background:linear-gradient(0deg,var(--accent-soft),var(--accent-soft)),var(--card);
+  }
+
+  /* step 5: the work tag, rendered like the physical thing */
   .tag-card{
     position:relative;
     background:
@@ -456,17 +562,35 @@
     display:flex;justify-content:space-between;gap:12px;align-items:baseline;
     padding:10px 0;border-bottom:1px dashed var(--tag-line);font-size:.95rem;
   }
-  .tag-row:last-child{border-bottom:none}
   .tag-row .k{
     font-family:var(--mono);font-size:.7rem;text-transform:uppercase;
     letter-spacing:.14em;color:var(--tag-soft);white-space:nowrap;
   }
-  .tag-row .v{text-align:right;color:var(--tag-ink)}
+  .tag-row .v{text-align:right;color:var(--tag-ink);min-width:0;overflow-wrap:break-word}
   .tag-row .v b{display:block;font-weight:700;letter-spacing:-.005em}
+  .tag-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    gap:12px;padding-top:14px;flex-wrap:wrap;
+  }
+  .tag-fine{
+    font-family:var(--mono);font-size:.64rem;color:var(--tag-soft);
+    letter-spacing:.1em;text-transform:uppercase;
+  }
+  .stamp{
+    font-family:var(--mono);font-weight:700;font-size:.8rem;
+    letter-spacing:.22em;text-transform:uppercase;
+    color:var(--stamp);
+    border:2px solid currentColor;border-radius:4px;
+    padding:6px 10px 5px 12px;
+    transform:rotate(-4deg);
+    box-shadow:inset 0 0 0 1px var(--tag-paper),inset 0 0 0 2px currentColor;
+  }
   .chg{
-    background:none;border:none;cursor:pointer;padding:0;
+    background:none;border:none;cursor:pointer;
     font-family:var(--mono);font-size:.72rem;color:var(--accent-hi);
     text-decoration:underline;text-underline-offset:2px;
+    position:relative;
+    padding:14px 6px;margin:-14px -6px; /* invisible 44px-plus tap area */
   }
   @media(prefers-color-scheme:dark){
     .chg{color:var(--accent)}
@@ -480,6 +604,9 @@
   @media(prefers-color-scheme:dark){
     .conf-code{color:var(--accent)}
   }
+  .tag-actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:4px}
+  .tag-actions .btn{padding:11px 18px;font-size:.9rem}
+  .tag-actions-hint{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);margin-bottom:14px}
   .demo-note{
     margin-top:18px;padding:13px 16px;
     background:var(--raise);
@@ -489,8 +616,164 @@
     font-size:.88rem;color:var(--ink-soft);
   }
 
-  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:26px;flex-wrap:wrap}
   .nav .spacer{flex:1}
+
+  /* ---------- shop demo board ---------- */
+  .board-note{
+    margin:0 0 18px;padding:13px 16px;
+    background:var(--raise);
+    border:1px dashed var(--line-strong);
+    border-radius:var(--r-sm);
+    font-size:.88rem;color:var(--ink-soft);
+  }
+  .board-note b{color:var(--ink)}
+  .board{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-lg);
+    box-shadow:var(--sh-2);
+    padding:20px 16px 22px;
+  }
+  .board-head{
+    display:flex;flex-wrap:wrap;justify-content:space-between;
+    gap:8px 16px;align-items:baseline;margin-bottom:6px;
+  }
+  .board-title{
+    font-family:var(--mono);font-size:.78rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .board-title b{color:var(--accent);font-weight:700}
+  .board-cap{font-family:var(--mono);font-size:.7rem;color:var(--ink-faint)}
+  .board .chips{margin:12px 0 4px}
+  .brow{
+    display:flex;gap:12px;padding:12px 0;
+    border-top:1px dashed var(--line);
+  }
+  .brow:first-of-type{border-top:none}
+  .btime{
+    font-family:var(--mono);font-size:.8rem;font-variant-numeric:tabular-nums;
+    color:var(--ink-soft);width:64px;flex:none;padding-top:6px;white-space:nowrap;
+  }
+  .bcard{flex:1;min-width:0}
+  .b-open{color:var(--ink-faint);font-size:.9rem;padding:6px 0;font-style:italic}
+  .b-block{
+    font-family:var(--mono);font-size:.76rem;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-soft);
+    background:
+      repeating-linear-gradient(-45deg,transparent 0 8px,rgba(128,128,128,.06) 8px 10px),
+      var(--raise);
+    border:1px dashed var(--line-strong);
+    border-radius:var(--r-sm);
+    padding:12px 14px;
+  }
+  .appt{
+    border:1px solid var(--line);
+    border-radius:var(--r-md);
+    padding:12px 14px;
+    background:var(--raise);
+    box-shadow:var(--sh-1);
+  }
+  .appt.mine{
+    border-color:var(--accent);
+    box-shadow:0 0 0 1px var(--accent),var(--sh-1);
+  }
+  .appt.done{opacity:.72}
+  .appt-top{
+    display:flex;justify-content:space-between;align-items:baseline;
+    gap:8px 12px;flex-wrap:wrap;
+  }
+  .appt-name{font-weight:650;letter-spacing:-.005em}
+  .appt-sub{font-size:.84rem;color:var(--ink-soft);margin-top:2px}
+  .pill{
+    font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;
+    text-transform:uppercase;white-space:nowrap;
+    padding:4px 9px;border-radius:999px;border:1px solid;
+  }
+  .pill.s-checkedin{color:var(--ink-soft);border-color:var(--line-strong);background:var(--card)}
+  .pill.s-inprogress{color:var(--accent-hi);border-color:currentColor;background:var(--accent-soft)}
+  @media(prefers-color-scheme:dark){
+    .pill.s-inprogress{color:var(--accent)}
+  }
+  .pill.s-done{color:var(--good);border-color:currentColor;background:var(--card)}
+  .mine-chip{
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;
+    text-transform:uppercase;color:#fff;
+    background:linear-gradient(180deg,var(--accent),var(--accent-hi));
+    border-radius:999px;padding:3px 8px;white-space:nowrap;
+  }
+  .appt-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .bbtn{
+    cursor:pointer;
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;
+    text-transform:uppercase;
+    background:var(--card);color:var(--ink);
+    border:1px solid var(--line-strong);
+    border-radius:var(--r-sm);
+    padding:8px 12px;min-height:44px;
+    transition:background .15s ease,border-color .15s ease,color .15s ease;
+  }
+  .bbtn:hover{border-color:var(--ink-faint);background:var(--raise)}
+  .bbtn[aria-pressed="true"]{
+    background:var(--ink);color:var(--card);border-color:var(--ink);
+  }
+  .appt-details{
+    margin-top:12px;border-top:1px dashed var(--line);
+    padding-top:12px;font-size:.88rem;
+  }
+  .dline{display:flex;gap:12px;padding:3px 0}
+  .dline .dk{
+    font-family:var(--mono);font-size:.66rem;text-transform:uppercase;
+    letter-spacing:.12em;color:var(--ink-faint);
+    width:86px;flex:none;padding-top:3px;
+  }
+  .dline .dv{color:var(--ink-soft);min-width:0;overflow-wrap:break-word}
+  .dline .dv img{
+    max-width:140px;max-height:100px;display:block;margin-top:4px;
+    border-radius:var(--r-sm);border:1px solid var(--line-strong);
+  }
+
+  /* ---------- developer section ---------- */
+  #about{border-top:1px solid var(--line)}
+  .flow-scroll{overflow-x:auto;padding-bottom:8px;margin:18px 0 8px}
+  .flowmap{min-width:660px;display:flex;flex-direction:column;gap:10px}
+  .lane{display:flex;align-items:center;gap:8px}
+  .lane-label{
+    font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-faint);
+    width:78px;flex:none;
+  }
+  .fbox{
+    font-family:var(--mono);font-size:.68rem;letter-spacing:.04em;
+    text-transform:uppercase;white-space:nowrap;color:var(--ink-soft);
+    border:1px solid var(--line-strong);background:var(--card);
+    border-radius:6px;padding:8px 10px;
+    box-shadow:var(--sh-1);
+  }
+  .fbox.hot{border-color:var(--accent);color:var(--accent-hi)}
+  @media(prefers-color-scheme:dark){
+    .fbox.hot{color:var(--accent)}
+  }
+  .farr{color:var(--ink-faint);font-family:var(--mono);font-size:.8rem}
+  .fdrop{
+    margin-left:86px;
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent-hi);
+  }
+  @media(prefers-color-scheme:dark){
+    .fdrop{color:var(--accent)}
+  }
+  .why{max-width:60ch;color:var(--ink-soft);font-size:.96rem;margin:14px 0}
+  .why b{color:var(--ink)}
+  .featrow{
+    list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;
+  }
+  .featrow li{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-soft);
+    border:1px solid var(--line-strong);border-radius:999px;
+    padding:7px 13px;background:var(--card);
+  }
 
   /* ---------- footer ---------- */
   footer{
@@ -499,14 +782,39 @@
     font-size:.88rem;
     border-top:3px solid var(--accent);
   }
-  footer a{color:var(--hero-text);text-decoration-color:var(--accent);text-underline-offset:3px}
-  footer .fine{font-family:var(--mono);font-size:.76rem;margin-top:10px;color:var(--hero-dim);opacity:.75}
+  footer b{color:var(--hero-text);font-weight:650}
+  footer a{
+    color:var(--hero-text);text-decoration-color:var(--accent);
+    text-underline-offset:3px;
+    display:inline-block;padding:10px 2px;margin:-10px -2px; /* tap area */
+  }
+  footer .links{font-family:var(--mono);font-size:.78rem;margin-top:12px;letter-spacing:.04em}
+  footer .fine{font-family:var(--mono);font-size:.76rem;margin-top:12px;color:var(--hero-dim);opacity:.75}
 
   @media(min-width:720px){
     header{padding:80px 0 52px}
     .panel-box{padding:32px 32px 34px}
     .progress{font-size:11px}
     .tag-card{padding:24px 24px 20px 56px}
+    .board{padding:24px 24px 26px}
+  }
+
+  /* ---------- print: only the work tag ---------- */
+  @media print{
+    .badge,.bookbar,.viewswitch,.vs-note{display:none}
+    body.print-tag{background:#fff;padding:0}
+    body.print-tag *{visibility:hidden}
+    body.print-tag #tagPrint,body.print-tag #tagPrint *{visibility:visible}
+    body.print-tag #tagPrint{
+      position:absolute;left:0;top:0;width:100%;margin:0;
+      transform:none;box-shadow:none;
+      --tag-paper:#f6ecd6;--tag-paper-2:#efe1c2;--tag-ink:#3a2f1c;
+      --tag-soft:#6f5f40;--tag-line:#b9a97f;--stamp:#1c6e38;--bg:#ffffff;
+    }
+    body.print-tag .chg{display:none}
+    /* printing from the shop board: force the tag's ancestors visible */
+    body.print-tag #custView[hidden]{display:block}
+    body.print-tag #p5{display:block}
   }
 
   /* motion respect: kill entrances, keep instant state changes */
@@ -514,14 +822,15 @@
     html{scroll-behavior:auto}
     .panel.active{animation:none}
     .progress li::after,.progress li::before,
-    .btn,.svc,.chip,.bookbar{transition:none}
+    .btn,.svc,.chip,.bookbar,.viewswitch button,.bbtn,.radio,
+    .field input,.field textarea{transition:none}
     .btn:hover,.svc:hover,.chip:hover{transform:none}
   }
 </style>
 </head>
 <body>
 
-<div class="badge">SAMPLE · invented business</div>
+<div class="badge">SAMPLE &middot; invented business</div>
 
 <header>
   <div class="wrap">
@@ -531,6 +840,7 @@
     <div class="facts">
       <span><b>Tue to Sun</b> 10am to 6pm</span>
       <span><b>Closed Mondays</b> (we ride too)</span>
+      <span><b>Two stands</b> in the back</span>
       <span><b>000 Example Ave</b>, San Francisco</span>
     </div>
     <div class="hero-cta">
@@ -544,19 +854,38 @@
   <div class="wrap">
     <p class="kicker">No phone tag, no sticky notes</p>
     <h2 id="flowtop">Get on the stand</h2>
-    <p class="owner-note"><b>Shop owners, this is the pitch:</b> bookings land while you are elbow-deep in a repair stand. The customer picks a slot, you get the job, nobody plays phone tag.</p>
+    <p class="owner-note"><b>How it works:</b> pick a service, grab a slot, tell us what the bike is doing. Drop it off in your window. We call before doing anything expensive.</p>
 
-    <div class="panel-box">
-      <ol class="progress" id="progress">
+    <noscript>
+      <div class="owner-note">
+        <b>Booking here runs on a bit of JavaScript</b>, which is off in your browser.
+        The shop part still stands: Tue to Sun, 10am to 6pm, 000 Example Ave.
+        Tune-ups from $89, flat fixes from $18, brake service from $49, drivetrain
+        clean and tune from $75. Weird noises get a free look and an estimate
+        before any work. Walk-ins welcome for the quick stuff.
+      </div>
+    </noscript>
+
+    <div class="needs-js">
+      <div class="viewswitch" role="group" aria-label="Demo view">
+        <button id="vwCustomer" type="button" aria-pressed="true">Customer view</button>
+        <button id="vwShop" type="button" aria-pressed="false">Shop demo</button>
+      </div>
+      <p class="vs-note">One system, two sides. Book something, then flip.</p>
+    </div>
+
+    <div class="panel-box needs-js" id="custView">
+      <ol class="progress" id="progress" aria-label="Booking steps">
         <li data-n="1">Service</li>
         <li data-n="2">Time</li>
-        <li data-n="3">Details</li>
-        <li data-n="4">Done</li>
+        <li data-n="3">Bike</li>
+        <li data-n="4">Details</li>
+        <li data-n="5">Tag</li>
       </ol>
 
-      <!-- STEP 1 -->
+      <!-- STEP 1: service -->
       <div class="panel active" id="p1">
-        <h3>What is the bike doing?</h3>
+        <h3 tabindex="-1">What is the bike doing?</h3>
         <p class="sub">Prices are starting points. Parts are extra, surprises get a call first.</p>
         <div id="svcList"></div>
         <div class="nav">
@@ -565,23 +894,83 @@
         </div>
       </div>
 
-      <!-- STEP 2 -->
+      <!-- STEP 2: time -->
       <div class="panel" id="p2">
-        <h3>When can you drop it off?</h3>
+        <h3 tabindex="-1">When can you drop it off?</h3>
         <p class="sub">Next seven open days. Mondays we are out riding, not answering the door.</p>
+        <p class="next-avail" id="nextAvail"></p>
         <div class="chips" id="dayList"></div>
-        <p class="slot-hint" id="slotHint">Pick a day and the open slots show up here.</p>
+        <p class="slot-hint" id="slotHint" aria-live="polite">Pick a day and the open slots show up here.</p>
         <div class="chips" id="slotList"></div>
-        <p class="legend" id="slotLegend" style="display:none">Crossed out means somebody beat you to it.</p>
+        <p class="legend" id="slotLegend" style="display:none">Crossed out means somebody beat you to it. Held means the stand is tied up with shop work. Two stands back there, so the calendar is honest.</p>
         <div class="nav">
           <button class="btn ghost" id="back2" type="button">Back</button>
-          <button class="btn" id="next2" type="button" disabled>Next: your details</button>
+          <button class="btn" id="next2" type="button" disabled>Next: your bike</button>
         </div>
       </div>
 
-      <!-- STEP 3 -->
+      <!-- STEP 3: bike intake -->
       <div class="panel" id="p3">
-        <h3>Who does the bike belong to?</h3>
+        <h3 tabindex="-1">Your bike</h3>
+        <p class="sub">Thirty seconds of detail now saves a phone call later.</p>
+
+        <div class="field" id="fldType">
+          <span class="lbl" id="typeLbl">What kind of bike?</span>
+          <div class="chips" id="bikeTypes" role="group" aria-labelledby="typeLbl" style="margin-bottom:0"></div>
+          <p class="err">Pick the closest one. Other is fine.</p>
+        </div>
+
+        <div class="grid3-wrap">
+          <div class="grid3">
+            <div class="field">
+              <label for="fBrand">Brand <span class="hint">(optional)</span></label>
+              <input id="fBrand" type="text" placeholder="Surly">
+            </div>
+            <div class="field">
+              <label for="fModel">Model <span class="hint">(optional)</span></label>
+              <input id="fModel" type="text" placeholder="Cross-Check">
+            </div>
+            <div class="field">
+              <label for="fYear">Year <span class="hint">(ish)</span></label>
+              <input id="fYear" type="text" inputmode="numeric" maxlength="4" placeholder="2019">
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="fldProblem">
+          <label for="fProblem">What is happening? <span class="hint">(the noise description helps more than you think)</span></label>
+          <textarea id="fProblem" rows="3" placeholder="Clicks on the third pedal stroke, only uphill. Started last week."></textarea>
+          <p class="err">Tell us something, even if it is just "it feels wrong."</p>
+        </div>
+
+        <div class="field">
+          <label for="fBikeNotes">Anything else we should know <span class="hint">(optional)</span></label>
+          <textarea id="fBikeNotes" rows="2" placeholder="Lock code taped under the saddle. Do not true the front wheel, it is sentimental."></textarea>
+        </div>
+
+        <div class="field">
+          <span class="lbl">Photo <span class="hint">(optional)</span></span>
+          <p class="hint" style="margin-bottom:10px">A photo can help us understand the problem before you arrive. Stays on your device in this demo, nothing gets uploaded.</p>
+          <input id="fPhoto" class="file-hide" type="file" accept="image/*">
+          <label for="fPhoto" class="btn ghost file-btn">Add a photo</label>
+          <div class="photo-prev" id="photoPrev" hidden>
+            <img id="photoImg" alt="Preview of the photo you attached">
+            <div class="photo-meta">
+              <span id="photoMeta"></span>
+              <button class="btn ghost" id="photoRemove" type="button" style="display:block;padding:9px 14px;min-height:44px;font-size:.84rem">Remove photo</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav">
+          <button class="btn ghost" id="back3" type="button">Back</button>
+          <button class="btn" id="next3" type="button">Next: your details</button>
+        </div>
+      </div>
+
+      <!-- STEP 4: contact + authorization -->
+      <div class="panel" id="p4">
+        <h3 tabindex="-1">Who does the bike belong to?</h3>
         <p class="sub">Just enough to put a name on the work tag and reach you when it is ready.</p>
         <div class="field" id="fldName">
           <label for="fName">Your name</label>
@@ -593,21 +982,29 @@
           <input id="fContact" type="text" autocomplete="tel" placeholder="(415) 555-0000 or you@example.com">
           <p class="err">Give us a phone number or an email so we can tell you when it is done.</p>
         </div>
-        <div class="field">
-          <label for="fNotes">About the bike <span class="hint">(optional, but the noise description helps)</span></label>
-          <textarea id="fNotes" rows="3" placeholder="Blue Surly, clicks on the third pedal stroke, only uphill"></textarea>
-        </div>
+
+        <fieldset class="auth">
+          <legend>If we find something else</legend>
+          <span class="hint">Happens a lot. Tell us how you want it handled.</span>
+          <div class="radios">
+            <label class="radio"><input type="radio" name="auth" value="call" checked> Call me before doing any additional work</label>
+            <label class="radio"><input type="radio" name="auth" value="25"> Go ahead up to $25 over the estimate</label>
+            <label class="radio"><input type="radio" name="auth" value="50"> Go ahead up to $50 over</label>
+            <label class="radio"><input type="radio" name="auth" value="100"> Go ahead up to $100 over</label>
+          </div>
+        </fieldset>
+
         <div class="nav">
-          <button class="btn ghost" id="back3" type="button">Back</button>
-          <button class="btn" id="next3" type="button">Review and book</button>
+          <button class="btn ghost" id="back4" type="button">Back</button>
+          <button class="btn" id="next4" type="button">Review and book</button>
         </div>
       </div>
 
-      <!-- STEP 4 -->
-      <div class="panel" id="p4">
-        <h3>You are on the stand.</h3>
-        <p class="sub">Here is your work tag. Screenshot it or just remember the code.</p>
-        <div class="tag-card">
+      <!-- STEP 5: work tag -->
+      <div class="panel" id="p5">
+        <h3 tabindex="-1">You are on the stand.</h3>
+        <p class="sub">Here is your work tag. Print it, save it, or just remember the code.</p>
+        <div class="tag-card" id="tagPrint">
           <div class="tag-hole" aria-hidden="true"></div>
           <div class="tag-row">
             <span class="k">Work tag</span>
@@ -622,32 +1019,114 @@
             <span class="v" id="sumTime"></span>
           </div>
           <div class="tag-row">
-            <span class="k">Customer</span>
-            <span class="v" id="sumContact"></span>
+            <span class="k">Bike</span>
+            <span class="v" id="sumBike"></span>
+          </div>
+          <div class="tag-row">
+            <span class="k">What is up</span>
+            <span class="v" id="sumProblem"></span>
           </div>
           <div class="tag-row" id="sumNotesRow">
             <span class="k">Notes</span>
             <span class="v" id="sumNotes"></span>
           </div>
+          <div class="tag-row" id="sumPhotoRow">
+            <span class="k">Photo</span>
+            <span class="v">Attached. Stays in your browser.</span>
+          </div>
+          <div class="tag-row">
+            <span class="k">Customer</span>
+            <span class="v" id="sumContact"></span>
+          </div>
+          <div class="tag-row" style="border-bottom:none">
+            <span class="k">Extra work</span>
+            <span class="v" id="sumAuth"></span>
+          </div>
+          <div class="tag-foot">
+            <span class="tag-fine" id="stampDate">Fog Line Cycles &middot; demo tag</span>
+            <span class="stamp" aria-label="Status: checked in">Checked in</span>
+          </div>
         </div>
-        <p class="demo-note">This is a demo, so nothing was actually booked. In the real version this emails the shop and adds it to their calendar.</p>
+
+        <div class="tag-actions">
+          <a class="btn ghost" id="icsLink" download="fogline-dropoff.ics" href="#">Add to calendar</a>
+          <button class="btn ghost" id="printTag" type="button">Print work tag</button>
+        </div>
+        <p class="tag-actions-hint">The calendar file is a real .ics your phone can open. Printing uses your print dialog, so "save as PDF" works too.</p>
+
+        <p class="demo-note">Demo, not a real booking: nothing left your browser. Your booking is saved locally, so flip to the <b>shop demo</b> up top and watch it land on the schedule board. In the real version this would also email the shop.</p>
         <div class="nav">
-          <button class="btn ghost" id="back4" type="button">Back</button>
+          <button class="btn ghost" id="back5" type="button">Back</button>
+          <button class="btn ghost" id="seeShop" type="button">See the shop side</button>
           <button class="btn" id="restart" type="button">Book another repair</button>
         </div>
+      </div>
+    </div>
+
+    <!-- SHOP DEMO -->
+    <div class="needs-js" id="shopView" hidden>
+      <div class="board-note"><b>Shop demo.</b> This is the counter side of the same system, the board a mechanic would run the day from. The crossed-out slots customers see are these jobs. Bookings you make in the customer view land here too.</div>
+      <div class="board">
+        <div class="board-head">
+          <span class="board-title"><b>FLC</b> service board</span>
+          <span class="board-cap">2 stands &middot; 1 mechanic on duty</span>
+        </div>
+        <div class="chips" id="boardDays"></div>
+        <div id="boardRows"></div>
       </div>
     </div>
   </div>
 </section>
 
+<section id="about">
+  <div class="wrap">
+    <p class="kicker">For the curious</p>
+    <h2>Why I built this demo</h2>
+    <p class="why">Most repair shops take bookings on a phone nobody can reach, because both hands are inside a bottom bracket. Jobs live in voicemail, text threads, and sticky notes on the bench. Then a callback gets missed and a customer walks.</p>
+    <p class="why">This page is the alternative. The customer picks a slot, describes the bike and the problem before showing up, and says up front how much extra work they will approve. The shop gets a board it can run the day from. <b>Fewer calls, fewer surprises, nothing on a sticky note.</b></p>
+
+    <div class="flow-scroll">
+      <div class="flowmap" role="img" aria-label="The flow: a customer selects a service, selects a time, describes the bike, confirms, and gets a work tag. The same booking appears on the shop board, where the shop views the intake, services the bike, and marks it complete.">
+        <div class="lane">
+          <span class="lane-label">Customer</span>
+          <span class="fbox">Select service</span><span class="farr">&rarr;</span>
+          <span class="fbox">Select time</span><span class="farr">&rarr;</span>
+          <span class="fbox">Bike intake</span><span class="farr">&rarr;</span>
+          <span class="fbox">Confirm</span><span class="farr">&rarr;</span>
+          <span class="fbox hot">Work tag</span>
+        </div>
+        <div class="fdrop">&darr; same data, no phone call</div>
+        <div class="lane">
+          <span class="lane-label">Shop</span>
+          <span class="fbox hot">Appointment appears</span><span class="farr">&rarr;</span>
+          <span class="fbox">View intake</span><span class="farr">&rarr;</span>
+          <span class="fbox">Service bike</span><span class="farr">&rarr;</span>
+          <span class="fbox">Mark complete</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="why">One HTML file, no backend, so everything stays in your browser. In a real deployment the bookings would land in a database, text the shop, and sync a calendar. That part is plumbing. The flow you just used is the hard part.</p>
+
+    <ul class="featrow" aria-label="What this demo covers">
+      <li>Scheduling</li>
+      <li>Customer intake</li>
+      <li>Work orders</li>
+      <li>Shop dashboard</li>
+      <li>Mobile UX</li>
+    </ul>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
-    <p>Sample built by Angel Valle Jr. Fog Line Cycles is not a real shop; the booking flow is the point. <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a></p>
+    <p><b>WORKING SAMPLE</b> &middot; Designed and built by Angel Valle Jr. Fog Line Cycles is an invented shop; the booking system on this page is real and runs entirely in your browser.</p>
+    <p class="links"><a href="https://avjcodes.github.io/">SEE MORE WORK</a> &nbsp;&middot;&nbsp; <a href="mailto:theangelvallejr@gmail.com">BUILD SOMETHING LIKE THIS</a></p>
     <p class="fine">One HTML file. No trackers, no external requests, loads before your coffee cools.</p>
   </div>
 </footer>
 
-<div class="bookbar" id="bookBar">
+<div class="bookbar needs-js" id="bookBar">
   <button class="btn" id="barBook" type="button">Book a repair</button>
 </div>
 
@@ -662,8 +1141,16 @@
     { id:"flat",  name:"Flat fix",                  desc:"Tube swap, plus we hunt the glass that caused it.",    price:"from $18", time:"20 minutes" },
     { id:"brake", name:"Brake service",             desc:"Pads, cables or a bleed. Lever feel dialed back in.",  price:"from $49", time:"about 1 hour" },
     { id:"drive", name:"Drivetrain clean and tune", desc:"Degrease, re-lube, shifting indexed so it stops skipping.", price:"from $75", time:"1 to 2 hours" },
-    { id:"look",  name:"Not sure, look at it",      desc:"Describe the noise. We will find it.",                 price:"free estimate", time:"15 minutes" }
+    { id:"noise", name:"Bike is making a weird noise", desc:"Diagnosis first. We find the noise, then call you with a number before touching anything.", price:"estimate after inspection", time:"15 min drop-off chat" },
+    { id:"look",  name:"Not sure, look at it",      desc:"Something else, or a few things at once. Describe it, we will sort it.", price:"free estimate", time:"15 minutes" }
   ];
+  var BIKE_TYPES = ["Road","Mountain","E-bike","Cargo","Commuter","Other"];
+  var AUTH_TEXT = {
+    call:"Call before any extra work",
+    "25":"Pre-approved up to $25 over",
+    "50":"Pre-approved up to $50 over",
+    "100":"Pre-approved up to $100 over"
+  };
   var SLOT_TIMES = ["10:00 am","11:00 am","12:00 pm","1:30 pm","2:30 pm","3:30 pm","4:30 pm"];
   var WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
   var MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -687,8 +1174,12 @@
     return out;
   }
   var DAYS = buildDays();
+  function dayIdxByKey(key){
+    for (var i = 0; i < DAYS.length; i++){ if (DAYS[i].key === key) return i; }
+    return -1;
+  }
 
-  /* deterministic hash so "taken" slots are stable per day, not random each load */
+  /* deterministic hash (FNV-1a) so "taken" slots are stable per day, not random each load */
   function hash(str){
     var h = 2166136261;
     for (var i = 0; i < str.length; i++){
@@ -697,35 +1188,144 @@
     }
     return h >>> 0;
   }
+  function slotInfo(dayKey, t){
+    var taken = hash("fogline|" + dayKey + "|" + t) % 3 === 0;
+    var blocked = !taken && hash("block|" + dayKey + "|" + t) % 9 === 0;
+    return { t: t, taken: taken, blocked: blocked };
+  }
   function slotsFor(dayKey){
-    var list = SLOT_TIMES.map(function(t){
-      return { t: t, taken: hash("fogline|" + dayKey + "|" + t) % 3 === 0 };
-    });
+    var list = SLOT_TIMES.map(function(t){ return slotInfo(dayKey, t); });
     /* never let a whole day read as full in the demo */
-    if (list.every(function(s){ return s.taken; })) list[0].taken = false;
+    if (list.every(function(s){ return s.taken || s.blocked; })){
+      list[0].taken = false; list[0].blocked = false;
+    }
     return list;
   }
 
+  /* seeded fictional appointments, derived from the same hash so the
+     board always matches the crossed-out slots customers see */
+  var SEED_FIRST = ["Maya","Colin","Priya","Marcus","Ines","Theo","Rosa","Kenji","Alma","Dev","June","Walt"];
+  var SEED_LAST = "ABCDGHKLMNRSTVW";
+  var SEED_BIKES = [
+    ["Road","Specialized Allez"], ["Commuter","Public C7"], ["Mountain","Trek Marlin 6"],
+    ["E-bike","Rad Power RadCity"], ["Road","Cannondale Synapse"], ["Cargo","Yuba Kombi"],
+    ["Commuter","Linus Roadster"], ["Mountain","Giant Talon 2"], ["E-bike","Aventon Level.2"],
+    ["Road","Bianchi Via Nirone"]
+  ];
+  var SEED_JOBS = [
+    ["Shifting skips under load in the small ring.","drive"],
+    ["Front brake squeals hard and grabs at the end.","brake"],
+    ["Slow leak in the rear, flat by morning.","flat"],
+    ["Creak from the bottom bracket on climbs.","noise"],
+    ["Chain drops when backpedaling.","drive"],
+    ["Front wheel wobble after a curb hit.","look"],
+    ["Shift cable frayed at the lever.","brake"],
+    ["Freehub clicks when coasting, sometimes slips.","noise"],
+    ["Annual once-over before a touring trip.","tune"],
+    ["Everything works, nothing works well.","tune"]
+  ];
+  var SEED_AUTH = ["call","25","50","call","100","call","50","25"];
+  var SEED_BLOCK = ["Held: wheel build backlog","Held: warranty rebuild","Held: parts run","Held: stand maintenance"];
+  function seededAppt(dayKey, t){
+    var h = hash("seed|" + dayKey + "|" + t);
+    var h2 = hash("seed2|" + dayKey + "|" + t);
+    var bike = SEED_BIKES[h % SEED_BIKES.length];
+    var job = SEED_JOBS[h2 % SEED_JOBS.length];
+    return {
+      seeded: true,
+      name: SEED_FIRST[h % SEED_FIRST.length] + " " + SEED_LAST.charAt(h2 % SEED_LAST.length) + ".",
+      svcName: svcById(job[1]).name,
+      bikeLine: bike[1],
+      bikeSub: bike[0],
+      problem: job[0],
+      auth: SEED_AUTH[h % SEED_AUTH.length]
+    };
+  }
+  function blockReason(dayKey, t){
+    return SEED_BLOCK[hash("blockwhy|" + dayKey + "|" + t) % SEED_BLOCK.length];
+  }
+
+  /* ---------- visitor bookings (localStorage) ---------- */
+  var LS_KEY = "flc-demo-bookings";
+  var bookings = [];
+  var photoMem = {};   /* code -> dataURL, this session only (photos never persisted) */
+  var statusMem = {};  /* "dayKey|slot" -> checkedin | inprogress | done, this session only */
+  var blockMem = {};   /* "dayKey|slot" -> true when blocked from the shop board, this session only */
+  var openSet = {};    /* "dayKey|slot" -> details expanded */
+  var currentCode = null;
+  try{
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw){
+      var parsed = JSON.parse(raw);
+      if (Object.prototype.toString.call(parsed) === "[object Array]"){
+        bookings = parsed.filter(function(b){
+          return b && b.code && b.slot && dayIdxByKey(b.dayKey) !== -1;
+        });
+      }
+    }
+  }catch(e){ bookings = []; }
+  function persistBookings(){
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(bookings)); }catch(e){}
+  }
+  persistBookings(); /* rewrite minus any stale days */
+  function bookingAt(dayKey, slot){
+    for (var i = bookings.length - 1; i >= 0; i--){
+      if (bookings[i].dayKey === dayKey && bookings[i].slot === slot) return bookings[i];
+    }
+    return null;
+  }
+  /* a slot is unavailable to the customer if seeded-taken, blocked, or already booked
+     in this browser (excluding the booking currently being edited) */
+  function slotClosed(dayKey, s){
+    if (s.taken || s.blocked) return true;
+    if (blockMem[dayKey + "|" + s.t]) return true;
+    var b = bookingAt(dayKey, s.t);
+    return !!(b && b.code !== currentCode);
+  }
+
   /* ---------- state ---------- */
-  var state = { service: null, dayIdx: null, slot: null, name: "", contact: "", notes: "" };
+  var state = {
+    service:null, dayIdx:null, slot:null,
+    bikeType:null, brand:"", model:"", year:"", problem:"", bikeNotes:"",
+    photoData:null, photoName:"",
+    name:"", contact:"", auth:"call"
+  };
   var step = 1;
+  var view = "cust";
+  var boardDayIdx = 0;
+  var boardTouched = false;
 
   /* ---------- step switching ---------- */
+  function scrollBeh(){
+    return (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) ? "auto" : "smooth";
+  }
   function go(n, scroll){
     step = n;
-    for (var i = 1; i <= 4; i++){
+    for (var i = 1; i <= 5; i++){
       $("p" + i).classList.toggle("active", i === n);
     }
     var items = $("progress").children;
-    for (var j = 0; j < 4; j++){
+    for (var j = 0; j < 5; j++){
       items[j].classList.toggle("done", j + 1 < n);
       items[j].classList.toggle("current", j + 1 === n);
+      if (j + 1 === n) items[j].setAttribute("aria-current", "step");
+      else items[j].removeAttribute("aria-current");
     }
-    if (n === 4) buildSummary();
-    if (scroll) $("flowtop").scrollIntoView({ behavior: "smooth", block: "start" });
+    if (n === 5) buildSummary();
+    if (scroll){
+      $("flowtop").scrollIntoView({ behavior: scrollBeh(), block: "start" });
+      var hd = $("p" + n).querySelector("h3");
+      if (hd){
+        try{ hd.focus({ preventScroll: true }); }catch(e){ hd.focus(); }
+      }
+    }
   }
 
   /* ---------- step 1: services ---------- */
+  function svcById(id){
+    for (var i = 0; i < SERVICES.length; i++){ if (SERVICES[i].id === id) return SERVICES[i]; }
+    return null;
+  }
   function renderServices(){
     var box = $("svcList");
     box.innerHTML = "";
@@ -779,10 +1379,16 @@
     slotsFor(day.key).forEach(function(s){
       var b = document.createElement("button");
       b.type = "button";
-      b.className = "chip" + (s.taken ? " taken" : "") + (!s.taken && state.slot === s.t ? " sel" : "");
+      var closed = slotClosed(day.key, s);
+      var cls = "chip";
+      if (closed && s.blocked) cls += " held";
+      else if (closed) cls += " taken";
+      if (!closed && state.slot === s.t) cls += " sel";
+      b.className = cls;
       b.textContent = s.t;
-      if (s.taken){
+      if (closed){
         b.disabled = true;
+        b.setAttribute("aria-label", s.t + (s.blocked ? ", held for shop work" : ", taken"));
       } else {
         b.addEventListener("click", function(){
           state.slot = s.t;
@@ -796,18 +1402,105 @@
   function updateNext2(){
     $("next2").disabled = !(state.dayIdx !== null && state.slot);
   }
+  function renderNextAvail(){
+    for (var i = 0; i < DAYS.length; i++){
+      var slots = slotsFor(DAYS[i].key);
+      for (var j = 0; j < slots.length; j++){
+        if (!slotClosed(DAYS[i].key, slots[j])){
+          $("nextAvail").innerHTML = "Next open slot: <b>" + DAYS[i].full + " at " + slots[j].t + "</b>";
+          return;
+        }
+      }
+    }
+    $("nextAvail").textContent = "The week is full. Call the shop and we will squeeze you in.";
+  }
 
-  /* ---------- step 3: validation ---------- */
+  /* ---------- step 3: bike intake ---------- */
+  function renderBikeTypes(){
+    var box = $("bikeTypes");
+    box.innerHTML = "";
+    BIKE_TYPES.forEach(function(t){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip" + (state.bikeType === t ? " sel" : "");
+      b.textContent = t;
+      b.addEventListener("click", function(){
+        state.bikeType = t;
+        $("fldType").classList.remove("bad");
+        renderBikeTypes();
+      });
+      box.appendChild(b);
+    });
+  }
+  $("fPhoto").addEventListener("change", function(){
+    var f = this.files && this.files[0];
+    if (!f){ clearPhoto(); return; }
+    if (!/^image\//.test(f.type)){
+      $("photoPrev").hidden = false;
+      $("photoImg").removeAttribute("src");
+      $("photoImg").style.display = "none";
+      $("photoMeta").textContent = "That file is not an image. Try a photo.";
+      state.photoData = null; state.photoName = "";
+      return;
+    }
+    if (f.size > 8 * 1024 * 1024){
+      $("photoPrev").hidden = false;
+      $("photoImg").removeAttribute("src");
+      $("photoImg").style.display = "none";
+      $("photoMeta").textContent = "That photo is huge (over 8 MB). Try a smaller one.";
+      state.photoData = null; state.photoName = "";
+      return;
+    }
+    var rd = new FileReader();
+    rd.onload = function(){
+      state.photoData = rd.result;
+      state.photoName = f.name;
+      $("photoImg").src = rd.result;
+      $("photoImg").style.display = "block";
+      $("photoMeta").textContent = f.name + " (" + Math.max(1, Math.round(f.size / 1024)) + " KB)";
+      $("photoPrev").hidden = false;
+    };
+    rd.readAsDataURL(f);
+  });
+  function clearPhoto(){
+    state.photoData = null; state.photoName = "";
+    $("fPhoto").value = "";
+    $("photoPrev").hidden = true;
+    $("photoImg").removeAttribute("src");
+  }
+  $("photoRemove").addEventListener("click", clearPhoto);
+
+  function validateBike(){
+    state.brand = $("fBrand").value.trim();
+    state.model = $("fModel").value.trim();
+    state.year = $("fYear").value.trim();
+    state.problem = $("fProblem").value.trim();
+    state.bikeNotes = $("fBikeNotes").value.trim();
+    var okType = !!state.bikeType;
+    var okProb = state.problem.length > 0;
+    $("fldType").classList.toggle("bad", !okType);
+    $("fldProblem").classList.toggle("bad", !okProb);
+    if (!okType){ $("bikeTypes").querySelector("button").focus(); return false; }
+    if (!okProb){ $("fProblem").focus(); return false; }
+    return true;
+  }
+  $("fProblem").addEventListener("input", function(){ $("fldProblem").classList.remove("bad"); });
+
+  /* ---------- step 4: contact + authorization ---------- */
   function looksLikeContact(v){
     var digits = v.replace(/\D/g, "");
     var phoneOk = digits.length >= 7 && digits.length <= 15;
     var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
     return phoneOk || emailOk;
   }
+  function readAuth(){
+    var r = document.querySelector('input[name="auth"]:checked');
+    return r ? r.value : "call";
+  }
   function validateDetails(){
     state.name = $("fName").value.trim();
     state.contact = $("fContact").value.trim();
-    state.notes = $("fNotes").value.trim();
+    state.auth = readAuth();
     var okName = state.name.length > 0;
     var okContact = looksLikeContact(state.contact);
     $("fldName").classList.toggle("bad", !okName);
@@ -820,33 +1513,129 @@
   $("fName").addEventListener("input", function(){ $("fldName").classList.remove("bad"); });
   $("fContact").addEventListener("input", function(){ $("fldContact").classList.remove("bad"); });
 
-  /* ---------- step 4: summary ---------- */
-  function svcById(id){
-    for (var i = 0; i < SERVICES.length; i++){ if (SERVICES[i].id === id) return SERVICES[i]; }
-    return null;
+  /* ---------- time helpers ---------- */
+  function toMins(t){
+    var m = t.match(/(\d+):(\d+)\s*(am|pm)/i);
+    var h = (+m[1]) % 12;
+    if (/pm/i.test(m[3])) h += 12;
+    return h * 60 + (+m[2]);
   }
+  function fmtMins(mm){
+    var h = Math.floor(mm / 60), m = mm % 60;
+    var ap = h >= 12 ? "pm" : "am";
+    var hh = h % 12; if (hh === 0) hh = 12;
+    return hh + ":" + (m < 10 ? "0" : "") + m + " " + ap;
+  }
+  function dropWindow(slot){
+    var c = toMins(slot);
+    return { from: fmtMins(c - 15), to: fmtMins(c + 15) };
+  }
+
+  /* ---------- .ics (real client-side calendar file) ---------- */
+  function icsEsc(s){
+    return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n");
+  }
+  function icsFold(line){
+    var out = [], s = line;
+    while (s.length > 74){ out.push(s.slice(0, 74)); s = " " + s.slice(74); }
+    out.push(s);
+    return out.join("\r\n");
+  }
+  function icsLocal(d, mins){
+    var dt = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, mins);
+    function p(n){ return (n < 10 ? "0" : "") + n; }
+    return "" + dt.getFullYear() + p(dt.getMonth()+1) + p(dt.getDate()) +
+      "T" + p(dt.getHours()) + p(dt.getMinutes()) + "00";
+  }
+  function buildICS(code, day, slot, svc){
+    var c = toMins(slot);
+    var w = dropWindow(slot);
+    var stamp = new Date().toISOString().replace(/[-:]/g,"").slice(0,15) + "Z";
+    var lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Fog Line Cycles demo//Booking//EN",
+      "CALSCALE:GREGORIAN",
+      "BEGIN:VEVENT",
+      "UID:" + code + "@fogline-demo.invalid",
+      "DTSTAMP:" + stamp,
+      "DTSTART:" + icsLocal(day.date, c - 15),
+      "DTEND:" + icsLocal(day.date, c + 15),
+      icsFold("SUMMARY:" + icsEsc("Bike drop-off: " + svc.name + " (Fog Line Cycles)")),
+      icsFold("DESCRIPTION:" + icsEsc("Work tag " + code + ". Drop-off window " + w.from + " to " + w.to + ". Demo booking from a portfolio sample, not a real shop.")),
+      icsFold("LOCATION:" + icsEsc("000 Example Ave, San Francisco")),
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ];
+    return lines.join("\r\n") + "\r\n";
+  }
+
+  /* ---------- step 5: summary + save ---------- */
   function esc(s){
-    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   }
   function changeLink(target){
     return ' <button class="chg" type="button" data-go="' + target + '">change</button>';
   }
+  function bikeLineOf(st){
+    var main = (st.brand + " " + st.model).trim();
+    if (!main) main = st.bikeType + " bike";
+    var sub = st.bikeType + (st.year ? ", about " + st.year : "");
+    return { main: main, sub: sub };
+  }
+  function saveCurrentBooking(code, day){
+    var svc = svcById(state.service);
+    if (currentCode && currentCode !== code){
+      bookings = bookings.filter(function(b){ return b.code !== currentCode; });
+      delete photoMem[currentCode];
+    }
+    bookings = bookings.filter(function(b){ return b.code !== code; });
+    bookings.push({
+      code: code, createdAt: new Date().toISOString(),
+      dayKey: day.key, dayFull: day.full, slot: state.slot,
+      svcId: svc.id, svcName: svc.name,
+      bikeType: state.bikeType, brand: state.brand, model: state.model, year: state.year,
+      problem: state.problem, notes: state.bikeNotes,
+      auth: state.auth, name: state.name, contact: state.contact,
+      photo: !!state.photoData
+    });
+    bookings = bookings.slice(-8);
+    if (state.photoData) photoMem[code] = state.photoData;
+    currentCode = code;
+    persistBookings();
+    renderNextAvail();
+  }
   function buildSummary(){
     var s = svcById(state.service);
     var day = DAYS[state.dayIdx];
+    var w = dropWindow(state.slot);
+    var bike = bikeLineOf(state);
+
     $("sumService").innerHTML = "<b>" + s.name + "</b>" + s.price + ", " + s.time + changeLink("1");
-    $("sumTime").innerHTML = "<b>" + day.full + "</b>" + state.slot + changeLink("2");
-    $("sumContact").innerHTML = "<b>" + esc(state.name) + "</b>" + esc(state.contact) + changeLink("3");
-    if (state.notes){
+    $("sumTime").innerHTML = "<b>" + day.full + "</b>Window " + w.from + " to " + w.to + " (slot " + state.slot + ")" + changeLink("2");
+    $("sumBike").innerHTML = "<b>" + esc(bike.main) + "</b>" + esc(bike.sub) + changeLink("3");
+    $("sumProblem").textContent = state.problem;
+    if (state.bikeNotes){
       $("sumNotesRow").style.display = "";
-      $("sumNotes").textContent = state.notes;
+      $("sumNotes").textContent = state.bikeNotes;
     } else {
       $("sumNotesRow").style.display = "none";
     }
-    var code = hash("tag|" + state.name + "|" + state.contact + "|" + day.key + "|" + state.slot) % 1679616;
-    $("confCode").textContent = "FLC-" + code.toString(36).toUpperCase().padStart(4, "0");
+    $("sumPhotoRow").style.display = state.photoData ? "" : "none";
+    $("sumContact").innerHTML = "<b>" + esc(state.name) + "</b>" + esc(state.contact) + changeLink("4");
+    $("sumAuth").innerHTML = "<b>" + AUTH_TEXT[state.auth] + "</b>" + changeLink("4");
+
+    var code = hash("tag|" + state.name + "|" + state.contact + "|" + day.key + "|" + state.slot + "|" + state.service) % 1679616;
+    var codeStr = "FLC-" + code.toString(36).toUpperCase().padStart(4, "0");
+    $("confCode").textContent = codeStr;
+    $("stampDate").textContent = "Fog Line Cycles \u00b7 demo tag \u00b7 " + MO[new Date().getMonth()] + " " + new Date().getDate();
+
+    $("icsLink").href = "data:text/calendar;charset=utf-8," + encodeURIComponent(buildICS(codeStr, day, state.slot, s));
+
+    saveCurrentBooking(codeStr, day);
+
     /* wire the change links (fresh nodes each build) */
-    var links = document.querySelectorAll("#p4 .chg");
+    var links = document.querySelectorAll("#p5 .chg");
     for (var i = 0; i < links.length; i++){
       links[i].addEventListener("click", function(e){
         go(parseInt(e.currentTarget.getAttribute("data-go"), 10), true);
@@ -854,23 +1643,227 @@
     }
   }
 
+  /* print only the tag */
+  function printTheTag(){
+    document.body.classList.add("print-tag");
+    window.print();
+    setTimeout(function(){ document.body.classList.remove("print-tag"); }, 500);
+  }
+  $("printTag").addEventListener("click", printTheTag);
+
+  /* rebuild the work tag from a saved booking record (shop-board reprint) */
+  function fillTagFromBooking(rec){
+    var s = svcById(rec.svcId);
+    var w = dropWindow(rec.slot);
+    var bike = bikeLineOf(rec);
+    $("sumService").innerHTML = "<b>" + s.name + "</b>" + s.price + ", " + s.time;
+    $("sumTime").innerHTML = "<b>" + esc(rec.dayFull) + "</b>Window " + w.from + " to " + w.to + " (slot " + rec.slot + ")";
+    $("sumBike").innerHTML = "<b>" + esc(bike.main) + "</b>" + esc(bike.sub);
+    $("sumProblem").textContent = rec.problem;
+    if (rec.notes){
+      $("sumNotesRow").style.display = "";
+      $("sumNotes").textContent = rec.notes;
+    } else {
+      $("sumNotesRow").style.display = "none";
+    }
+    $("sumPhotoRow").style.display = rec.photo ? "" : "none";
+    $("sumContact").innerHTML = "<b>" + esc(rec.name) + "</b>" + esc(rec.contact);
+    $("sumAuth").innerHTML = "<b>" + AUTH_TEXT[rec.auth] + "</b>";
+    $("confCode").textContent = rec.code;
+    $("stampDate").textContent = "Fog Line Cycles · demo tag · " + MO[new Date().getMonth()] + " " + new Date().getDate();
+  }
+  window.addEventListener("afterprint", function(){
+    document.body.classList.remove("print-tag");
+  });
+
+  /* ---------- shop demo board ---------- */
+  function statusOf(key){ return statusMem[key] || "checkedin"; }
+  var STATUS_LABEL = { checkedin:"Checked in", inprogress:"In progress", done:"Done" };
+  function pill(st){
+    return '<span class="pill s-' + st + '">' + STATUS_LABEL[st] + "</span>";
+  }
+  function renderBoardDays(){
+    var box = $("boardDays");
+    box.innerHTML = "";
+    DAYS.forEach(function(day, idx){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip" + (boardDayIdx === idx ? " sel" : "");
+      b.innerHTML = "<b>" + day.top + "</b>" + day.sub;
+      b.addEventListener("click", function(){
+        boardDayIdx = idx;
+        boardTouched = true;
+        renderBoard();
+      });
+      box.appendChild(b);
+    });
+  }
+  function apptHTML(key, a, mine, rec){
+    var st = statusOf(key);
+    var open = !!openSet[key];
+    var h = '<div class="appt' + (mine ? " mine" : "") + (st === "done" ? " done" : "") + '">';
+    h += '<div class="appt-top"><span><span class="appt-name">' + esc(a.name) + "</span>";
+    h += '<span class="appt-sub">' + esc(a.svcName) + " \u00b7 " + esc(a.bikeLine) + " (" + esc(a.bikeSub) + ")</span></span>";
+    h += "<span>" + (mine ? '<span class="mine-chip">Your booking</span> ' : "") + pill(st) + "</span></div>";
+    h += '<div class="appt-actions">';
+    h += '<button class="bbtn" type="button" data-act="open" data-key="' + esc(key) + '" aria-expanded="' + (open ? "true" : "false") + '">' + (open ? "Close" : "Open") + "</button>";
+    ["checkedin","inprogress","done"].forEach(function(sv){
+      h += '<button class="bbtn" type="button" data-act="status" data-status="' + sv + '" data-key="' + esc(key) + '" aria-pressed="' + (st === sv ? "true" : "false") + '">' + STATUS_LABEL[sv] + "</button>";
+    });
+    if (mine && rec){
+      h += '<button class="bbtn" type="button" data-act="print" data-key="' + esc(key) + '">Print tag</button>';
+    }
+    h += "</div>";
+    if (open){
+      h += '<div class="appt-details">';
+      h += '<div class="dline"><span class="dk">Problem</span><span class="dv">' + esc(a.problem) + "</span></div>";
+      h += '<div class="dline"><span class="dk">Extra work</span><span class="dv">' + AUTH_TEXT[a.auth] + "</span></div>";
+      if (rec){
+        h += '<div class="dline"><span class="dk">Contact</span><span class="dv">' + esc(rec.contact) + "</span></div>";
+        if (rec.notes) h += '<div class="dline"><span class="dk">Notes</span><span class="dv">' + esc(rec.notes) + "</span></div>";
+        if (rec.photo){
+          var img = photoMem[rec.code];
+          h += '<div class="dline"><span class="dk">Photo</span><span class="dv">' +
+            (img ? '<img src="' + img + '" alt="Customer photo of the bike">' : "Attached during booking (kept only in that browser session)") +
+            "</span></div>";
+        }
+      }
+      h += "</div>";
+    }
+    h += "</div>";
+    return h;
+  }
+  function renderBoard(focusKey, focusAct, focusStatus){
+    renderBoardDays();
+    var day = DAYS[boardDayIdx];
+    var html = "";
+    SLOT_TIMES.forEach(function(t){
+      var key = day.key + "|" + t;
+      var info = slotInfo(day.key, t);
+      var rec = bookingAt(day.key, t);
+      html += '<div class="brow"><div class="btime">' + t.replace(" ", "&nbsp;") + "</div><div class=\"bcard\">";
+      if (rec){
+        html += apptHTML(key, {
+          name: rec.name, svcName: rec.svcName,
+          bikeLine: bikeLineOf(rec).main, bikeSub: rec.bikeType,
+          problem: rec.problem, auth: rec.auth
+        }, true, rec);
+      } else if (info.taken){
+        html += apptHTML(key, seededAppt(day.key, t), false, null);
+      } else if (info.blocked){
+        html += '<div class="b-block">' + blockReason(day.key, t) + "</div>";
+      } else if (blockMem[key]){
+        html += '<div class="b-block">Blocked at the counter</div>';
+        html += '<div class="appt-actions"><button class="bbtn" type="button" data-act="unblock" data-key="' + esc(key) + '">Unblock</button></div>';
+      } else {
+        html += '<div class="b-open">Open</div>';
+        html += '<div class="appt-actions"><button class="bbtn" type="button" data-act="block" data-key="' + esc(key) + '">Block slot</button></div>';
+      }
+      html += "</div></div>";
+    });
+    $("boardRows").innerHTML = html;
+    if (focusKey){
+      var btns = $("boardRows").querySelectorAll("button");
+      for (var i = 0; i < btns.length; i++){
+        if (btns[i].getAttribute("data-key") === focusKey &&
+            btns[i].getAttribute("data-act") === focusAct &&
+            (focusAct !== "status" || btns[i].getAttribute("data-status") === focusStatus)){
+          btns[i].focus(); break;
+        }
+      }
+    }
+  }
+  $("boardRows").addEventListener("click", function(e){
+    var btn = e.target.closest ? e.target.closest("button") : null;
+    if (!btn) return;
+    var act = btn.getAttribute("data-act");
+    var key = btn.getAttribute("data-key");
+    if (act === "open"){
+      openSet[key] = !openSet[key];
+      renderBoard(key, "open");
+    } else if (act === "status"){
+      statusMem[key] = btn.getAttribute("data-status");
+      renderBoard(key, "status", statusMem[key]);
+    } else if (act === "block"){
+      blockMem[key] = true;
+      renderBoard(key, "unblock");
+      renderSlots();
+      renderNextAvail();
+    } else if (act === "unblock"){
+      delete blockMem[key];
+      renderBoard(key, "block");
+      renderSlots();
+      renderNextAvail();
+    } else if (act === "print"){
+      var cut = key.lastIndexOf("|");
+      var rec = bookingAt(key.slice(0, cut), key.slice(cut + 1));
+      if (rec){
+        fillTagFromBooking(rec);
+        printTheTag();
+      }
+    }
+  });
+
+  /* ---------- view toggle ---------- */
+  function setView(v){
+    view = v;
+    $("custView").hidden = v !== "cust";
+    $("shopView").hidden = v !== "shop";
+    $("vwCustomer").setAttribute("aria-pressed", v === "cust" ? "true" : "false");
+    $("vwShop").setAttribute("aria-pressed", v === "shop" ? "true" : "false");
+    if (v === "shop"){
+      if (!boardTouched && bookings.length){
+        var idx = dayIdxByKey(bookings[bookings.length - 1].dayKey);
+        if (idx !== -1) boardDayIdx = idx;
+      }
+      renderBoard();
+    }
+  }
+  $("vwCustomer").addEventListener("click", function(){ setView("cust"); });
+  $("vwShop").addEventListener("click", function(){ setView("shop"); });
+
   /* ---------- navigation wiring ---------- */
   $("next1").addEventListener("click", function(){ if (state.service) go(2, true); });
   $("back2").addEventListener("click", function(){ go(1, true); });
   $("next2").addEventListener("click", function(){ if (state.dayIdx !== null && state.slot) go(3, true); });
   $("back3").addEventListener("click", function(){ go(2, true); });
-  $("next3").addEventListener("click", function(){ if (validateDetails()) go(4, true); });
+  $("next3").addEventListener("click", function(){ if (validateBike()) go(4, true); });
   $("back4").addEventListener("click", function(){ go(3, true); });
+  $("next4").addEventListener("click", function(){ if (validateDetails()) go(5, true); });
+  $("back5").addEventListener("click", function(){ go(4, true); });
+  $("seeShop").addEventListener("click", function(){
+    if (state.dayIdx !== null){
+      var idx = dayIdxByKey(DAYS[state.dayIdx].key);
+      if (idx !== -1){ boardDayIdx = idx; boardTouched = true; }
+    }
+    setView("shop");
+    $("book").scrollIntoView({ behavior: scrollBeh(), block: "start" });
+  });
   $("restart").addEventListener("click", function(){
-    state = { service: null, dayIdx: null, slot: null, name: "", contact: "", notes: "" };
-    $("fName").value = ""; $("fContact").value = ""; $("fNotes").value = "";
+    state = {
+      service:null, dayIdx:null, slot:null,
+      bikeType:null, brand:"", model:"", year:"", problem:"", bikeNotes:"",
+      photoData:null, photoName:"",
+      name:"", contact:"", auth:"call"
+    };
+    currentCode = null; /* the finished booking now holds its slot for real */
+    $("fName").value = ""; $("fContact").value = "";
+    $("fBrand").value = ""; $("fModel").value = ""; $("fYear").value = "";
+    $("fProblem").value = ""; $("fBikeNotes").value = "";
+    clearPhoto();
+    document.querySelector('input[name="auth"][value="call"]').checked = true;
     $("fldName").classList.remove("bad"); $("fldContact").classList.remove("bad");
+    $("fldType").classList.remove("bad"); $("fldProblem").classList.remove("bad");
     renderServices(); renderDays(); renderSlots(); updateNext2();
+    renderBikeTypes(); renderNextAvail();
     go(1, true);
   });
 
   /* hero + sticky bar buttons scroll to the flow */
-  function toFlow(){ $("book").scrollIntoView({ behavior: "smooth", block: "start" }); }
+  function toFlow(){
+    if (view !== "cust") setView("cust");
+    $("book").scrollIntoView({ behavior: scrollBeh(), block: "start" });
+  }
   $("heroBook").addEventListener("click", toFlow);
   $("barBook").addEventListener("click", toFlow);
 
@@ -887,6 +1880,9 @@
   renderDays();
   renderSlots();
   updateNext2();
+  renderBikeTypes();
+  renderNextAvail();
+  renderBoardDays();
   go(1, false);
 })();
 </script>
