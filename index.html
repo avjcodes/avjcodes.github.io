@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Angel Valle Jr. San Francisco developer. Apps, tools and games. Everything labeled Live opens.">
+<meta property="og:title" content="Angel Valle Jr. · Apps, tools and games">
+<meta property="og:description" content="San Francisco developer. Apps, tools and games. Everything labeled Live opens.">
+<meta property="og:url" content="https://avjcodes.github.io/">
+<meta property="og:image" content="https://avjcodes.github.io/assets/01_sleight_of_claw.png">
+<meta property="og:image:alt" content="Sleight of Claw gameplay: a crab running a shell game on the beach">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
 <title>Angel Valle Jr. · Apps, tools and games</title>
 <link rel="preload" href="assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/ClashDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
@@ -48,6 +56,9 @@
     --badge-sample-ink: #6b6a76;
     --ribbon-ink: rgba(23, 22, 40, 0.08);
     --ribbon-stroke: rgba(23, 22, 40, 0.20);
+    --games-tint: rgba(192, 54, 44, 0.035);
+    --overlay: rgba(23, 22, 40, 0.34);
+    --palette-bg: #ffffff;
     --shadow-card: 0 1px 2px rgba(20, 18, 43, 0.04), 0 10px 28px rgba(20, 18, 43, 0.07);
     --shadow-card-hover: 0 2px 4px rgba(20, 18, 43, 0.05), 0 22px 56px rgba(20, 18, 43, 0.14);
     --shadow-btn: 0 4px 16px rgba(192, 54, 44, 0.28);
@@ -82,6 +93,9 @@
       --badge-sample-ink: #8f8e9c;
       --ribbon-ink: rgba(235, 234, 255, 0.07);
       --ribbon-stroke: rgba(235, 234, 255, 0.17);
+      --games-tint: rgba(247, 127, 91, 0.045);
+      --overlay: rgba(0, 0, 0, 0.55);
+      --palette-bg: #15151c;
       --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.35);
       --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.55);
       --shadow-btn: 0 4px 18px rgba(247, 127, 91, 0.25);
@@ -168,7 +182,7 @@
     background: var(--accent-500);
     box-shadow: 0 0 10px var(--accent-14);
   }
-  .nav-links { margin-left: auto; display: flex; gap: 4px; }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 4px; }
   .nav-links a {
     text-decoration: none;
     font-size: 0.82rem;
@@ -180,9 +194,38 @@
     transition: color 0.15s ease, background 0.15s ease;
   }
   .nav-links a:hover { color: var(--ink); background: var(--accent-09); }
+  .palette-btn { display: none; }
+  .js .palette-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    background: none;
+    border: 0;
+    padding: 12px 12px;
+    min-height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .js .palette-btn:hover { color: var(--ink); background: var(--accent-09); }
+  .palette-btn kbd {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    line-height: 1;
+    border: 1px solid var(--hairline);
+    border-radius: 5px;
+    padding: 3px 6px;
+    background: var(--surface-2);
+    color: var(--ink-3);
+  }
 
   /* ================= Hero ================= */
-  header.hero { padding: clamp(64px, 11vw, 128px) 0 clamp(40px, 6vw, 64px); }
+  header.hero { padding: clamp(64px, 11vw, 128px) 0 clamp(24px, 4vw, 40px); }
   .kicker {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -245,10 +288,40 @@
   .btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent-ring); }
   .btn svg { flex: 0 0 auto; }
 
+  /* ================= Now ================= */
+  #now { padding-top: 40px; }
+  .now-list {
+    margin-top: 20px;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 32px;
+    max-width: 760px;
+  }
+  .now-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-size: 0.92rem;
+    color: var(--ink-2);
+    border-top: 1px solid var(--hairline-soft);
+    padding-top: 12px;
+  }
+  .now-label {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-600);
+    flex: 0 0 108px;
+  }
+
   /* ================= Capability ribbon ================= */
   .ribbon {
     width: 100vw;
     margin-left: calc(50% - 50vw);
+    margin-top: clamp(32px, 5vw, 56px);
     overflow: hidden;
     padding: 8px 0;
     pointer-events: none;
@@ -340,7 +413,7 @@
     color: var(--accent-600);
     margin-bottom: 16px;
   }
-  .cap h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.012em;   font-family: var(--display); font-weight: 600;
+  .cap h3 { font-size: 1rem;  letter-spacing: -0.012em;   font-family: var(--display); font-weight: 600;
 }
   .cap p { margin-top: 8px; font-size: 0.88rem; color: var(--ink-2); }
   .cap .receipt {
@@ -374,6 +447,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+    align-items: start;
   }
   .card {
     position: relative;
@@ -387,7 +461,6 @@
     transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
   .card:hover {
-    transform: translateY(-4px);
     border-color: var(--accent-ring);
     box-shadow: var(--shadow-card-hover);
   }
@@ -432,7 +505,10 @@
     font-size: 1.3rem;
     font-weight: 600;
     letter-spacing: -0.01em;
-    display: flex;
+  }
+  .card h3 a {
+    text-decoration: none;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
   }
@@ -442,22 +518,163 @@
     color: var(--ink-3);
     transition: transform 0.15s ease, color 0.15s ease;
   }
-  .card:hover h3 .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
-  .card p { margin-top: 8px; font-size: 0.9rem; color: var(--ink-2); }
+  .card h3 a:hover .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
+  .card > p, .card .overview { margin-top: 8px; font-size: 0.9rem; color: var(--ink-2); }
   .card .tech {
     margin-top: 12px;
     font-family: var(--mono);
     font-size: 0.73rem;
     color: var(--ink-3);
   }
-  section, #live, .card[id] { scroll-margin-top: 88px; }
+  section, #live, .card[id], .lab-item[id] { scroll-margin-top: 88px; }
+
+  /* ================= Receipts ================= */
+  .rcpt-row { margin-top: 4px; display: flex; flex-wrap: wrap; gap: 0 20px; }
+  .rcpt {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 12px 0;
+    margin-bottom: -8px;
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    color: var(--ink-3);
+    transition: color 0.15s ease;
+  }
+  .rcpt:hover { color: var(--accent-600); }
+  .rcpt .rno { color: var(--accent-600); padding: 0 5px 0 6px; }
+  .rcpt .rdir { padding-right: 6px; }
+
+  /* ================= Case-study disclosure ================= */
+  .case-details { margin-top: 16px; border-top: 1px solid var(--hairline-soft); }
+  .case-details summary {
+    list-style: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 12px 0 8px;
+    transition: color 0.15s ease;
+  }
+  .case-details summary::-webkit-details-marker { display: none; }
+  .case-details summary::before {
+    content: "+";
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    line-height: 1;
+    color: var(--accent-600);
+    width: 14px;
+    flex: 0 0 auto;
+  }
+  .case-details[open] summary::before { content: "\2212"; }
+  .case-details summary:hover { color: var(--accent-600); }
+  .case-body { padding: 4px 0 12px; display: grid; gap: 12px; }
+  .blk { font-size: 0.88rem; color: var(--ink-2); }
+  .blk-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-600);
+    margin-bottom: 4px;
+  }
+  .case-body code {
+    font-family: var(--mono);
+    font-size: 0.84em;
+    background: var(--accent-09);
+    border-radius: 5px;
+    padding: 1px 5px;
+  }
+
+  /* ================= Lab ================= */
+  .lab-grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .lab-item {
+    background: var(--surface-2);
+    border: 1px dashed var(--hairline);
+    border-radius: 12px;
+    padding: 20px 20px 16px;
+  }
+  .lab-tag {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--badge-sample-ink);
+  }
+  .lab-item h3 {
+    margin-top: 8px;
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .lab-item p { margin-top: 8px; font-size: 0.86rem; color: var(--ink-2); }
 
   /* ================= Games ================= */
+  #games {
+    position: relative;
+    padding-bottom: clamp(48px, 7vw, 72px);
+  }
+  #games::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(50% - 50vw);
+    background: var(--games-tint);
+    border-top: 1px solid var(--hairline-soft);
+    border-bottom: 1px solid var(--hairline-soft);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .games-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .wordmark .dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    background: var(--accent-500);
+  }
   .game-grid {
     margin-top: 32px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    align-items: start;
   }
   .game {
     background: var(--surface);
@@ -468,7 +685,6 @@
     transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
   }
   .game:hover {
-    transform: translateY(-4px);
     border-color: var(--accent-ring);
     box-shadow: var(--shadow-card-hover);
   }
@@ -526,9 +742,42 @@
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .play-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
+  .games-disclosure {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-3);
+  }
   @media (prefers-reduced-motion: reduce) {
     .play-btn { transition: none; }
     .play-btn:hover { transform: none; }
+  }
+
+  /* ================= Ship log ================= */
+  .shiplog {
+    margin-top: 24px;
+    list-style: none;
+    max-width: 720px;
+  }
+  .shiplog li {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 12px 0;
+    border-top: 1px solid var(--hairline-soft);
+    font-size: 0.9rem;
+    color: var(--ink-2);
+  }
+  .shiplog li:last-child { border-bottom: 1px solid var(--hairline-soft); }
+  .log-date {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--ink-3);
+    flex: 0 0 64px;
+    white-space: nowrap;
   }
 
   /* ================= About / Contact ================= */
@@ -577,6 +826,69 @@
   footer a { color: var(--ink-3); text-decoration: none; }
   footer a:hover { color: var(--accent-600); }
 
+  /* ================= Command palette ================= */
+  .palette-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--overlay);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 96px 20px 20px;
+  }
+  .palette-backdrop[hidden] { display: none; }
+  .palette-panel {
+    width: 100%;
+    max-width: 440px;
+    background: var(--palette-bg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    box-shadow: var(--shadow-card-hover);
+    padding: 8px;
+  }
+  .palette-title {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 12px 16px 8px;
+  }
+  .palette-list { list-style: none; }
+  .palette-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 48px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--ink);
+    transition: background 0.15s ease;
+  }
+  .palette-item:hover,
+  .palette-item:focus-visible { background: var(--accent-09); }
+  .palette-item .dest {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--ink-3);
+    white-space: nowrap;
+  }
+  .palette-foot {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    color: var(--ink-3);
+    padding: 8px 16px 8px;
+    border-top: 1px solid var(--hairline-soft);
+    margin-top: 4px;
+  }
+
   /* ================= Reveal / motion ================= */
   .js .reveal {
     opacity: 0;
@@ -588,12 +900,13 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .js .reveal { opacity: 1; transform: none; transition: none; }
-    .cap, .card, .game, .btn, .game .shot img { transition: none; }
+    .cap, .card, .game, .btn, .game .shot img,
+    .rcpt, .case-details summary, .palette-item, .palette-btn { transition: none; }
     .cap:hover, .card:hover, .game:hover, .btn:hover { transform: none; }
     .game:hover .shot img { transform: none; }
     .badge-live::before { animation: none; }
     .card h3 .arrow, .cap .receipt::after { transition: none; }
-    .card:hover h3 .arrow { transform: none; }
+    .card h3 a:hover .arrow { transform: none; }
     .cap .receipt:hover::after { transform: none; }
     .ribbon-track { animation: none; transform: none; width: 100%; }
     .ribbon-row + .ribbon-row { display: none; }
@@ -605,8 +918,10 @@
     .game-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 620px) {
-    .cap-grid, .work-grid { grid-template-columns: 1fr; }
+    .cap-grid, .work-grid, .lab-grid, .now-list { grid-template-columns: 1fr; }
     .nav-links a { padding: 12px 8px; }
+    .palette-btn .pb-txt { display: none; }
+    .js .palette-btn { padding: 12px 8px; }
     .monogram .full { display: none; }
     .monogram .short { display: inline; }
     .tier-head { flex-direction: column; gap: 4px; }
@@ -619,10 +934,13 @@
   <div class="nav-inner">
     <a class="monogram" href="#top"><span class="dot" aria-hidden="true"></span><span class="full">ANGEL VALLE JR.</span><span class="short">AVJ</span></a>
     <div class="nav-links">
-      <a href="#build">What I build</a>
       <a href="#work">Work</a>
+      <a href="#lab">Lab</a>
       <a href="#games">Games</a>
       <a href="#contact">Contact</a>
+      <button type="button" id="palette-open" class="palette-btn" aria-haspopup="dialog" aria-label="Open quick menu">
+        <span class="pb-txt">menu</span><kbd aria-hidden="true">/</kbd>
+      </button>
     </div>
   </div>
 </nav>
@@ -632,8 +950,8 @@
   <!-- ============ HERO ============ -->
   <header class="hero">
     <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
-    <h1 class="reveal" style="--d:1">Apps, tools and games. <span class="accent">Everything labeled Live opens.</span></h1>
-    <p class="sub reveal" style="--d:2">Custom-built, every one of them. Designed, tested and shipped by me, start to finish.</p>
+    <h1 class="reveal" style="--d:1">I build useful software <span class="accent">and weird little games.</span></h1>
+    <p class="sub reveal" style="--d:2">Custom-built, every one of them. Everything labeled Live opens.</p>
     <div class="cta reveal" style="--d:3">
       <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
@@ -645,6 +963,17 @@
       </a>
     </div>
   </header>
+
+  <!-- ============ NOW ============ -->
+  <section id="now" aria-label="What I'm doing now">
+    <p class="eyebrow reveal">00 · Now</p>
+    <ul class="now-list reveal" style="--d:1">
+      <li><span class="now-label">Building</span><span>Pocket Adventurer, heading to Steam</span></li>
+      <li><span class="now-label">Prototyping</span><span>Gus Makes Games</span></li>
+      <li><span class="now-label">Shipping</span><span>small tools and client builds</span></li>
+      <li><span class="now-label">Learning</span><span>Computer science at WGU</span></li>
+    </ul>
+  </section>
 
   <!-- ============ CAPABILITY RIBBON ============ -->
   <div class="ribbon" aria-hidden="true">
@@ -703,120 +1032,254 @@
   <section id="work">
     <p class="eyebrow reveal">02 · Selected work</p>
     <h2 class="reveal" style="--d:1">What's live, what's a sample</h2>
-    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category.</p>
+    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category. Open a case study on any card for the how and the why.</p>
 
     <div class="tier-head reveal" id="live">
       <span class="tier-title">Live on GitHub</span>
       <span class="tier-sub">public repos, open now</span>
     </div>
     <div class="work-grid">
-      <a class="card reveal" style="--d:0" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">
+
+      <article class="card reveal" style="--d:0">
         <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3>sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>Turns green-screen video into game-ready sprite sheets. Built because I needed it for my own games.</p>
+        <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</p>
         <p class="tech">python</p>
-      </a>
-      <a class="card reveal" style="--d:1" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>My sprite pipeline generates animation frames with video AI. The green background is never quite the same green twice. Normal chroma keying assumes one color: it either left green fringes or ate the sprite's edges.</p>
+            <p class="blk"><span class="blk-label">Why I built it</span>I needed clean sprites for my own games and got tired of hand-fixing edges frame by frame.</p>
+            <p class="blk"><span class="blk-label">The build</span>Samples the border pixels of each frame independently, takes the circular mean of the saturated hues to find that frame's actual background color, removes pixels near that hue, despills the green rim glow, then erodes the alpha edge.</p>
+            <p class="blk"><span class="blk-label">What didn't work</span>Keying against a fixed green value. The generated frames varied enough in hue that edge cleanup was inconsistent across a single sheet. Per-frame sampling replaced it.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>Tests run on synthetic frames instead of image fixtures, so the repo stays small and the tests stay deterministic.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Python, NumPy, Pillow. MIT.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:1">
         <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3>steam-comp-tracker <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>Pulls Steam market data on comparable games so pricing decisions come from numbers, not vibes.</p>
+        <h3><a href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">steam-comp-tracker <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">Tracks comparable Steam games over time: review velocity, price moves, tag overlap.</p>
         <p class="tech">python</p>
-      </a>
-      <a class="card reveal" style="--d:2" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>I'm bringing my own game to Steam. I wanted to know how games like mine actually move: review pace, price changes, what tags they share. Steam shows you today; it doesn't show you change over time.</p>
+            <p class="blk"><span class="blk-label">The build</span>Snapshots public stats into plain JSONL files, one per game, then generates an HTML report. Run <code>snap</code> on a schedule and the history builds itself.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>Python standard library only. No installs, no database, no API key. Fetching is isolated in one function; everything downstream takes plain dicts, which is what makes it testable.</p>
+            <p class="blk"><span class="blk-label">Honest data note</span>Review counts are solid; owner numbers come from SteamSpy and are estimates with wide ranges. Reviews-per-week is the closest public proxy for sales, and the tool says so instead of pretending otherwise.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Python stdlib. CI on GitHub Actions. MIT.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:2">
         <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3>markdown-task-dashboard <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>A template repo: plain markdown task files rendered as a local dashboard. No database, no login.</p>
+        <h3><a href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">markdown-task-dashboard <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A local dashboard for solo projects with a real deadline.</p>
         <p class="tech">python · template repo</p>
-      </a>
-      <a class="card reveal" style="--d:3" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>My game has a fixed festival date. Task lists tell you what's left; they don't tell you whether you'll make it. I wanted one number: hours remaining at my actual pace, and the finish date that implies.</p>
+            <p class="blk"><span class="blk-label">The build</span>Reads plain markdown task files you already own, adds up the unchecked work, divides by the focused hours per day you really do. One Python file, one HTML page, localhost.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>The tool writes back to your notes when you check things off, so the writeback tests are the ones that matter: there are tests proving a checkbox click changes exactly one line of your file and nothing else.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Python stdlib. Template repo, so you can start from it. MIT.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:3">
         <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3>pourcost <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>Bar drink cost calculator. Enter the pour, get the margin.</p>
-        <p class="tech">python</p>
-      </a>
-      <a class="card reveal" style="--d:4" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">
-        <div class="card-top"><span class="badge badge-live">Live</span></div>
-        <h3>vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>A linter for Obsidian-style note vaults. Finds broken links and messy frontmatter before they pile up.</p>
+        <h3><a href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">pourcost <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">Bar math from the command line: pour cost percent, menu pricing, inventory value.</p>
         <p class="tech">typescript</p>
-      </a>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>I spent years behind a bar. The numbers every bar program runs on (what a drink costs to make, what to charge, what the shelf is worth) usually live in somebody's spreadsheet, wrong.</p>
+            <p class="blk"><span class="blk-label">Why I built it</span>This is the tool I wish my managers had. One JSON file describing bottles and recipes; the math comes out right every time.</p>
+            <p class="blk"><span class="blk-label">The build</span>Commands for costing a recipe, back-solving a menu price from a target pour cost, and valuing inventory counts, partial bottles included, because real bars count tenths.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>The JSON is validated on load, so mistakes get named before any math runs. TypeScript on Node 23+ native type stripping: no dependencies, no build step.</p>
+            <p class="blk"><span class="blk-label">Built with</span>TypeScript, Node's built-in test runner, CI. MIT.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:4">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A structure linter for Obsidian vaults: broken wikilinks, missing anchors, orphan notes, frontmatter rules.</p>
+        <p class="tech">typescript</p>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>My second brain is a few hundred markdown notes. Links rot quietly: a renamed note, a deleted heading, an alias that stopped matching. Obsidian shows you one broken link when you trip over it. I wanted all of them in one pass.</p>
+            <p class="blk"><span class="blk-label">The build</span>Implements Obsidian's actual link-resolution rules (full path, path suffix, basename, aliases, case-insensitive, heading and block anchors), then lints every note. Exit codes and a <code>--json</code> mode so it runs in CI.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>Code fences, inline code, and comments are masked before link scanning, so example links in documentation don't count as real ones. That one choice removed most false positives.</p>
+            <p class="blk"><span class="blk-label">Built with</span>TypeScript on Node's native type stripping. No dependencies, no build step. MIT.</p>
+          </div>
+        </details>
+      </article>
+
     </div>
 
     <div class="tier-head reveal">
-      <span class="tier-title">Sample builds</span>
+      <span class="tier-title">Flagship samples</span>
       <span class="tier-sub">invented businesses, real code, each page says so on it</span>
     </div>
     <div class="work-grid">
-      <a class="card reveal" style="--d:0" id="kestrel" href="kestrel-assistant.html">
+
+      <article class="card reveal" style="--d:0" id="kestrel">
         <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3>Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>A tenant help assistant for a property manager. Ask about your lease, it answers from the documents.</p>
+        <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
         <p class="tech">client-side retrieval</p>
-      </a>
-      <a class="card reveal" style="--d:1" id="ninthhill" href="ninthhill-dashboard.html">
+        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">Why I built it</span>To show clients what a real document-grounded assistant looks like without hand-waving. The page IS the demo.</p>
+            <p class="blk"><span class="blk-label">The build</span>Sixteen policy chunks embedded in the page; your question is scored against them client-side; the best chunks become the answer, with the source document cited under every reply.</p>
+            <p class="blk"><span class="blk-label">Failure behavior, by design</span>Ask something outside the documents and it says "I don't have that in my documents, so I won't guess" and gives you the office contact instead. An assistant that guesses is worse than no assistant.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, no libraries, no API. The production version of this pattern runs on an LLM with the same retrieval discipline.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="ninthhill">
         <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3>Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>The Monday sales report for a coffee roaster, before and after: one spreadsheet mess turned into a readable dashboard.</p>
+        <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
         <p class="tech">SVG charts from a cleaned dataset</p>
-      </a>
-      <a class="card reveal" style="--d:2" id="fogline" href="fogline-cycles.html">
-        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3>Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>A bike shop site where you book a repair in four steps instead of leaving a voicemail.</p>
-        <p class="tech">4-step booking state machine</p>
-      </a>
-      <a class="card reveal" style="--d:3" id="pelican" href="brass-pelican.html">
-        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
-        <h3>The Brass Pelican <span class="arrow" aria-hidden="true">&#8599;</span></h3>
-        <p>A live music dive bar site with an events calendar the owner updates without touching code.</p>
-        <p class="tech">date-templated calendar</p>
-      </a>
+        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">Why I built it</span>Every small business has the Monday spreadsheet. I wanted a before/after you can actually scroll.</p>
+            <p class="blk"><span class="blk-label">The build</span>567 rows of invented-but-realistic wholesale data, charts drawn in hand-rolled SVG, KPIs recomputed from the raw rows and hand-verified, a sortable customer table.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>No chart library. Every number on screen is derived from the visible dataset, and the claimed insight (a seasonal blend overtaking decaf) is genuinely in the data, checked to the week.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies.</p>
+          </div>
+        </details>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ============ LAB ============ -->
+  <section id="lab">
+    <p class="eyebrow reveal">03 · Lab</p>
+    <h2 class="reveal" style="--d:1">The lab</h2>
+    <p class="section-note reveal" style="--d:2">Experiments, prototypes and internal tooling. Rougher on purpose.</p>
+    <div class="lab-grid">
+
+      <article class="lab-item reveal" style="--d:0" id="fogline">
+        <p class="lab-tag">Sample build</p>
+        <h3>Fog Line Cycles booking flow</h3>
+        <p>A four-step repair-shop booking flow with deterministic "taken" slots: an FNV-1a hash of day and time, so the demo feels alive but is reproducible. Confirmation renders as a physical work tag. Invented shop, and the page says so.</p>
+        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
+      </article>
+
+      <article class="lab-item reveal" style="--d:1" id="pelican">
+        <p class="lab-tag">Sample build</p>
+        <h3>The Brass Pelican</h3>
+        <p>A dive-bar site whose events calendar generates from weekly templates relative to today, so the demo never looks stale. Built because three real bars I researched had empty calendars on their sites.</p>
+        <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">RECEIPT<span class="rno">09</span><span class="rdir" aria-hidden="true">&#8599;</span>LIVE</a></div>
+      </article>
+
+      <article class="lab-item reveal" style="--d:2">
+        <p class="lab-tag">Internal tool</p>
+        <h3>This site's build process</h3>
+        <p>This portfolio went through an adversarial judge loop before shipping: independent review passes compared it against a named gold standard and returned fail-with-corrections or ship-it. It failed three times before it passed. The judges caught a factually wrong tech label, a 375px nav overflow, and two sentences I'd accidentally lifted from a site I admire.</p>
+      </article>
+
+      <article class="lab-item reveal" style="--d:3">
+        <p class="lab-tag">Internal tool</p>
+        <h3>AI video to sprite pipeline</h3>
+        <p>The generation-to-game-asset workflow sprite-chroma-key ships from: generate animation frames with video AI over green, key per frame, pack sheets. The keyer is the public piece; the pipeline is the reason it exists.</p>
+      </article>
+
     </div>
   </section>
 
   <!-- ============ GAMES ============ -->
   <section id="games">
-    <p class="eyebrow reveal">03 · Games</p>
+    <div class="games-head reveal">
+      <p class="eyebrow">04 · Games</p>
+      <span class="wordmark"><span class="dot" aria-hidden="true"></span>lowpolysaint</span>
+    </div>
     <h2 class="reveal" style="--d:1">Made under lowpolysaint</h2>
     <p class="section-note reveal" style="--d:2">Desktop games built in Godot. Same developer, different hat.</p>
     <div class="game-grid">
       <article class="game reveal" style="--d:0">
+        <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/01_sleight_of_claw.png" alt="Sleight of Claw gameplay: a crab running a shell game on the beach" loading="lazy"></div>
         <div class="body">
           <div class="name-row"><h3>Sleight of Claw</h3><span class="badge badge-live">Live</span></div>
-          <p class="status">Shipped · free in your browser</p>
-          <p>A shell game run by a crab. Live online leaderboard. Loads straight in the browser, no install.</p>
+          <p class="status">Play now · free browser prototype</p>
+          <p>You're the hustler, not the mark: hide the pearl, shuffle the shells, read the tourist. Live online leaderboard that records every session, not just your best.</p>
           <a class="play-btn" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
             Play it in your browser
           </a>
-          <p class="studio">lowpolysaint</p>
+          <div class="rcpt-row"><a class="rcpt" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">RECEIPT<span class="rno">10</span><span class="rdir" aria-hidden="true">&#8599;</span>PLAY</a></div>
         </div>
       </article>
       <article class="game reveal" style="--d:1">
+        <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/02_gus_makes_games.png" alt="Gus Makes Games: a pixel-art bedroom where a solo developer works" loading="lazy"></div>
         <div class="body">
           <h3>Gus Makes Games</h3>
-          <p class="status">In production · nothing public to open yet</p>
-          <p>A sim about being a solo game developer. Playable end to end in its first build.</p>
+          <p class="status">In development · nothing public to open yet</p>
+          <p>A game about a solo developer making games, made by a solo developer making games. Playable end to end in its first build.</p>
+          <details class="case-details">
+            <summary>What didn't work</summary>
+            <div class="case-body">
+              <p class="blk">Text looked crisp in the editor and blurry in the running game. The cause was measuring in design-space pixels while the window rendered at a different scale; readability that passed on paper failed on screen. Fixed by locking the window to 1:1 and re-verifying every text size on the actual screen.</p>
+            </div>
+          </details>
           <p class="studio">lowpolysaint</p>
         </div>
       </article>
       <article class="game reveal" style="--d:2">
+        <!-- Media container: swap the img for a muted looping <video poster="..."> when real gameplay clips land -->
         <div class="shot"><img src="assets/03_pocket_adventurer.png" alt="Pocket Adventurer: a tiny companion revealed at the edge of a desktop screen" loading="lazy"></div>
         <div class="body">
           <h3>Pocket Adventurer</h3>
-          <p class="status">Heading to Steam · store page not live yet</p>
-          <p>A desktop companion that lives at the edge of your screen while you work. Coming to Steam.</p>
+          <p class="status">Coming to Steam · store page not live yet</p>
+          <p>A desktop companion idle RPG: a tiny adventurer lives on your screen while you work. In production now, heading to Steam.</p>
           <p class="studio">lowpolysaint</p>
         </div>
       </article>
     </div>
+    <p class="games-disclosure reveal">Some game art is AI-assisted. The itch page discloses it, and so does this line.</p>
+  </section>
+
+  <!-- ============ SHIP LOG ============ -->
+  <section id="shiplog">
+    <p class="eyebrow reveal">05 · Log</p>
+    <h2 class="reveal" style="--d:1">Ship log</h2>
+    <p class="section-note reveal" style="--d:2">Milestones, not commit noise. All dates 2026.</p>
+    <ul class="shiplog reveal" style="--d:3">
+      <li><span class="log-date">AUG 20</span><span>Portfolio launched: this site, plus four openable sample builds</span></li>
+      <li><span class="log-date">AUG 11</span><span>Sleight of Claw updated on itch (published Aug 9)</span></li>
+      <li><span class="log-date">JUL 22</span><span>markdown-task-dashboard: writeback + template-repo release</span></li>
+      <li><span class="log-date">JUL 21</span><span>Shipped three tools in one day: steam-comp-tracker, pourcost, vaultlint</span></li>
+      <li><span class="log-date">JUL 19</span><span>Shipped sprite-chroma-key and markdown-task-dashboard</span></li>
+    </ul>
   </section>
 
   <!-- ============ ABOUT ============ -->
   <section id="about">
-    <p class="eyebrow reveal">04 · About</p>
+    <p class="eyebrow reveal">06 · About</p>
     <h2 class="reveal" style="--d:1">The short version</h2>
     <div class="about-card reveal" style="--d:2">
       <p>I'm a developer in San Francisco. I build and fix things for people: websites, tools, automations, and agentic systems that carry real work on their own. All of it designed, tested and shipped by me, start to finish. I'm also a computer science student at WGU.</p>
@@ -826,7 +1289,7 @@
   <!-- ============ CONTACT ============ -->
   <section id="contact">
     <div class="contact-card reveal">
-      <p class="eyebrow" style="justify-content:center">05 · Contact</p>
+      <p class="eyebrow" style="justify-content:center">07 · Contact</p>
       <h2 style="margin-top:12px">Have something in mind?</h2>
       <p class="line">Describe what you need in a paragraph. If I'm not the right fit for it, my first reply will say so.</p>
       <div class="cta">
@@ -849,6 +1312,22 @@
 
 </div>
 
+<!-- ============ COMMAND PALETTE (JS only; absent without JS) ============ -->
+<div class="palette-backdrop" id="palette" role="dialog" aria-modal="true" aria-label="Quick menu" hidden>
+  <div class="palette-panel">
+    <p class="palette-title">Quick menu</p>
+    <ul class="palette-list">
+      <li><a class="palette-item" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener"><span>Play a game</span><span class="dest">itch.io</span></a></li>
+      <li><a class="palette-item" href="https://github.com/avjcodes" target="_blank" rel="noopener"><span>Inspect my code</span><span class="dest">github.com/avjcodes</span></a></li>
+      <li><a class="palette-item" href="#now"><span>See what I'm building</span><span class="dest">#now</span></a></li>
+      <li><a class="palette-item" href="#work"><span>View samples</span><span class="dest">#work</span></a></li>
+      <li><a class="palette-item" href="#lab"><span>View the lab</span><span class="dest">#lab</span></a></li>
+      <li><a class="palette-item" href="mailto:theangelvallejr@gmail.com"><span>Email me</span><span class="dest">email</span></a></li>
+    </ul>
+    <p class="palette-foot">arrows move · enter opens · esc closes</p>
+  </div>
+</div>
+
 <script>
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -866,6 +1345,71 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
   items.forEach(function (el) { io.observe(el); });
+})();
+
+(function () {
+  var root = document.getElementById('palette');
+  var openBtn = document.getElementById('palette-open');
+  if (!root || !openBtn) return;
+  var items = Array.prototype.slice.call(root.querySelectorAll('.palette-item'));
+  if (!items.length) return;
+  var lastFocus = null;
+
+  function openPalette() {
+    lastFocus = document.activeElement;
+    root.hidden = false;
+    items[0].focus();
+  }
+  function closePalette(restoreFocus) {
+    root.hidden = true;
+    if (restoreFocus && lastFocus && typeof lastFocus.focus === 'function') {
+      lastFocus.focus();
+    }
+    lastFocus = null;
+  }
+
+  openBtn.addEventListener('click', function () { openPalette(); });
+
+  root.addEventListener('click', function (e) {
+    if (e.target === root) closePalette(true);
+  });
+
+  items.forEach(function (a) {
+    a.addEventListener('click', function () {
+      // Navigation is taking over (hash scroll, new tab, or mailto): close without
+      // restoring focus so in-page jumps land where the link points.
+      closePalette(false);
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (root.hidden) {
+      var t = e.target;
+      var tag = (t && t.tagName ? t.tagName : '').toLowerCase();
+      var typing = tag === 'input' || tag === 'textarea' || tag === 'select' || (t && t.isContentEditable);
+      var slash = e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey;
+      var ck = (e.ctrlKey || e.metaKey) && !e.altKey && !e.shiftKey && !typing && (e.key === 'k' || e.key === 'K');
+      if (slash || ck) {
+        e.preventDefault();
+        openPalette();
+      }
+      return;
+    }
+    if (e.key === 'Escape') { e.preventDefault(); closePalette(true); return; }
+    var i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); return; }
+    if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); return; }
+    if (e.key === 'Home') { e.preventDefault(); items[0].focus(); return; }
+    if (e.key === 'End') { e.preventDefault(); items[items.length - 1].focus(); return; }
+    if (e.key === 'Tab') {
+      // Focus trap: cycle within the palette's items.
+      e.preventDefault();
+      var n;
+      if (e.shiftKey) { n = i <= 0 ? items.length - 1 : i - 1; }
+      else { n = (i < 0 || i === items.length - 1) ? 0 : i + 1; }
+      items[n].focus();
+    }
+  });
 })();
 </script>
 
