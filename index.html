@@ -7,9 +7,16 @@
 <meta property="og:title" content="Angel Valle Jr. · Apps, tools and games">
 <meta property="og:description" content="San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
 <meta property="og:url" content="https://avjcodes.github.io/">
-<meta property="og:image" content="https://avjcodes.github.io/assets/01_sleight_of_claw.png">
-<meta property="og:image:alt" content="Sleight of Claw gameplay: a crab running a shell game on the beach">
+<meta property="og:image" content="https://avjcodes.github.io/assets/og-card.png">
+<meta property="og:image:alt" content="Angel Valle Jr. I build useful software and weird little games.">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Angel Valle Jr. · Apps, tools and games">
+<meta name="twitter:description" content="San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
+<meta name="twitter:image" content="https://avjcodes.github.io/assets/og-card.png">
+<link rel="canonical" href="https://avjcodes.github.io/">
 <meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
 <title>Angel Valle Jr. · Apps, tools and games</title>
@@ -626,6 +633,24 @@
     border-radius: 5px;
     padding: 1px 5px;
   }
+  .ba-figure { margin: 2px 0 4px; }
+  .ba-figure img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    background: var(--bg-deep);
+  }
+  .ba-figure img + img { margin-top: 8px; }
+  .ba-figure figcaption {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+  }
 
   /* ================= Lab ================= */
   .lab-grid {
@@ -1034,6 +1059,7 @@
       <li><span class="now-label">Building</span><span>Pocket Adventurer, heading to Steam</span></li>
       <li><span class="now-label">Prototyping</span><span>Gus Makes Games</span></li>
       <li><span class="now-label">Shipping</span><span>Small tools and client builds</span></li>
+      <li><span class="now-label">Shipped</span><span>Site Doctor, an agentic QA demo</span></li>
       <li><span class="now-label">Studying</span><span>Computer Science at WGU</span></li>
     </ul>
   </section>
@@ -1059,30 +1085,36 @@
         <a class="receipt" href="#kestrel">receipt: Kestrel</a>
       </div>
       <div class="cap reveal" style="--d:1">
-        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></div>
-        <h3>Workflow automation and data pipelines</h3>
-        <p>Messy spreadsheets in, one clean report out, on a schedule.</p>
-        <a class="receipt" href="#ninthhill">receipt: Ninth Hill</a>
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><polyline points="21 3 21 9 15 9"/><circle cx="12" cy="12" r="2.5"/></svg></div>
+        <h3>Agentic systems</h3>
+        <p>A planner that chooses tools, gathers evidence, and verifies fixes.</p>
+        <a class="receipt" href="#sitedoctor">receipt: Site Doctor</a>
       </div>
       <div class="cap reveal" style="--d:2">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></div>
+        <h3>Data cleanup and reporting</h3>
+        <p>Messy data in, useful decisions out.</p>
+        <a class="receipt" href="#ninthhill">receipt: Ninth Hill</a>
+      </div>
+      <div class="cap reveal" style="--d:3">
         <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
         <h3>Small-business sites with booking</h3>
         <p>The site takes the booking so the phone can stay on the hook.</p>
         <a class="receipt" href="#fogline">receipt: Fog Line</a>
       </div>
-      <div class="cap reveal" style="--d:3">
+      <div class="cap reveal" style="--d:4">
         <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
         <h3>Sites owners update themselves</h3>
         <p>Events and content pages you can change without calling a developer.</p>
         <a class="receipt" href="#pelican">receipt: Brass Pelican</a>
       </div>
-      <div class="cap reveal" style="--d:4">
+      <div class="cap reveal" style="--d:5">
         <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
         <h3>Python tools and dashboards</h3>
         <p>Small programs that do one job well and keep doing it.</p>
         <a class="receipt" href="#live">receipt: the GitHub repos</a>
       </div>
-      <div class="cap reveal" style="--d:5">
+      <div class="cap reveal" style="--d:6">
         <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="0.5" fill="currentColor"/><circle cx="18" cy="13" r="0.5" fill="currentColor"/></svg></div>
         <h3>Desktop games in Godot</h3>
         <p>Art, code, sound, shipped builds. The whole thing.</p>
@@ -1099,11 +1131,29 @@
 
     <div class="work-grid">
 
-      <article class="card reveal" style="--d:0" id="kestrel">
+      <article class="card reveal" style="--d:0" id="sitedoctor">
+        <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
+        <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
+        <div class="rcpt-row"><a class="rcpt" href="site-doctor.html">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>Most site audits produce a checklist without knowing which failures matter. A broken footer link and a broken booking button both show up as "broken link," but only one of them costs the business money.</p>
+            <p class="blk"><span class="blk-label">The build</span>A planner selects deterministic inspection tools, gathers evidence from real page fetches, traces the critical flow end to end in a sandboxed copy of the page, and prioritizes findings by severity times business impact. There's also a Break the Site mode: sabotage a sandboxed copy yourself, then watch the same tools find the faults without being told what you broke.</p>
+            <p class="blk"><span class="blk-label">What makes it agentic</span>The loop, not the tools: it identifies what needs investigation, chooses a tool, examines the output, updates its state, forms hypotheses, runs further tests to confirm or kill them, verifies candidate fixes in the sandbox, and stops when the work runs out or it hits an honest iteration cap.</p>
+            <p class="blk"><span class="blk-label">Failure behavior</span>Whatever it could not test is reported as an uncertainty instead of invented certainty: external links it won't follow, contrast over background images it can't resolve, work left in the queue when the cap hits.</p>
+            <p class="blk"><span class="blk-label">An honest note</span>No language model runs in the browser demo. The planner is a deterministic policy engine occupying the seat a model takes in production, and every measurement comes from a tool either way. The page says all of this itself.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Plain JavaScript, same-origin fetch plus <code>DOMParser</code>, sandboxed iframe instrumentation. Zero dependencies, no backend.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="kestrel">
         <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
-        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1115,11 +1165,11 @@
         </details>
       </article>
 
-      <article class="card reveal" style="--d:1" id="fogline">
+      <article class="card reveal" style="--d:2" id="fogline">
         <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
-        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1131,33 +1181,38 @@
         </details>
       </article>
 
-      <article class="card reveal" style="--d:2" id="ninthhill">
+      <article class="card reveal" style="--d:3" id="ninthhill">
         <div class="card-top"><span class="ptype">Data / dashboard</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
-        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
             <p class="blk"><span class="blk-label">Why I built it</span>Every small business has the Monday spreadsheet. I wanted a before/after you can actually scroll.</p>
             <p class="blk"><span class="blk-label">The build</span>567 rows of invented-but-realistic wholesale data, charts drawn in hand-rolled SVG, KPIs recomputed from the raw rows and hand-verified, a sortable customer table.</p>
             <p class="blk"><span class="blk-label">Technical decisions</span>No chart library. Every number on screen is derived from the visible dataset, and the claimed insight (a seasonal blend overtaking decaf) is genuinely in the data, checked to the week.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies.</p>
+            <p class="blk"><span class="blk-label">Built with</span>One HTML file, nothing to install, the awful spreadsheet included.</p>
           </div>
         </details>
       </article>
 
-      <article class="card reveal" style="--d:3">
+      <article class="card reveal" style="--d:4">
         <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
             <p class="blk"><span class="blk-label">The problem</span>My sprite pipeline generates animation frames with video AI. The green background is never quite the same green twice. Normal chroma keying assumes one color: it either left green fringes or ate the sprite's edges.</p>
             <p class="blk"><span class="blk-label">Why I built it</span>I needed clean sprites for my own games and got tired of hand-fixing edges frame by frame.</p>
             <p class="blk"><span class="blk-label">The build</span>Samples the border pixels of each frame independently, takes the circular mean of the saturated hues to find that frame's actual background color, removes pixels near that hue, despills the green rim glow, then erodes the alpha edge.</p>
+            <figure class="ba-figure">
+              <img src="assets/sprite-raw-vs-keyed.png" alt="Real tool output: a raw AI-generated sprite frame on a green background beside the same frame after keying, background removed cleanly" loading="lazy" width="630" height="402">
+              <img src="assets/sprite-edge-detail.png" alt="Edge close-up: a fixed-color key leaves green fringe and dropout holes along the sprite's outline; the measured key from this tool cuts a clean edge" loading="lazy" width="1328" height="660">
+              <figcaption>Real output, from the tool's listing images: raw frame vs keyed, and the edge detail a fixed-color key gets wrong.</figcaption>
+            </figure>
             <p class="blk"><span class="blk-label">What didn't work</span>Keying against a fixed green value. The generated frames varied enough in hue that edge cleanup was inconsistent across a single sheet. Per-frame sampling replaced it.</p>
             <p class="blk"><span class="blk-label">Technical decisions</span>Tests run on synthetic frames instead of image fixtures, so the repo stays small and the tests stay deterministic.</p>
             <p class="blk"><span class="blk-label">Built with</span>Python, NumPy, Pillow. MIT.</p>
@@ -1165,11 +1220,11 @@
         </details>
       </article>
 
-      <article class="card reveal" style="--d:4">
+      <article class="card reveal" style="--d:5">
         <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A structure linter for Obsidian vaults: broken wikilinks, missing anchors, orphan notes, frontmatter rules.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1254,7 +1309,7 @@
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
             Play in your browser
           </a>
-          <div class="rcpt-row"><a class="rcpt" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>PLAY</a></div>
+          <div class="rcpt-row"><a class="rcpt" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>PLAY</a></div>
         </div>
       </article>
       <article class="game game-sub reveal" style="--d:1">
@@ -1309,6 +1364,7 @@
       <p class="eyebrow" style="justify-content:center">07 · Contact</p>
       <h2 style="margin-top:12px">Have something in mind?</h2>
       <p class="line">Tell me what you're trying to build. Rough notes are fine. If I'm not the right fit, my first reply will say so.</p>
+      <p class="line">Most interested in internal tools, agentic workflows, business automation, and odd software problems.</p>
       <div class="cta">
         <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
@@ -1322,6 +1378,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
           github.com/avjcodes
         </a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/angel-valle-jr/" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.55V9h3.57zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/></svg>
+          LinkedIn <span aria-hidden="true">&#8599;</span>
+        </a>
       </div>
       <p class="visually-hidden" id="copy-status" aria-live="polite"></p>
     </div>
@@ -1329,7 +1389,7 @@
 
   <footer>
     <span>Angel Valle Jr. · San Francisco</span>
-    <span>Games published as <a href="#games">lowpolysaint</a> · <a href="https://github.com/avjcodes" target="_blank" rel="noopener">github.com/avjcodes</a></span>
+    <span>Games published as <a href="#games">lowpolysaint</a> · <a href="https://github.com/avjcodes" target="_blank" rel="noopener">github.com/avjcodes</a> · <a href="https://www.linkedin.com/in/angel-valle-jr/" target="_blank" rel="noopener">LinkedIn &#8599;</a></span>
   </footer>
 
 </div>
@@ -1341,6 +1401,7 @@
     <ul class="palette-list">
       <li><a class="palette-item" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener"><span>Play a game</span><span class="dest">itch.io</span></a></li>
       <li><a class="palette-item" href="https://github.com/avjcodes" target="_blank" rel="noopener"><span>Inspect my code</span><span class="dest">github.com/avjcodes</span></a></li>
+      <li><a class="palette-item" href="https://www.linkedin.com/in/angel-valle-jr/" target="_blank" rel="noopener"><span>LinkedIn</span><span class="dest">linkedin.com</span></a></li>
       <li><a class="palette-item" href="#now"><span>See what I'm building</span><span class="dest">#now</span></a></li>
       <li><a class="palette-item" href="#work"><span>View samples</span><span class="dest">#work</span></a></li>
       <li><a class="palette-item" href="#lab"><span>View the lab</span><span class="dest">#lab</span></a></li>

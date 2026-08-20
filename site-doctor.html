@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Site Doctor: an agent loop that audits the demo sites on this portfolio. Real fetches, deterministic tools, evidence-backed findings, sandboxed fix verification. No language model in the runtime.">
+<meta property="og:title" content="Site Doctor · It tries to break websites">
+<meta property="og:description" content="A watchable agent loop that audits real pages: navigation, forms, accessibility, mobile layout, user flows. Findings come from tool measurements, never prose.">
+<meta property="og:url" content="https://avjcodes.github.io/site-doctor.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Site Doctor: Agentic Website QA">
+<meta name="twitter:description" content="It does not generate websites. It tries to break them. A deterministic agent loop that inspects real pages, chooses tools, and verifies fixes in a sandbox.">
+<link rel="canonical" href="https://avjcodes.github.io/site-doctor.html">
+<meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
+<title>Site Doctor · Agentic website QA · Angel Valle Jr.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c0362c'/%3E%3Cpath d='M18 34h8l4-12 8 24 4-12h4' fill='none' stroke='%23fff6f2' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ClashDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  /* ============================================================
+     SITE DOCTOR - instrument panel over the portfolio's tokens.
+     Neutral ground, hairlines, mono data, severity inks.
+     No neon, no gradients-as-identity. 4px grid.
+     ============================================================ */
+  @font-face {
+    font-family: "Clash Display";
+    src: url("assets/fonts/ClashDisplay-Semibold.woff2") format("woff2");
+    font-weight: 600; font-style: normal; font-display: swap;
+  }
+  @font-face {
+    font-family: "Clash Display";
+    src: url("assets/fonts/ClashDisplay-Bold.woff2") format("woff2");
+    font-weight: 700; font-style: normal; font-display: swap;
+  }
+
+  :root {
+    --bg: #f6f6f8;
+    --bg-deep: #ededf2;
+    --grid-line: rgba(23, 22, 40, 0.045);
+    --panel: #ffffff;
+    --panel-2: #fafafb;
+    --well: #f1f1f4;
+    --hairline: rgba(23, 22, 40, 0.12);
+    --hairline-soft: rgba(23, 22, 40, 0.06);
+    --ink: #17161f;
+    --ink-2: #56555f;
+    --ink-3: #6b6a76;
+    --accent-600: #c0362c;
+    --accent-500: #d84a33;
+    --accent-14: rgba(216, 74, 51, 0.14);
+    --accent-09: rgba(216, 74, 51, 0.09);
+    --accent-ring: rgba(216, 74, 51, 0.45);
+    --on-accent: #fff6f2;
+    --sev-crit: #b3261e;
+    --sev-major: #9a4b00;
+    --sev-minor: #7a6400;
+    --sev-pass: #1e7a3c;
+    --sev-crit-soft: rgba(179, 38, 30, 0.08);
+    --sev-major-soft: rgba(154, 75, 0, 0.08);
+    --sev-minor-soft: rgba(122, 100, 0, 0.09);
+    --sev-pass-soft: rgba(30, 122, 60, 0.08);
+    --nav-bg: rgba(246, 246, 248, 0.82);
+    --shadow-card: 0 1px 2px rgba(20, 18, 43, 0.04), 0 10px 28px rgba(20, 18, 43, 0.07);
+    --shadow-btn: 0 4px 16px rgba(192, 54, 44, 0.28);
+    --shadow-btn-hover: 0 8px 26px rgba(192, 54, 44, 0.36);
+    --mono: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --display: "Clash Display", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0b10;
+      --bg-deep: #07070b;
+      --grid-line: rgba(235, 234, 255, 0.035);
+      --panel: #131318;
+      --panel-2: #16161c;
+      --well: #0e0e13;
+      --hairline: rgba(235, 234, 255, 0.11);
+      --hairline-soft: rgba(235, 234, 255, 0.06);
+      --ink: #ececf1;
+      --ink-2: #a7a6b3;
+      --ink-3: #8f8e9c;
+      --accent-600: #f77f5b;
+      --accent-500: #f0704a;
+      --accent-14: rgba(240, 112, 74, 0.16);
+      --accent-09: rgba(240, 112, 74, 0.10);
+      --accent-ring: rgba(247, 127, 91, 0.55);
+      --on-accent: #1c0d08;
+      --sev-crit: #ff8a7a;
+      --sev-major: #f0a35f;
+      --sev-minor: #dcc465;
+      --sev-pass: #4cb873;
+      --sev-crit-soft: rgba(255, 138, 122, 0.10);
+      --sev-major-soft: rgba(240, 163, 95, 0.10);
+      --sev-minor-soft: rgba(220, 196, 101, 0.10);
+      --sev-pass-soft: rgba(76, 184, 115, 0.10);
+      --nav-bg: rgba(11, 11, 16, 0.78);
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.35);
+      --shadow-btn: 0 4px 18px rgba(247, 127, 91, 0.25);
+      --shadow-btn-hover: 0 8px 26px rgba(247, 127, 91, 0.35);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  html:not(.js) .needs-js { display: none; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    z-index: 0;
+  }
+  ::selection { background: var(--accent-14); }
+  a { color: inherit; }
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--accent-ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  [hidden] { display: none !important; }
+  .wrap { position: relative; z-index: 1; max-width: 1060px; margin: 0 auto; padding: 0 20px; }
+  .vh {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .skip {
+    position: absolute; left: 12px; top: -60px; z-index: 40;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--hairline); border-radius: 8px;
+    padding: 10px 16px; font-size: 0.9rem; text-decoration: none;
+    transition: top 0.15s ease;
+  }
+  .skip:focus-visible { top: 12px; }
+
+  /* ---------- nav ---------- */
+  nav.top {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .nav-inner {
+    max-width: 1060px; margin: 0 auto; padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .monogram {
+    font-family: var(--display); font-weight: 600; font-size: 0.95rem;
+    letter-spacing: 0.08em; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    padding: 12px 0; margin: -12px 0;
+  }
+  .monogram .dot {
+    width: 9px; height: 9px; border-radius: 3px;
+    background: var(--accent-500); box-shadow: 0 0 10px var(--accent-14);
+  }
+  .nav-tag {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-3);
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 4px 10px;
+  }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--ink-2);
+    padding: 12px 12px; border-radius: 8px; white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--accent-09); }
+
+  /* ---------- hero ---------- */
+  header.hero { padding: clamp(56px, 9vw, 104px) 0 clamp(20px, 3vw, 36px); }
+  .kicker {
+    font-family: var(--mono); font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.18em; color: var(--ink-3);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  }
+  .kicker::before { content: ""; width: 22px; height: 1px; background: var(--accent-500); }
+  .hero h1 {
+    font-family: var(--display); font-weight: 700;
+    font-size: clamp(2.5rem, 6.5vw, 4.2rem);
+    letter-spacing: -0.03em; line-height: 1.02;
+  }
+  .hero .pitch {
+    margin-top: 20px; font-family: var(--display); font-weight: 600;
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem); letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .hero .pitch .accent { color: var(--accent-600); }
+  .hero .sub { margin-top: 16px; font-size: 1.02rem; color: var(--ink-2); max-width: 62ch; }
+  .hero .sub b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- shared section chrome ---------- */
+  section { padding: 28px 0; }
+  h2.sec {
+    font-family: var(--display); font-weight: 700; font-size: 1.5rem;
+    letter-spacing: -0.015em; margin-bottom: 4px;
+  }
+  .sec-note { color: var(--ink-2); font-size: 0.94rem; margin-bottom: 18px; max-width: 70ch; }
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--hairline);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* ---------- control deck ---------- */
+  .deck { padding: 20px; }
+  .deck fieldset { border: none; }
+  .deck legend {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+  }
+  .targets { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  @media (min-width: 720px) { .targets { grid-template-columns: 1fr 1fr; } }
+  .target-card {
+    position: relative; display: block; cursor: pointer;
+    border: 1px solid var(--hairline); border-radius: 12px;
+    background: var(--panel-2); padding: 14px 16px;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  }
+  .target-card:hover { border-color: var(--ink-3); }
+  .target-card input { position: absolute; opacity: 0; pointer-events: none; }
+  .target-card .tname {
+    font-family: var(--display); font-weight: 600; font-size: 1.05rem;
+    letter-spacing: -0.01em; display: block;
+  }
+  .target-card .tfile {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
+    display: block; margin-top: 2px;
+  }
+  .target-card .tgoal {
+    display: block; margin-top: 8px; font-size: 0.86rem; color: var(--ink-2);
+  }
+  .target-card .tgoal b { color: var(--ink); font-weight: 600; }
+  .target-card.on {
+    border-color: var(--accent-500);
+    box-shadow: 0 0 0 1px var(--accent-500), var(--shadow-card);
+    background: var(--panel);
+  }
+  .target-card input:focus-visible ~ .tname { outline: 2px solid var(--accent-ring); outline-offset: 4px; border-radius: 4px; }
+  .goal-note { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); margin-top: 12px; }
+
+  .deck details.sab {
+    margin-top: 18px; border: 1px dashed var(--hairline); border-radius: 12px;
+    background: var(--panel-2);
+  }
+  .deck details.sab summary {
+    cursor: pointer; list-style: none; display: flex; align-items: center; gap: 10px;
+    padding: 13px 16px; min-height: 44px;
+    font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .deck details.sab summary::-webkit-details-marker { display: none; }
+  .deck details.sab summary::before {
+    content: "+"; font-weight: 700; color: var(--accent-600);
+    width: 18px; text-align: center; flex: none;
+  }
+  .deck details.sab[open] summary::before { content: "\2212"; }
+  .sab-body { padding: 2px 16px 16px; }
+  .sab-note { font-size: 0.85rem; color: var(--ink-2); margin-bottom: 12px; max-width: 70ch; }
+  .sab-note b { color: var(--ink); }
+  .sab-list { display: grid; grid-template-columns: 1fr; gap: 6px; }
+  @media (min-width: 720px) { .sab-list { grid-template-columns: 1fr 1fr; } }
+  .sab-item {
+    display: flex; align-items: center; gap: 10px; cursor: pointer;
+    border: 1px solid var(--hairline-soft); border-radius: 9px;
+    background: var(--panel); padding: 10px 12px; min-height: 44px;
+    font-size: 0.88rem; color: var(--ink-2);
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .sab-item:hover { border-color: var(--hairline); }
+  .sab-item input { accent-color: var(--accent-600); width: 16px; height: 16px; flex: none; }
+  .sab-item input:checked ~ span { color: var(--ink); }
+
+  .run-row { margin-top: 18px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    text-decoration: none; font-family: var(--sans);
+    font-size: 0.92rem; font-weight: 600;
+    padding: 13px 26px; min-height: 44px;
+    border-radius: 12px; border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-solid { background: var(--accent-600); color: var(--on-accent); box-shadow: var(--shadow-btn); }
+  .btn-solid:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
+  .btn-solid:active { transform: translateY(0); }
+  .btn-solid:disabled {
+    cursor: not-allowed; background: var(--well); color: var(--ink-3);
+    border-color: var(--hairline); box-shadow: none; transform: none;
+  }
+  .btn-ghost { background: var(--panel); border-color: var(--hairline); color: var(--ink); }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent-ring); }
+  .run-status { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); }
+
+  /* ---------- live grid: log + preview ---------- */
+  .live-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; align-items: start; }
+  .live-grid > * { min-width: 0; }
+  @media (min-width: 900px) { .live-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); } }
+  .console-head {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    padding: 12px 16px; border-bottom: 1px solid var(--hairline-soft);
+  }
+  .console-title {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+  .console-title b { color: var(--accent-600); font-weight: 700; }
+  .console-meta { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+  .log {
+    height: 460px; overflow-y: auto; overflow-x: auto;
+    padding: 14px 16px 18px;
+    font-family: var(--mono); font-size: 0.78rem; line-height: 1.7;
+    color: var(--ink-2);
+    background: var(--well);
+    border-radius: 0 0 13px 13px;
+    scrollbar-width: thin;
+  }
+  .log .empty { color: var(--ink-3); }
+  .log .phase {
+    margin: 14px 0 4px; color: var(--ink);
+    font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 10px; white-space: nowrap;
+  }
+  .log .phase:first-child { margin-top: 0; }
+  .log .phase .pn { color: var(--accent-600); }
+  .log .phase::after { content: ""; flex: 1; height: 1px; background: var(--hairline); min-width: 24px; }
+  .log .tool { white-space: pre-wrap; word-break: break-word; }
+  .log .tool .tn { color: var(--accent-600); font-weight: 600; }
+  .log .tool .arg { color: var(--ink-3); }
+  .log .res { color: var(--ink); white-space: pre-wrap; word-break: break-word; padding-left: 18px; }
+  .log .sub { color: var(--ink-3); white-space: pre-wrap; word-break: break-word; padding-left: 18px; }
+  .log .plan {
+    color: var(--ink-3); font-style: italic; white-space: pre-wrap; word-break: break-word;
+    border-left: 2px solid var(--hairline); padding-left: 10px; margin: 2px 0;
+  }
+  .log .fail-line { color: var(--sev-crit); }
+  .log .ok-line { color: var(--sev-pass); }
+
+  .preview-shell { position: sticky; top: 76px; }
+  .prev-frame-wrap { overflow: hidden; background: var(--well); border-radius: 0 0 13px 13px; position: relative; }
+  .phone {
+    width: 375px; height: 600px; border: 0; display: block;
+    background: #fff; transform-origin: top left;
+  }
+  .prev-status {
+    padding: 10px 16px; border-top: 1px solid var(--hairline-soft);
+    font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
+    min-height: 38px; word-break: break-word;
+  }
+  .prev-status b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- findings stream + report ---------- */
+  .stream { display: grid; gap: 8px; margin-top: 16px; }
+  .fcard {
+    display: flex; align-items: baseline; gap: 12px;
+    border: 1px solid var(--hairline); border-left-width: 3px;
+    border-radius: 10px; background: var(--panel);
+    padding: 10px 14px; font-size: 0.88rem;
+  }
+  .fcard .ft { color: var(--ink); font-weight: 600; }
+  .fcard .ftool { margin-left: auto; font-family: var(--mono); font-size: 0.68rem; color: var(--ink-3); white-space: nowrap; }
+  .sev {
+    font-family: var(--mono); font-size: 0.64rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap;
+    padding: 3px 8px; border-radius: 999px; border: 1px solid currentColor;
+  }
+  .sev-critical { color: var(--sev-crit); background: var(--sev-crit-soft); }
+  .sev-major { color: var(--sev-major); background: var(--sev-major-soft); }
+  .sev-minor { color: var(--sev-minor); background: var(--sev-minor-soft); }
+  .sev-pass { color: var(--sev-pass); background: var(--sev-pass-soft); }
+  .fcard.b-critical { border-left-color: var(--sev-crit); }
+  .fcard.b-major { border-left-color: var(--sev-major); }
+  .fcard.b-minor { border-left-color: var(--sev-minor); }
+
+  .report { margin-top: 24px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .report > div { min-width: 0; }
+  .sum-strip {
+    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+    padding: 16px 18px;
+  }
+  .sum-chip {
+    font-family: var(--mono); font-size: 0.78rem; font-variant-numeric: tabular-nums;
+    border: 1px solid var(--hairline); border-radius: 999px; padding: 7px 14px;
+    color: var(--ink-2); background: var(--panel-2);
+  }
+  .sum-chip b { color: var(--ink); font-weight: 700; }
+  .sum-chip.c-crit b { color: var(--sev-crit); }
+  .sum-chip.c-major b { color: var(--sev-major); }
+  .sum-chip.c-minor b { color: var(--sev-minor); }
+  .sum-clean { font-size: 0.9rem; color: var(--ink-2); padding: 0 18px 16px; max-width: 75ch; }
+
+  h3.rpt {
+    font-family: var(--mono); font-size: 0.74rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  }
+  h3.rpt .n { color: var(--accent-600); }
+  h3.rpt::after { content: ""; flex: 1; height: 1px; background: var(--hairline-soft); }
+
+  .fix-card { padding: 16px 18px; margin-bottom: 10px; }
+  .fix-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .fix-rank {
+    font-family: var(--display); font-weight: 700; font-size: 1.3rem;
+    color: var(--accent-600); font-variant-numeric: tabular-nums;
+  }
+  .fix-title { font-family: var(--display); font-weight: 600; font-size: 1.08rem; letter-spacing: -0.01em; }
+  .fix-impact { margin-top: 8px; font-size: 0.88rem; color: var(--ink-2); }
+  .fix-impact b { color: var(--ink); font-weight: 600; }
+  .evid {
+    margin-top: 10px; font-family: var(--mono); font-size: 0.74rem; line-height: 1.65;
+    color: var(--ink-2); background: var(--well);
+    border: 1px solid var(--hairline-soft); border-radius: 8px;
+    padding: 10px 12px; overflow-x: auto; white-space: pre-wrap; word-break: break-word;
+  }
+  details.more { margin-top: 10px; }
+  details.more summary {
+    cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent-600);
+    padding: 10px 4px; margin: -6px -4px; min-height: 44px;
+  }
+  details.more summary::-webkit-details-marker { display: none; }
+  details.more summary::before { content: "+"; font-weight: 700; }
+  details.more[open] summary::before { content: "\2212"; }
+  .more-body { padding: 6px 0 2px; display: grid; gap: 8px; }
+  .kv { display: flex; gap: 12px; font-size: 0.86rem; }
+  .kv .k {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-3); width: 104px; flex: none; padding-top: 4px;
+  }
+  .kv .v { color: var(--ink-2); min-width: 0; overflow-wrap: break-word; }
+  .kv .v b { color: var(--ink); font-weight: 600; }
+  .verified {
+    display: inline-block; font-family: var(--mono); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--sev-pass);
+    border: 1px solid currentColor; border-radius: 4px; padding: 3px 8px;
+    background: var(--sev-pass-soft);
+  }
+
+  .flow-scroll { overflow-x: auto; padding-bottom: 8px; }
+  .flow-map { display: flex; align-items: stretch; gap: 8px; min-width: max-content; padding: 4px 2px; }
+  .fstep {
+    border: 1px solid var(--hairline); border-radius: 9px; background: var(--panel);
+    padding: 9px 12px; min-width: 120px;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.03em; color: var(--ink-2);
+  }
+  .fstep .st { display: block; font-weight: 700; margin-bottom: 2px; }
+  .fstep.pass { border-color: var(--sev-pass); }
+  .fstep.pass .st { color: var(--sev-pass); }
+  .fstep.fail { border-color: var(--sev-crit); background: var(--sev-crit-soft); }
+  .fstep.fail .st { color: var(--sev-crit); }
+  .farrow { align-self: center; color: var(--ink-3); font-family: var(--mono); flex: none; }
+
+  .tech-list { display: grid; gap: 8px; }
+  .trace-item {
+    font-family: var(--mono); font-size: 0.74rem; line-height: 1.6; color: var(--ink-2);
+    border-bottom: 1px solid var(--hairline-soft); padding: 8px 2px;
+    white-space: pre-wrap; word-break: break-word;
+  }
+  .trace-item:last-child { border-bottom: none; }
+  .trace-item .tn { color: var(--accent-600); font-weight: 600; }
+  .trace-item .dec { color: var(--ink-3); font-style: italic; }
+  .uncert { padding: 16px 18px; }
+  .uncert ul { list-style: none; display: grid; gap: 6px; }
+  .uncert li {
+    font-size: 0.88rem; color: var(--ink-2); padding-left: 18px; position: relative;
+  }
+  .uncert li::before {
+    content: "?"; position: absolute; left: 0; top: 0;
+    font-family: var(--mono); font-weight: 700; color: var(--sev-major);
+  }
+  .stop-line {
+    margin-top: 12px; font-family: var(--mono); font-size: 0.76rem; color: var(--ink);
+    border-top: 1px dashed var(--hairline); padding-top: 12px;
+  }
+  .stop-line b { color: var(--accent-600); }
+
+  /* ---------- how it works ---------- */
+  #how { border-top: 1px solid var(--hairline-soft); margin-top: 24px; padding-top: 44px; }
+  .how-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media (min-width: 860px) { .how-grid { grid-template-columns: 1.1fr 1fr; } }
+  .how-copy p { color: var(--ink-2); font-size: 0.96rem; max-width: 62ch; margin-bottom: 14px; }
+  .how-copy p b { color: var(--ink); font-weight: 600; }
+  .loop-box { padding: 18px; }
+  .loop-title {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px;
+  }
+  .loop-list { list-style: none; display: grid; gap: 6px; }
+  .loop-list li {
+    display: flex; gap: 12px; align-items: baseline;
+    font-size: 0.88rem; color: var(--ink-2);
+    border: 1px solid var(--hairline-soft); border-radius: 8px;
+    background: var(--panel-2); padding: 9px 12px;
+  }
+  .loop-list .ln {
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 700;
+    color: var(--accent-600); flex: none; width: 20px; font-variant-numeric: tabular-nums;
+  }
+  .loop-list b { color: var(--ink); font-weight: 600; }
+  .tool-chips { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tool-chips span {
+    font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em;
+    color: var(--ink-2); border: 1px solid var(--hairline); border-radius: 999px;
+    padding: 5px 10px; background: var(--panel);
+  }
+
+  /* ---------- footer ---------- */
+  footer {
+    margin-top: 56px; border-top: 1px solid var(--hairline-soft);
+    padding: 32px 0 40px; font-size: 0.88rem; color: var(--ink-2);
+  }
+  footer b { color: var(--ink); font-weight: 600; }
+  footer .links { font-family: var(--mono); font-size: 0.78rem; margin-top: 12px; letter-spacing: 0.04em; }
+  footer .links a {
+    color: var(--ink); text-decoration-color: var(--accent-500);
+    text-underline-offset: 3px; display: inline-block; padding: 10px 2px; margin: -10px -2px;
+  }
+  footer .fine { font-family: var(--mono); font-size: 0.72rem; margin-top: 12px; color: var(--ink-3); }
+
+  .noscript-box {
+    border: 1px solid var(--hairline); border-left: 3px solid var(--accent-600);
+    border-radius: 10px; background: var(--panel);
+    padding: 16px 18px; font-size: 0.94rem; color: var(--ink-2); margin: 20px 0;
+  }
+  .noscript-box b { color: var(--ink); }
+  .noscript-box a { color: var(--ink); text-decoration-color: var(--accent-500); }
+
+  @media (max-width: 899px) {
+    .preview-shell { position: static; }
+    .log { height: 340px; }
+  }
+  @media (max-width: 540px) {
+    .nav-tag { display: none; }
+    .nav-inner { gap: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn, .target-card, .sab-item, .skip, .nav-links a { transition: none; }
+    .btn-solid:hover, .btn-ghost:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the demo</a>
+
+<nav class="top" aria-label="Site">
+  <div class="nav-inner">
+    <a class="monogram" href="https://avjcodes.github.io/"><span class="dot" aria-hidden="true"></span>ANGEL VALLE JR.</a>
+    <span class="nav-tag">SITE DOCTOR</span>
+    <div class="nav-links">
+      <a href="https://avjcodes.github.io/">Back to portfolio</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Agent system / Web QA / Working sample</p>
+    <h1>Site Doctor</h1>
+    <p class="pitch">It doesn't generate websites. <span class="accent">It tries to break them.</span></p>
+    <p class="sub">An agent loop that audits the demo sites on this portfolio. It fetches the real page, tests navigation, forms, accessibility and mobile layout, traces the money flow end to end, forms hypotheses, verifies candidate fixes in a sandbox, and reports only what it measured. <b>No language model runs on this page</b>; the section at the bottom explains exactly what does.</p>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap">
+
+    <noscript>
+      <div class="noscript-box">
+        <b>This demo needs JavaScript.</b> Site Doctor is an agent loop that runs in your browser: it fetches one of the demo pages from this portfolio, audits it with deterministic tools, and renders an evidence-backed report. None of that can happen with scripts off. The write-up of how it works is prose, though, and lives on
+        <a href="https://avjcodes.github.io/">the portfolio hub</a>, alongside the two pages it audits:
+        <a href="fogline-cycles.html">Fog Line Cycles</a> and <a href="brass-pelican.html">The Brass Pelican</a>.
+      </div>
+    </noscript>
+
+    <section id="run" class="needs-js" aria-labelledby="runH">
+      <h2 class="sec" id="runH">Point it at a patient</h2>
+      <p class="sec-note">Two demo sites from this portfolio are the sanctioned targets. Site Doctor fetches the page over the same origin at run time; nothing is pre-recorded.</p>
+      <div class="panel deck">
+        <fieldset>
+          <legend>Target site</legend>
+          <div class="targets" id="targetList">
+            <label class="target-card on" data-target="fogline">
+              <input type="radio" name="sdTarget" value="fogline" checked>
+              <span class="tname">Fog Line Cycles</span>
+              <span class="tfile">fogline-cycles.html</span>
+              <span class="tgoal">Goal: <b>a visitor books a repair</b></span>
+            </label>
+            <label class="target-card" data-target="pelican">
+              <input type="radio" name="sdTarget" value="pelican">
+              <span class="tname">The Brass Pelican</span>
+              <span class="tfile">brass-pelican.html</span>
+              <span class="tgoal">Goal: <b>a visitor reaches tonight's show and sends a back-room inquiry</b></span>
+            </label>
+          </div>
+          <p class="goal-note">Goals are preconfigured for this demo. A production run would take the goal as input.</p>
+        </fieldset>
+
+        <details class="sab">
+          <summary>Break the site first (optional)</summary>
+          <div class="sab-body">
+            <p class="sab-note"><b>Sabotage is applied to a sandboxed copy; the real demo pages are untouched.</b> Site Doctor is not told what you broke. The same tools that audit the clean page have to find the faults.</p>
+            <div class="sab-list" id="sabList"></div>
+          </div>
+        </details>
+
+        <div class="run-row">
+          <button class="btn btn-solid" id="runBtn" type="button">Run Site Doctor</button>
+          <span class="run-status" id="runStatus" role="status">idle</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="live" class="needs-js" aria-labelledby="liveH">
+      <h2 class="sec" id="liveH">The loop, live</h2>
+      <p class="sec-note">Left: every tool call and every planner decision as they happen. Right: the sandboxed copy under audit at 375 pixels, with the element under test outlined.</p>
+      <div class="live-grid">
+        <div class="panel">
+          <div class="console-head">
+            <span class="console-title"><b>&gt;_</b> activity</span>
+            <span class="console-meta" id="logMeta">0 tool calls</span>
+          </div>
+          <div class="log" id="activityLog" tabindex="0" aria-label="Audit activity log">
+            <p class="empty">Pick a target and hit RUN. Every line that appears here is a real tool call against the fetched page.</p>
+          </div>
+          <p class="vh" id="phaseLive" aria-live="polite"></p>
+        </div>
+        <div class="preview-shell">
+          <div class="panel">
+            <div class="console-head">
+              <span class="console-title">sandbox &middot; <b id="prevName">no page loaded</b></span>
+              <span class="console-meta">375px</span>
+            </div>
+            <div class="prev-frame-wrap" id="prevWrap">
+              <iframe class="phone" id="prevFrame" title="Sandboxed copy of the page under audit" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+            </div>
+            <p class="prev-status" id="prevStatus">Sandboxed copy. The real demo pages are untouched.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="needs-js" aria-labelledby="resH" hidden>
+      <h2 class="sec" id="resH">Findings</h2>
+      <p class="sec-note">Streamed as the tools surface them, then prioritized. Every finding names the tool that measured it.</p>
+      <div class="stream" id="findStream"></div>
+
+      <div class="report" id="reportBlock" hidden>
+        <div>
+          <h3 class="rpt"><span class="n">A</span> Summary</h3>
+          <div class="panel">
+            <div class="sum-strip" id="sumStrip"></div>
+            <p class="sum-clean" id="sumClean" hidden></p>
+          </div>
+        </div>
+
+        <div id="fixFirstSec">
+          <h3 class="rpt"><span class="n">B</span> Fix these first</h3>
+          <div id="fixFirst"></div>
+        </div>
+
+        <div>
+          <h3 class="rpt"><span class="n">C</span> User flow</h3>
+          <p class="sec-note" id="flowGoalLine"></p>
+          <div class="flow-scroll">
+            <div class="flow-map" id="flowMap"></div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="rpt"><span class="n">D</span> Technical</h3>
+          <details class="more">
+            <summary id="techSummary">All findings</summary>
+            <div class="more-body tech-list" id="techList"></div>
+          </details>
+        </div>
+
+        <div>
+          <h3 class="rpt"><span class="n">E</span> Agent trace</h3>
+          <details class="more">
+            <summary id="traceSummary">Tool calls</summary>
+            <div class="more-body" id="traceBox"></div>
+          </details>
+        </div>
+
+        <div>
+          <h3 class="rpt"><span class="n">F</span> Uncertainties &amp; stop reason</h3>
+          <div class="panel uncert">
+            <ul id="uncertBox"></ul>
+            <p class="stop-line" id="stopLine"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="howH">
+      <h2 class="sec" id="howH">How this works, honestly</h2>
+      <div class="how-grid">
+        <div class="how-copy">
+          <p><b>No language model runs in this demo.</b> The planner is a deterministic policy engine: a plain JavaScript function, <code>nextAction(state)</code>, that inspects the run state and returns the next tool call. It drives the same loop shape a model-driven planner would drive: read the state, choose a tool, gather evidence, update, verify, stop.</p>
+          <p><b>Measurements come from tools, never from generated text.</b> Every number in the report, from a contrast ratio to a pixel of horizontal overflow, is read off the fetched page or the rendered sandbox at run time. If a tool cannot measure something, that lands in the uncertainties list instead of the findings.</p>
+          <p><b>The sandbox is isolated.</b> The audited page runs as a copy inside a sandboxed frame with an in-memory storage shim, so audit runs never touch the state the real demo pages keep in your browser. Dashed outlines in the preview are Site Doctor's inspection markers; green outlines are candidate fixes it patched in to verify.</p>
+          <p><b>Production versions of this architecture put a model in the planner seat.</b> That is the seat the policy function occupies here. The tools, the evidence discipline, the verification step and the stopping rules stay exactly the same; static hosting is why this page ships with the deterministic planner, and the audit is real either way.</p>
+          <p>The whole thing is one HTML file. <a href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html">Read the source</a>, or just view-source this page.</p>
+        </div>
+        <div>
+          <div class="panel loop-box">
+            <p class="loop-title">The loop</p>
+            <ol class="loop-list">
+              <li><span class="ln">01</span><span><b>Discover.</b> Fetch the page, parse it, inventory links, forms, headings, controls.</span></li>
+              <li><span class="ln">02</span><span><b>Goal.</b> Map the business goal to concrete controls on the page.</span></li>
+              <li><span class="ln">03</span><span><b>Test.</b> Navigation, forms, accessibility, 375px layout, asset weight, and the goal flow end to end.</span></li>
+              <li><span class="ln">04</span><span><b>Hypotheses.</b> Findings raise testable claims; nothing ships as fact yet.</span></li>
+              <li><span class="ln">05</span><span><b>Verify.</b> Patch the sandbox, re-run the failing measurement, keep the before/after numbers.</span></li>
+              <li><span class="ln">06</span><span><b>Report.</b> Score severity against business impact, prioritize, state what remains unknown.</span></li>
+            </ol>
+            <div class="tool-chips" aria-label="Tool list">
+              <span>crawlSite</span><span>testNavigation</span><span>inspectForms</span><span>checkAccessibility</span><span>simulateViewport</span><span>traceUserFlow</span><span>measureAssets</span><span>probeBehavior</span><span>verifyCandidateFix</span><span>scoreFinding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>WORKING SAMPLE</b> &middot; Designed and built by Angel Valle Jr. The agent loop, the tools and the report on this page are real and run entirely in your browser.</p>
+    <p class="links"><a href="https://avjcodes.github.io/">SEE MORE WORK</a> &nbsp;&middot;&nbsp; <a href="https://avjcodes.github.io/#contact">BUILD SOMETHING LIKE THIS</a></p>
+    <p class="fine">SAMPLE &middot; the audited sites are portfolio demos, not client sites. One HTML file, no trackers, no requests beyond this page's own origin.</p>
+  </div>
+</footer>
+<script>
+(function(){
+'use strict';
+
+/* ============================================================
+   SITE DOCTOR runtime.
+   One agent loop: state -> nextAction(state) -> tool -> evidence.
+   The planner is the deterministic policy function nextAction().
+   No text on this page is generated; every number is measured.
+   ============================================================ */
+
+/* ---------- tiny utils ---------- */
+var $ = function(id){ return document.getElementById(id); };
+function qa(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+var reducedMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Pacing exists so a human can watch the loop work. A hidden tab has no
+   watcher, and browsers clamp background timers hard, so when the page is
+   hidden we yield through the message queue instead of the timer queue. */
+function msgTick(){
+  return new Promise(function(r){
+    var mc = new MessageChannel();
+    mc.port1.onmessage = function(){ r(); };
+    mc.port2.postMessage(0);
+  });
+}
+async function sleep(ms){
+  if (document.hidden){
+    for (var i = 0; i < 6; i++) await msgTick();
+    return;
+  }
+  return new Promise(function(r){ setTimeout(r, reducedMotion ? Math.min(ms, 15) : ms); });
+}
+function fmtKB(bytes){ return (bytes / 1024).toFixed(1) + ' KB'; }
+function px(n){ return Math.round(n) + 'px'; }
+function cssPath(elm){
+  /* short, human-readable locator: id if present, else tag.class chain (max 3) */
+  var parts = [];
+  var e = elm;
+  while (e && e.nodeType === 1 && parts.length < 3){
+    if (e.id){ parts.unshift('#' + e.id); break; }
+    var p = e.tagName.toLowerCase();
+    if (e.classList.length) p += '.' + e.classList[0];
+    parts.unshift(p);
+    e = e.parentElement;
+  }
+  return parts.join(' > ') || '(unknown)';
+}
+
+/* ---------- color math (WCAG) ---------- */
+function parseRGB(str){
+  var m = /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/.exec(str || '');
+  if (!m) return null;
+  return [ +m[1], +m[2], +m[3], m[4] === undefined ? 1 : +m[4] ];
+}
+function chanLin(c){
+  c /= 255;
+  return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+}
+function relLum(rgb){
+  return 0.2126 * chanLin(rgb[0]) + 0.7152 * chanLin(rgb[1]) + 0.0722 * chanLin(rgb[2]);
+}
+function contrastRatio(fg, bg){
+  var a = relLum(fg), b = relLum(bg);
+  var hi = Math.max(a, b), lo = Math.min(a, b);
+  return (hi + 0.05) / (lo + 0.05);
+}
+function compositeOver(top, under){
+  var a = top[3];
+  return [
+    top[0] * a + under[0] * (1 - a),
+    top[1] * a + under[1] * (1 - a),
+    top[2] * a + under[2] * (1 - a),
+    1
+  ];
+}
+/* Walk ancestors for a solid background. Honest failure: any background-image
+   on the way up (gradients included) means "unresolvable", not a guess. */
+function resolveBg(elm, win){
+  var e = elm, stack = [];
+  while (e && e.nodeType === 1){
+    var cs = win.getComputedStyle(e);
+    if (cs.backgroundImage && cs.backgroundImage !== 'none') return { rgb: null, reason: 'background-image on ' + cssPath(e) };
+    var c = parseRGB(cs.backgroundColor);
+    if (c && c[3] > 0){
+      stack.push(c);
+      if (c[3] >= 1) break;
+    }
+    e = e.parentElement;
+  }
+  if (!stack.length || stack[stack.length - 1][3] < 1) return { rgb: null, reason: 'no opaque background found' };
+  var bg = stack.pop();
+  while (stack.length) bg = compositeOver(stack.pop(), bg);
+  return { rgb: bg, reason: null };
+}
+function isLargeText(cs){
+  var size = parseFloat(cs.fontSize);
+  var weight = parseInt(cs.fontWeight, 10) || 400;
+  return size >= 24 || (size >= 18.66 && weight >= 700);
+}
+function visibleIn(elm, win){
+  if (!elm) return false;
+  var cs = win.getComputedStyle(elm);
+  if (cs.display === 'none' || cs.visibility === 'hidden') return false;
+  var r = elm.getBoundingClientRect();
+  return r.width > 0 && r.height > 0;
+}
+function inViewport(elm, win){
+  if (!visibleIn(elm, win)) return false;
+  var r = elm.getBoundingClientRect();
+  return r.bottom > 0 && r.top < win.innerHeight && r.right > 0 && r.left < win.innerWidth;
+}
+
+/* ---------- target configuration (preconfigured goals, stated on the page) ---------- */
+var TARGETS = {
+  fogline: {
+    key: 'fogline',
+    name: 'Fog Line Cycles',
+    url: 'fogline-cycles.html',
+    goal: 'a visitor books a repair',
+    goalShort: 'the booking path',
+    ctaSelectors: ['.hero-cta .btn', '#heroBook', '.bookbar .btn', '#barBook'],
+    ctaLabel: 'Book a repair',
+    goalSurface: '#book',
+    goalSelectors: ['#book', '#heroBook', '.hero-cta', '.bookbar', '#barBook', '#svcList', '#dayList', '#slotList',
+      '#bikeTypes', '#fProblem', '#fName', '#fContact', '#next1', '#next2', '#next3', '#next4', '#tagPrint', '#confCode'],
+    flowName: 'Book a repair (5 steps to a work tag)'
+  },
+  pelican: {
+    key: 'pelican',
+    name: 'The Brass Pelican',
+    url: 'brass-pelican.html',
+    goal: "a visitor reaches tonight's show and sends a back-room inquiry",
+    goalShort: 'the tonight + inquiry paths',
+    ctaSelectors: ['.call-btn', '.action-bar a', '#tonight-card .btn'],
+    ctaLabel: 'See tonight / call the bar',
+    goalSurface: '#tonight',
+    goalSelectors: ['#tonight', '#tonight-card', '.action-bar', '.call-btn', '#week-list', '#month-grid', '#detail',
+      '#detail-ics', '#inquiry-form', '#iq-date', '#iq-guests', '#iq-name', '#iq-email', '#inquiry-done'],
+    flowName: 'Tonight, details, calendar file + back-room inquiry'
+  }
+};
+
+/* ---------- sabotage: DOM transforms applied to the sandboxed copy only.
+   Detection is never special-cased; the normal tools have to find these. ---------- */
+function bigImageDataUri(){
+  /* a genuinely heavy image, built at run time so its byte weight is real */
+  var cells = [];
+  for (var i = 0; i < 3200; i++){
+    var col = ((i * 2654435761) >>> 8 & 0xffffff).toString(16);
+    while (col.length < 6) col = '0' + col;
+    cells.push('<rect x="' + (i % 64) * 10 + '" y="' + Math.floor(i / 64) * 10 + '" width="10" height="10" fill="#' + col + '"/>');
+  }
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="500" viewBox="0 0 640 500">' + cells.join('') + '</svg>';
+  return 'data:image/svg+xml;base64,' + btoa(svg);
+}
+var SABOTAGE = {
+  fogline: [
+    { id: 'f-cta', label: 'Remove the primary call to action',
+      apply: function(doc){
+        var h = doc.querySelector('.hero-cta'); if (h) h.parentNode.removeChild(h);
+        var b = doc.getElementById('bookBar'); if (b) b.parentNode.removeChild(b);
+      } },
+    { id: 'f-label', label: 'Strip the name field’s label',
+      apply: function(doc){
+        var l = doc.querySelector('label[for="fName"]'); if (l) l.parentNode.removeChild(l);
+      } },
+    { id: 'f-contrast', label: 'Wash out the intro copy',
+      apply: function(doc){
+        var e = doc.querySelector('.owner-note');
+        if (e) e.setAttribute('style', 'color:#b9b4ab;background-color:#f4f2ee');
+      } },
+    { id: 'f-overflow', label: 'Force horizontal overflow',
+      apply: function(doc){
+        var pre = doc.createElement('pre');
+        pre.setAttribute('style', 'width:560px;max-width:none;overflow:visible;font-size:12px');
+        pre.textContent = 'SHOP-INVENTORY-EXPORT-2026-08 | STAND-01 | STAND-02 | PARTS-BIN-A | PARTS-BIN-B | DO-NOT-WRAP-THIS-LINE';
+        var about = doc.querySelector('#about .wrap');
+        if (about) about.appendChild(pre);
+      } },
+    { id: 'f-disable', label: 'Disable the contact field',
+      apply: function(doc){
+        var e = doc.getElementById('fContact'); if (e) e.setAttribute('disabled', '');
+      } },
+    { id: 'f-img', label: 'Drop in a huge uncompressed image',
+      apply: function(doc){
+        var img = doc.createElement('img');
+        img.setAttribute('src', bigImageDataUri());
+        img.setAttribute('style', 'max-width:100%;height:auto;display:block;margin-top:16px');
+        /* no alt attribute: that is part of the fault */
+        var about = doc.querySelector('#about .wrap');
+        if (about) about.appendChild(img);
+      } }
+  ],
+  pelican: [
+    { id: 'p-link', label: 'Break the TONIGHT quick link',
+      apply: function(doc){
+        var a = doc.querySelector('.action-bar a[href="#tonight"]');
+        if (a) a.setAttribute('href', '#tonite');
+      } },
+    { id: 'p-phone', label: 'Hide the phone number on mobile',
+      apply: function(doc){
+        var st = doc.createElement('style');
+        st.textContent = '@media(max-width:760px){.call-btn,.action-bar,a[href^="tel:"]{display:none!important}}';
+        doc.head.appendChild(st);
+      } },
+    { id: 'p-label', label: 'Strip the email field’s label',
+      apply: function(doc){
+        var l = doc.querySelector('label[for="iq-email"]'); if (l) l.parentNode.removeChild(l);
+      } },
+    { id: 'p-disable', label: 'Disable the date field',
+      apply: function(doc){
+        var e = doc.getElementById('iq-date'); if (e) e.setAttribute('disabled', '');
+      } },
+    { id: 'p-contrast', label: 'Dim the calendar intro',
+      apply: function(doc){
+        var e = doc.querySelector('#calendar .sub');
+        if (e) e.setAttribute('style', 'color:#5c5648;background-color:#171107');
+      } },
+    { id: 'p-dup', label: 'Duplicate a quick-action item',
+      apply: function(doc){
+        var bar = doc.querySelector('.action-bar');
+        var call = bar && bar.querySelector('a[href^="tel:"]');
+        if (call) bar.insertBefore(call.cloneNode(true), call.nextSibling);
+      } }
+  ]
+};
+
+/* ---------- activity log ---------- */
+var logBox = $('activityLog');
+var currentPhase = 0;
+var PHASES = { 1: 'Discover', 2: 'Goal', 3: 'Test', 4: 'Hypotheses', 5: 'Verify', 6: 'Report' };
+function logNode(cls, html){
+  var d = document.createElement('div');
+  d.className = cls;
+  d.innerHTML = html;
+  logBox.appendChild(d);
+  logBox.scrollTop = logBox.scrollHeight;
+  return d;
+}
+function logPhase(n){
+  if (n <= currentPhase) return;
+  currentPhase = n;
+  logNode('phase', '<span class="pn">0' + n + '</span> ' + esc(PHASES[n]));
+  $('phaseLive').textContent = 'Phase ' + n + ' of 6: ' + PHASES[n];
+}
+function logTool(name, input){
+  logNode('tool', '&rarr; <span class="tn">' + esc(name) + '</span><span class="arg">(' + esc(input || '') + ')</span>');
+  return {
+    res: function(t){ logNode('res', esc(t)); },
+    sub: function(t){ logNode('sub', esc(t)); },
+    fail: function(t){ logNode('res fail-line', esc(t)); },
+    ok: function(t){ logNode('res ok-line', esc(t)); }
+  };
+}
+function logPlan(text){ logNode('plan', 'planner: ' + esc(text)); }
+function updateMeta(){
+  $('logMeta').textContent = S.iterations + ' tool call' + (S.iterations === 1 ? '' : 's');
+}
+function setPrevStatus(html){ $('prevStatus').innerHTML = html; }
+
+/* ---------- run state ---------- */
+var S = null;
+var ITERATION_CAP = 25;
+function freshState(targetKey, sabotageIds){
+  return {
+    target: TARGETS[targetKey],
+    sabotage: sabotageIds,
+    goal: TARGETS[targetKey].goal,
+    pages: {},
+    controls: [],
+    testHistory: [],
+    findings: [],
+    hypotheses: [],
+    verifications: [],
+    iterations: 0,
+    uncertainties: [],
+    stopped: false,
+    stopReason: null,
+    did: {},
+    flowSteps: [],
+    navData: null,
+    viewportData: null,
+    a11yData: null,
+    win: null,
+    doc: null,
+    startedAt: Date.now()
+  };
+}
+function addUncert(text){
+  if (S.uncertainties.indexOf(text) === -1) S.uncertainties.push(text);
+}
+var SEV_W = { critical: 3, major: 2, minor: 1 };
+function addFinding(key, props){
+  for (var i = 0; i < S.findings.length; i++){
+    if (S.findings[i].key === key){
+      var f0 = S.findings[i];
+      (props.evidence || []).forEach(function(e){ if (f0.evidence.indexOf(e) === -1) f0.evidence.push(e); });
+      if (props.tool && f0.tools.indexOf(props.tool) === -1) f0.tools.push(props.tool);
+      if (SEV_W[props.severity] > SEV_W[f0.severity]) f0.severity = props.severity;
+      return f0;
+    }
+  }
+  var f = {
+    key: key,
+    title: props.title,
+    severity: props.severity,
+    tools: [props.tool],
+    element: props.element || null,
+    node: props.node || null,
+    evidence: props.evidence || [],
+    suggestion: props.suggestion || null,
+    patchType: props.patchType || null,
+    measured: props.measured || null,
+    goalHint: !!props.goalHint,
+    impact: null, impactWhy: null, priority: 0,
+    verification: null,
+    scored: false,
+    order: S.findings.length
+  };
+  S.findings.push(f);
+  streamFinding(f);
+  return f;
+}
+function streamFinding(f){
+  var card = document.createElement('div');
+  card.className = 'fcard b-' + f.severity;
+  card.innerHTML = '<span class="sev sev-' + f.severity + '">' + f.severity + '</span>' +
+    '<span class="ft">' + esc(f.title) + '</span>' +
+    '<span class="ftool">' + esc(f.tools[0]) + '</span>';
+  $('findStream').appendChild(card);
+}
+function addHyp(kind, text, extra){
+  var h = { id: 'H' + (S.hypotheses.length + 1), kind: kind, text: text, status: 'open' };
+  for (var k in extra) h[k] = extra[k];
+  S.hypotheses.push(h);
+  return h;
+}
+
+/* ---------- sandbox ---------- */
+/* In-memory storage shim: audit runs must never touch the state the real
+   demo pages keep in this browser (they share this origin). */
+var SHIM_SRC = '(function(){try{var m={};var s={getItem:function(k){return Object.prototype.hasOwnProperty.call(m,k)?m[k]:null},setItem:function(k,v){m[k]=String(v)},removeItem:function(k){delete m[k]},clear:function(){m={}},key:function(i){return Object.keys(m)[i]||null}};try{Object.defineProperty(s,"length",{get:function(){return Object.keys(m).length}})}catch(e){}Object.defineProperty(window,"localStorage",{configurable:true,get:function(){return s}});}catch(e){}})();';
+var INSPECT_CSS = '[data-sd-inspect]{outline:2px dashed #d84a33 !important;outline-offset:3px !important}' +
+  '[data-sd-patch]{outline:2px solid #1e7a3c !important;outline-offset:3px !important}';
+var lastInspected = null;
+function highlight(node, label){
+  if (!S || !S.doc || !node) return;
+  if (lastInspected && lastInspected !== node){
+    try { lastInspected.removeAttribute('data-sd-inspect'); } catch (e){}
+  }
+  try {
+    node.setAttribute('data-sd-inspect', '');
+    lastInspected = node;
+    var r = node.getBoundingClientRect();
+    S.win.scrollTo(0, Math.max(0, r.top + S.win.scrollY - 180));
+    if (label) setPrevStatus('inspecting: <b>' + esc(label) + '</b> &middot; ' + esc(cssPath(node)));
+  } catch (e){}
+}
+function clearHighlight(){
+  if (lastInspected){ try { lastInspected.removeAttribute('data-sd-inspect'); } catch (e){} }
+  lastInspected = null;
+}
+function loadSandbox(mutatedDoc){
+  return new Promise(function(resolve){
+    var frame = $('prevFrame');
+    var head = mutatedDoc.querySelector('head');
+    if (head){
+      var st = mutatedDoc.createElement('style');
+      st.setAttribute('data-sd', '');
+      st.textContent = INSPECT_CSS;
+      head.appendChild(st);
+      var sc = mutatedDoc.createElement('script');
+      sc.textContent = SHIM_SRC;
+      head.insertBefore(sc, head.firstChild);
+      /* srcdoc documents inherit the parent page's base URL, which would turn
+         the copy's in-page "#..." links into full navigations to this page.
+         Pinning the base to about:srcdoc keeps fragment navigation same-document,
+         exactly like the real page. */
+      var baseEl = mutatedDoc.createElement('base');
+      baseEl.setAttribute('href', 'about:srcdoc');
+      head.insertBefore(baseEl, head.firstChild);
+    }
+    frame.onload = function(){
+      frame.onload = null;
+      S.win = frame.contentWindow;
+      S.doc = frame.contentDocument;
+      sleep(380).then(resolve);
+    };
+    frame.srcdoc = '<!DOCTYPE html>\n' + mutatedDoc.documentElement.outerHTML;
+  });
+}
+
+/* ---------- goal helpers ---------- */
+function goalControlVisible(){
+  var t = S.target;
+  for (var i = 0; i < t.ctaSelectors.length; i++){
+    var els = qa(t.ctaSelectors[i], S.doc);
+    for (var j = 0; j < els.length; j++){
+      if (inViewport(els[j], S.win)) return els[j];
+    }
+  }
+  var surf = S.doc.querySelector(t.goalSurface);
+  if (surf && inViewport(surf, S.win)) return surf;
+  return null;
+}
+function firstVisibleCta(){
+  var t = S.target;
+  for (var i = 0; i < t.ctaSelectors.length; i++){
+    var els = qa(t.ctaSelectors[i], S.doc);
+    for (var j = 0; j < els.length; j++){
+      if (visibleIn(els[j], S.win)) return els[j];
+    }
+  }
+  return null;
+}
+function isGoalElement(node){
+  if (!node || !node.closest) return false;
+  var sels = S.target.goalSelectors;
+  for (var i = 0; i < sels.length; i++){
+    try { if (node.closest(sels[i])) return true; } catch (e){}
+  }
+  return false;
+}
+
+/* ---------- tools ---------- */
+var tools = {};
+
+tools.crawlSite = async function(url, t){
+  var res, text;
+  try {
+    res = await fetch(url, { cache: 'no-store' });
+    text = await res.text();
+  } catch (e){
+    S.pages[url] = { status: 'unreachable' };
+    addFinding('unreachable', { title: 'Page could not be fetched', severity: 'critical', tool: 'crawlSite',
+      evidence: ['fetch("' + url + '") threw: ' + e.message], goalHint: true });
+    return { summary: 'FAILED: ' + e.message };
+  }
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(text, 'text/html');
+  /* sabotage lands on the copy, before any tool sees it */
+  var applied = 0;
+  SABOTAGE[S.target.key].forEach(function(sab){
+    if (S.sabotage.indexOf(sab.id) !== -1){ sab.apply(doc); applied++; }
+  });
+  $('prevName').textContent = url;
+  await loadSandbox(doc);
+  var counts = {
+    links: qa('a[href]', doc).length,
+    forms: qa('form', doc).length,
+    inputs: qa('input:not([type="hidden"]),select,textarea', doc).length,
+    images: qa('img[src]', doc).length,
+    headings: qa('h1,h2,h3,h4,h5,h6', doc).length,
+    buttons: qa('button,[role="button"]', doc).length
+  };
+  S.pages[url] = { status: res.status, bytes: text.length, title: doc.title, counts: counts };
+  /* follow same-origin html links, capped */
+  var followed = [];
+  var seen = {};
+  var anchors = qa('a[href]', doc);
+  for (var i = 0; i < anchors.length && followed.length < 2; i++){
+    var u;
+    try { u = new URL(anchors[i].getAttribute('href'), location.href); } catch (e){ continue; }
+    if (u.origin !== location.origin) continue;
+    if (u.pathname === new URL(url, location.href).pathname) continue;
+    if (u.protocol.indexOf('http') !== 0 || seen[u.pathname]) continue;
+    seen[u.pathname] = true;
+    try {
+      var r2 = await fetch(u.pathname, { cache: 'no-store' });
+      S.pages[u.pathname] = { status: r2.status, linkedFrom: url };
+      followed.push(u.pathname + ' → ' + r2.status);
+    } catch (e){
+      S.pages[u.pathname] = { status: 'unreachable', linkedFrom: url };
+      followed.push(u.pathname + ' → unreachable');
+    }
+  }
+  if (applied) t.sub('sabotage: ' + applied + ' toggle(s) applied to the sandbox copy (contents not disclosed to the tools)');
+  if (followed.length) t.sub('linked same-origin pages: ' + followed.join(' · '));
+  return { summary: res.status + ' ' + (res.ok ? 'OK' : '') + ' · ' + fmtKB(text.length) + ' · ' +
+    counts.links + ' links · ' + counts.forms + ' forms · ' + counts.inputs + ' fields · ' +
+    counts.images + ' images · ' + counts.headings + ' headings · ' + counts.buttons + ' buttons' };
+};
+
+tools.testNavigation = async function(_, t){
+  var doc = S.doc;
+  var anchors = qa('a[href]', doc);
+  var stats = { inPageOk: 0, top: 0, unresolved: [], sameOriginOk: 0, sameOriginBad: [], protocol: 0, external: 0 };
+  var fetched = {};
+  var dupSeen = {};
+  for (var i = 0; i < anchors.length; i++){
+    var a = anchors[i];
+    var raw = a.getAttribute('href') || '';
+    /* duplicate check: same parent, same href, same text */
+    var dkey = raw + '|' + (a.textContent || '').trim();
+    if (a.parentElement){
+      var sib = dupSeen[dkey];
+      if (sib && sib === a.parentElement){
+        addFinding('dup-link', { title: 'Duplicate link (same target, same text, side by side)', severity: 'minor',
+          tool: 'testNavigation', element: cssPath(a.parentElement), node: a,
+          evidence: ['"' + (a.textContent || '').trim() + '" → ' + raw + ' appears twice inside ' + cssPath(a.parentElement)],
+          suggestion: 'Remove the duplicate; repeated identical controls read as a rendering bug and eat tap space.' });
+      } else { dupSeen[dkey] = a.parentElement; }
+    }
+    if (raw === '#' || raw === ''){ stats.top++; continue; }
+    if (raw.charAt(0) === '#'){
+      var id = raw.slice(1);
+      if (doc.getElementById(id) || doc.querySelector('a[name="' + id.replace(/"/g, '') + '"]')) stats.inPageOk++;
+      else stats.unresolved.push({ href: raw, node: a });
+      continue;
+    }
+    var u;
+    try { u = new URL(raw, location.href); } catch (e){ continue; }
+    if (u.protocol === 'mailto:' || u.protocol === 'tel:'){ stats.protocol++; continue; }
+    if (u.origin !== location.origin){ stats.external++; continue; }
+    if (fetched[u.pathname] !== undefined) continue;
+    if (Object.keys(fetched).length >= 6){ continue; }
+    try {
+      var r = await fetch(u.pathname, { cache: 'no-store' });
+      fetched[u.pathname] = r.status;
+      if (r.ok) stats.sameOriginOk++;
+      else {
+        stats.sameOriginBad.push(u.pathname + ' → ' + r.status);
+        addFinding('deadlink-' + u.pathname, { title: 'Same-origin link returns ' + r.status, severity: 'major',
+          tool: 'testNavigation', element: cssPath(a), node: a,
+          evidence: ['GET ' + u.pathname + ' → HTTP ' + r.status],
+          suggestion: 'Fix the path or restore the missing file.' });
+      }
+    } catch (e){ fetched[u.pathname] = 'err'; }
+  }
+  /* group unresolved in-page anchors by pattern; the planner decides what they mean */
+  var groups = {};
+  stats.unresolved.forEach(function(u2){
+    var pat = u2.href.replace(/\d+/g, 'N');
+    if (!groups[pat]) groups[pat] = { pattern: pat, items: [] };
+    groups[pat].items.push(u2);
+  });
+  S.navData = { stats: stats, unresolvedGroups: Object.keys(groups).map(function(k){ return groups[k]; }) };
+  if (stats.external > 0) addUncert(stats.external + ' external link(s) not tested: they point off this origin (portfolio hub, mailto, tel and similar are exercised only as presence checks).');
+  if (stats.protocol > 0) addUncert(stats.protocol + ' protocol link(s) (tel:/mailto:) verified as present, not dialed.');
+  var bits = [anchors.length + ' links'];
+  bits.push(stats.inPageOk + ' in-page resolve');
+  if (stats.top) bits.push(stats.top + ' top-of-page');
+  if (stats.unresolved.length) bits.push(stats.unresolved.length + ' in-page unresolved → held for hypothesis');
+  bits.push(stats.sameOriginOk + ' same-origin fetched OK');
+  if (stats.sameOriginBad.length) bits.push(stats.sameOriginBad.length + ' dead');
+  if (stats.protocol) bits.push(stats.protocol + ' protocol');
+  if (stats.external) bits.push(stats.external + ' external not tested');
+  return { summary: bits.join(' · ') };
+};
+
+tools.inspectForms = async function(_, t){
+  var doc = S.doc;
+  var fields = qa('input,select,textarea', doc).filter(function(f){ return (f.getAttribute('type') || '') !== 'hidden'; });
+  var unlabeled = 0, disabled = 0, required = 0;
+  fields.forEach(function(f){
+    var id = f.id || f.name || f.tagName.toLowerCase();
+    var labelled = false;
+    if (f.id && doc.querySelector('label[for="' + f.id + '"]')) labelled = true;
+    else if (f.closest('label')) labelled = true;
+    else if (f.getAttribute('aria-label')) labelled = true;
+    else if (f.getAttribute('aria-labelledby')) labelled = true;
+    else if (f.type === 'radio' && f.closest('fieldset')) labelled = !!f.closest('label');
+    if (!labelled && f.type !== 'file'){
+      unlabeled++;
+      addFinding('label-' + id, { title: 'Form field has no label (' + id + ')', severity: 'major',
+        tool: 'inspectForms', element: '#' + id, node: f, patchType: 'label',
+        evidence: ['<' + f.tagName.toLowerCase() + (f.id ? ' id="' + f.id + '"' : '') + '> has no <label for>, wrapping label, or aria-label'],
+        suggestion: 'Associate a visible <label for="' + id + '">; placeholder text is not a label and screen readers get nothing.',
+        goalHint: isGoalElement(f) });
+      highlight(f, 'unlabeled field');
+    }
+    if (f.disabled){
+      disabled++;
+      addFinding('disabled-' + id, { title: 'Field is disabled (' + id + ')', severity: 'major',
+        tool: 'inspectForms', element: '#' + id, node: f, patchType: 'enable',
+        evidence: ['<' + f.tagName.toLowerCase() + ' id="' + f.id + '"> carries the disabled attribute; a visitor cannot type into it'],
+        suggestion: 'Remove the disabled attribute or gate it on real state; a permanently disabled required field kills the flow.',
+        goalHint: isGoalElement(f) });
+      highlight(f, 'disabled field');
+    }
+    if (f.required) required++;
+  });
+  var forms = qa('form', doc).length;
+  addUncert('Form checks are structural (labels, types, disabled state). Validation logic and submit handling are exercised only along the traced goal flow, not for every field combination.');
+  return { summary: forms + ' form(s), ' + fields.length + ' fields · ' + unlabeled + ' unlabeled · ' +
+    disabled + ' disabled · ' + required + ' required' };
+};
+
+tools.checkAccessibility = async function(_, t){
+  var doc = S.doc, win = S.win;
+  /* image alt */
+  var imgs = qa('img[src]', doc).filter(function(im){
+    return im.getAttribute('aria-hidden') !== 'true' && im.getAttribute('role') !== 'presentation';
+  });
+  var noAlt = 0;
+  imgs.forEach(function(im, i){
+    if (!im.hasAttribute('alt')){
+      noAlt++;
+      addFinding('alt-' + i, { title: 'Image has no alt text', severity: 'minor',
+        tool: 'checkAccessibility', element: cssPath(im), node: im,
+        evidence: ['<img> at ' + cssPath(im) + ' has no alt attribute (src: ' + (im.getAttribute('src') || '').slice(0, 60) + '…)'],
+        suggestion: 'Add alt text, or alt="" plus role="presentation" if it is decorative.' });
+      highlight(im, 'image without alt');
+    }
+  });
+  /* heading order (visible only) */
+  var hs = qa('h1,h2,h3,h4,h5,h6', doc).filter(function(h){ return visibleIn(h, win); });
+  var lastLevel = 0, jumps = 0, h1s = 0;
+  hs.forEach(function(h){
+    var lv = +h.tagName.charAt(1);
+    if (lv === 1) h1s++;
+    if (lastLevel && lv > lastLevel + 1){
+      jumps++;
+      addFinding('heading-jump-' + lv, { title: 'Heading level jumps (h' + lastLevel + ' → h' + lv + ')', severity: 'minor',
+        tool: 'checkAccessibility', element: cssPath(h), node: h,
+        evidence: ['"' + (h.textContent || '').trim().slice(0, 50) + '" is an h' + lv + ' directly after an h' + lastLevel],
+        suggestion: 'Keep heading levels sequential; screen-reader outlines depend on them.' });
+    }
+    lastLevel = lv;
+  });
+  /* contrast sample */
+  var sample = qa('p,li,a,button,label,h1,h2,h3,h4,legend,summary,dt,dd,figcaption,th,td', doc)
+    .filter(function(e2){
+      if (!visibleIn(e2, win)) return false;
+      for (var c = 0; c < e2.childNodes.length; c++){
+        var n2 = e2.childNodes[c];
+        if (n2.nodeType === 3 && n2.textContent.trim().length > 2) return true;
+      }
+      return false;
+    });
+  var totalCandidates = sample.length;
+  sample = sample.slice(0, 120);
+  if (totalCandidates > 120) addUncert('Contrast sampled the first 120 of ' + totalCandidates + ' text blocks; the rest were not measured.');
+  var checked = 0, skipped = 0, failed = 0;
+  sample.forEach(function(e3){
+    var cs = win.getComputedStyle(e3);
+    var fg = parseRGB(cs.color);
+    if (!fg) { skipped++; return; }
+    var bgres = resolveBg(e3, win);
+    if (!bgres.rgb){ skipped++; return; }
+    checked++;
+    var fgFlat = fg[3] < 1 ? compositeOver(fg, bgres.rgb) : fg;
+    var ratio = contrastRatio(fgFlat, bgres.rgb);
+    var threshold = isLargeText(cs) ? 3 : 4.5;
+    if (ratio < threshold - 0.01){
+      failed++;
+      var sel = cssPath(e3);
+      addFinding('contrast-' + sel, { title: 'Text fails WCAG AA contrast (' + ratio.toFixed(2) + ':1)', severity: ratio < threshold - 1.5 ? 'major' : 'minor',
+        tool: 'checkAccessibility', element: sel, node: e3, patchType: 'contrast',
+        measured: { ratio: ratio, threshold: threshold, fg: fgFlat, bg: bgres.rgb },
+        evidence: ['"' + (e3.textContent || '').trim().slice(0, 60) + '…" measures ' + ratio.toFixed(2) + ':1 against its background (needs ' + threshold + ':1)',
+          'computed color rgb(' + fgFlat.slice(0, 3).map(Math.round).join(',') + ') on rgb(' + bgres.rgb.slice(0, 3).map(Math.round).join(',') + ')'],
+        suggestion: 'Darken (or brighten) the text color until the measured ratio clears ' + threshold + ':1.',
+        goalHint: isGoalElement(e3) });
+      highlight(e3, 'low-contrast text');
+    }
+  });
+  /* focusability of interactive elements */
+  var fakeButtons = qa('[onclick],[role="button"],[role="link"]', doc).filter(function(e4){
+    var tag = e4.tagName.toLowerCase();
+    if (['a', 'button', 'input', 'select', 'textarea'].indexOf(tag) !== -1) return false;
+    return !e4.hasAttribute('tabindex');
+  });
+  fakeButtons.forEach(function(e5){
+    addFinding('focus-' + cssPath(e5), { title: 'Interactive element not keyboard-reachable', severity: 'major',
+      tool: 'checkAccessibility', element: cssPath(e5), node: e5,
+      evidence: [cssPath(e5) + ' acts as a control but is not focusable (no tabindex, not a native control)'],
+      suggestion: 'Use a real <button>/<a>, or add tabindex="0" plus key handling.' });
+  });
+  var scheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  addUncert('Contrast was measured in the ' + scheme + ' scheme this browser prefers (as the sandbox rendered it); the other scheme was not measured on this run.');
+  if (skipped > 0) addUncert(skipped + ' text block(s) skipped in the contrast pass: their background is an image or gradient the tool refuses to guess at.');
+  S.a11yData = { imgs: imgs.length, noAlt: noAlt, headings: hs.length, jumps: jumps, h1s: h1s, checked: checked, skipped: skipped, failed: failed };
+  return { summary: imgs.length + ' images (' + noAlt + ' missing alt) · headings: ' + hs.length + ' visible, ' + jumps + ' jumps · contrast: ' +
+    checked + ' pairs, ' + failed + ' below AA, ' + skipped + ' skipped · ' + fakeButtons.length + ' focus traps' };
+};
+
+tools.simulateViewport = async function(width, t){
+  var doc = S.doc, win = S.win;
+  win.scrollTo(0, 0);
+  await sleep(150);
+  var innerW = win.innerWidth;
+  var scrollW = Math.max(doc.documentElement.scrollWidth, doc.body ? doc.body.scrollWidth : 0);
+  var overflowPx = scrollW - innerW;
+  var offender = null;
+  if (overflowPx > 1){
+    /* attribute the overflow to the deepest element that actually extends the
+       page: skip anything a scrolling/clipping ancestor already contains, and
+       count content overflow (scrollWidth) so unwrapped text is caught too */
+    var clippedByAncestor = function(e0){
+      var p = e0.parentElement;
+      while (p && p !== doc.body){
+        var ov = win.getComputedStyle(p).overflowX;
+        if (ov === 'auto' || ov === 'scroll' || ov === 'hidden' || ov === 'clip') return true;
+        p = p.parentElement;
+      }
+      return false;
+    };
+    var depthOf = function(e0){ var d = 0; while (e0.parentElement){ d++; e0 = e0.parentElement; } return d; };
+    var all = qa('body *', doc).slice(0, 900);
+    var widest = innerW, offDepth = -1;
+    all.forEach(function(e6){
+      if (!visibleIn(e6, win) || clippedByAncestor(e6)) return;
+      var r = e6.getBoundingClientRect();
+      if (r.width < 40) return;
+      var reach = Math.max(r.right, r.left + e6.scrollWidth);
+      var d = depthOf(e6);
+      if (reach > widest + 1 || (Math.abs(reach - widest) <= 1 && d > offDepth)){
+        widest = Math.max(widest, reach); offender = e6; offDepth = d;
+      }
+    });
+    addFinding('overflow', { title: 'Page scrolls sideways at ' + width + 'px (' + Math.round(overflowPx) + 'px overflow)', severity: 'major',
+      tool: 'simulateViewport', element: offender ? cssPath(offender) : 'documentElement', node: offender, patchType: 'overflow',
+      measured: { overflowPx: overflowPx },
+      evidence: ['documentElement.scrollWidth ' + scrollW + 'px vs viewport ' + innerW + 'px',
+        offender ? 'widest offender: ' + cssPath(offender) + ' reaches ' + Math.round(widest) + 'px' : 'offender not isolated'],
+      suggestion: 'Constrain the offender (max-width:100%) or give wide content its own overflow-x:auto container.' });
+    if (offender) highlight(offender, 'horizontal overflow');
+  }
+  /* distance from top to the first goal control */
+  var cta = firstVisibleCta();
+  var ctaTop = null;
+  if (cta){
+    ctaTop = Math.round(cta.getBoundingClientRect().top + win.scrollY);
+    highlight(cta, 'primary goal control');
+  } else {
+    addFinding('goal-cta-missing', { title: 'No goal control found on the page', severity: 'critical',
+      tool: 'simulateViewport', element: S.target.ctaSelectors.join(', '), patchType: 'inject-cta', goalHint: true,
+      evidence: ['none of the goal-control selectors matched a visible element: ' + S.target.ctaSelectors.join(', ')],
+      suggestion: 'Restore a visible, always-reachable control for "' + S.goal + '".' });
+  }
+  /* fixed / sticky action bars */
+  var bars = [];
+  qa('body *', doc).slice(0, 900).forEach(function(e7){
+    var cs = win.getComputedStyle(e7);
+    if (cs.position !== 'fixed' && cs.position !== 'sticky') return;
+    var r = e7.getBoundingClientRect();
+    if (r.height < 20 || r.height > 220 || r.width < innerW * 0.6) return;
+    if (r.bottom < win.innerHeight - 90 || r.top > win.innerHeight) return;
+    if (!e7.querySelector('a,button')) return;
+    var hasGoal = !!(S.target.ctaSelectors.some(function(sel){ return e7.querySelector(sel) || (e7.matches && e7.matches(sel)); }) || e7.querySelector('a[href^="tel:"]'));
+    bars.push({ node: e7, sel: cssPath(e7), height: Math.round(r.height), hasGoal: hasGoal });
+  });
+  S.viewportData = { overflowPx: Math.max(0, Math.round(overflowPx)), ctaTop: ctaTop, ctaNode: cta, bars: bars };
+  addUncert('Layout was measured at ' + width + 'px only; tablet and desktop widths were not simulated on this run.');
+  var bits2 = ['overflow ' + Math.max(0, Math.round(overflowPx)) + 'px'];
+  bits2.push(cta ? 'first goal control at ' + ctaTop + 'px from top' : 'NO goal control found');
+  bits2.push(bars.length + ' fixed/sticky action bar(s)' + (bars.length && bars[0].hasGoal ? ' incl. goal control' : ''));
+  return { summary: bits2.join(' · ') };
+};
+
+tools.measureAssets = async function(_, t){
+  var doc = S.doc;
+  var imgs = qa('img[src]', doc);
+  var seen = {}, weighed = 0, external = 0, total = 0, heavy = 0;
+  for (var i = 0; i < imgs.length; i++){
+    var src = imgs[i].getAttribute('src');
+    if (!src || seen[src]) continue;
+    seen[src] = true;
+    var bytes = null, how = '';
+    if (src.indexOf('data:') === 0){
+      var b64 = src.indexOf(';base64,') !== -1;
+      var payload = src.slice(src.indexOf(',') + 1);
+      bytes = b64 ? Math.round(payload.length * 0.75) : payload.length;
+      how = 'decoded from data URI';
+    } else {
+      var u;
+      try { u = new URL(src, location.href); } catch (e){ continue; }
+      if (u.origin !== location.origin){ external++; continue; }
+      try {
+        var r = await fetch(u.pathname, { cache: 'no-store' });
+        var bl = await r.blob();
+        bytes = bl.size;
+        how = 'fetched, ' + r.status;
+      } catch (e){ continue; }
+    }
+    weighed++;
+    total += bytes;
+    if (bytes > 150 * 1024){
+      heavy++;
+      addFinding('heavy-img-' + i, { title: 'Oversized image (' + fmtKB(bytes) + ')', severity: 'major',
+        tool: 'measureAssets', element: cssPath(imgs[i]), node: imgs[i],
+        measured: { bytes: bytes },
+        evidence: [fmtKB(bytes) + ' for one image (' + how + '); tool budget: 150 KB per image'],
+        suggestion: 'Resize to display dimensions and re-encode (WebP/AVIF); this single asset outweighs the rest of the page.' });
+      highlight(imgs[i], 'oversized image');
+    }
+  }
+  if (external > 0) addUncert(external + ' image(s) point off-origin and were not weighed.');
+  if (!imgs.length) return { summary: 'no image assets on the page; nothing to weigh' };
+  return { summary: weighed + ' image(s) weighed · ' + fmtKB(total) + ' total · ' + heavy + ' over budget' + (external ? ' · ' + external + ' external skipped' : '') };
+};
+
+/* ---------- traceUserFlow: drive the goal path with real interactions ---------- */
+function typeInto(f, val){
+  if (!f) return 'field missing';
+  if (f.disabled) return 'disabled: a visitor cannot type into it';
+  if (f.readOnly) return 'read-only';
+  if (!visibleIn(f, S.win)) return 'not visible';
+  f.value = val;
+  try { f.dispatchEvent(new S.win.Event('input', { bubbles: true })); } catch (e){}
+  return null;
+}
+function flowStep(steps, name, pass, evidence, opts){
+  var st = { name: name, pass: pass, evidence: evidence };
+  steps.push(st);
+  if (!pass && !(opts && opts.skipped)){
+    addFinding((opts && opts.findingKey) || 'flow-' + name.toLowerCase().replace(/[^a-z0-9]+/g, '-'), {
+      title: 'Flow breaks: ' + name, severity: 'critical', tool: 'traceUserFlow',
+      element: (opts && opts.element) || null, node: (opts && opts.node) || null,
+      patchType: (opts && opts.patchType) || null,
+      evidence: [evidence], goalHint: true,
+      suggestion: (opts && opts.suggestion) || 'Repair this step; the goal flow dies here.'
+    });
+  }
+  return pass;
+}
+
+var flowDrivers = {
+  fogline: async function(t){
+    var doc = S.doc, win = S.win, steps = [];
+    var broken = false;
+    async function step(name, fn){
+      if (broken){ steps.push({ name: name, pass: false, evidence: 'not reached (flow already broken)', skipped: true }); return; }
+      await sleep(260);
+      var r = await fn();
+      if (!r.pass) broken = !r.soft;
+      flowStep(steps, name, r.pass, r.evidence, r);
+      t[r.pass ? 'ok' : 'fail']((r.pass ? '✓ ' : '✗ ') + name + ': ' + r.evidence);
+    }
+    await step('Entry CTA', async function(){
+      var cta = doc.querySelector('.hero-cta .btn') || doc.getElementById('heroBook');
+      if (!cta || !visibleIn(cta, win)) return { pass: false, evidence: 'no visible booking control in the hero', findingKey: 'goal-cta-missing', patchType: 'inject-cta', suggestion: 'Restore the "Book a repair" control; it is the only entrance to the flow.' };
+      highlight(cta, 'entry CTA');
+      return { pass: true, evidence: '"' + cta.textContent.trim() + '" at ' + Math.round(cta.getBoundingClientRect().top + win.scrollY) + 'px from top' };
+    });
+    await step('Service options render', async function(){
+      var svcs = qa('#svcList button', doc);
+      if (!svcs.length) return { pass: false, evidence: '#svcList is empty; the page script did not populate it (it may have crashed on a missing element)', element: '#svcList' };
+      highlight(svcs[0], 'service option');
+      var next1 = doc.getElementById('next1');
+      var gated = next1 && next1.disabled;
+      svcs[0].click();
+      await sleep(120);
+      var enabled = next1 && !next1.disabled;
+      if (!enabled) return { pass: false, evidence: 'selected "' + svcs[0].textContent.trim().slice(0, 30) + '" but the Next button stayed disabled', element: '#next1', node: next1 };
+      return { pass: true, evidence: svcs.length + ' services, Next ' + (gated ? 'correctly gated then ' : '') + 'enabled after selection' };
+    });
+    await step('Pick a time', async function(){
+      var n1 = doc.getElementById('next1'); if (n1) n1.click();
+      await sleep(200);
+      var days = qa('#dayList button', doc);
+      if (!days.length) return { pass: false, evidence: 'no day chips rendered in #dayList', element: '#dayList' };
+      highlight(days[0], 'day chip'); days[0].click();
+      await sleep(150);
+      var slots = qa('#slotList button:not([disabled])', doc);
+      if (!slots.length) return { pass: false, evidence: 'no open slot for the first day (every chip disabled)', element: '#slotList' };
+      highlight(slots[0], 'open slot'); slots[0].click();
+      await sleep(120);
+      var n2 = doc.getElementById('next2');
+      if (!n2 || n2.disabled) return { pass: false, evidence: 'slot picked but Next stayed disabled', element: '#next2', node: n2 };
+      n2.click();
+      await sleep(200);
+      return { pass: true, evidence: days.length + ' days offered, slot "' + slots[0].textContent.trim() + '" selectable, advanced to bike intake' };
+    });
+    await step('Bike intake', async function(){
+      var types = qa('#bikeTypes button', doc);
+      if (!types.length) return { pass: false, evidence: 'no bike-type chips rendered', element: '#bikeTypes' };
+      types[0].click();
+      var prob = doc.getElementById('fProblem');
+      highlight(prob, 'problem description');
+      var err = typeInto(prob, 'Sandbox probe: shifting skips under load on the third pedal stroke.');
+      if (err) return { pass: false, evidence: '#fProblem ' + err, element: '#fProblem', node: prob, patchType: err.indexOf('disabled') === 0 ? 'enable' : null, findingKey: err.indexOf('disabled') === 0 ? 'disabled-fProblem' : undefined };
+      var n3 = doc.getElementById('next3'); if (n3) n3.click();
+      await sleep(200);
+      var p4 = doc.getElementById('p4');
+      if (!p4 || !p4.classList.contains('active')) return { pass: false, evidence: 'intake filled but the flow did not advance to contact details', element: '#p4' };
+      return { pass: true, evidence: 'type + problem accepted, advanced to contact details' };
+    });
+    await step('Contact details', async function(){
+      var nameF = doc.getElementById('fName'), contF = doc.getElementById('fContact');
+      highlight(contF || nameF, 'contact field');
+      var e1 = typeInto(nameF, 'Site Doctor');
+      if (e1) return { pass: false, evidence: '#fName ' + e1, element: '#fName', node: nameF, patchType: e1.indexOf('disabled') === 0 ? 'enable' : null, findingKey: e1.indexOf('disabled') === 0 ? 'disabled-fName' : undefined };
+      var e2 = typeInto(contF, 'sitedoctor@example.com');
+      if (e2) return { pass: false, evidence: '#fContact ' + e2, element: '#fContact', node: contF, patchType: e2.indexOf('disabled') === 0 ? 'enable' : null, findingKey: e2.indexOf('disabled') === 0 ? 'disabled-fContact' : undefined };
+      var n4 = doc.getElementById('next4'); if (n4) n4.click();
+      await sleep(240);
+      var p5 = doc.getElementById('p5');
+      if (!p5 || !p5.classList.contains('active')) return { pass: false, evidence: 'valid details entered but the confirmation step never appeared', element: '#p5' };
+      return { pass: true, evidence: 'name + contact accepted, advanced to the work tag' };
+    });
+    await step('Work tag issued', async function(){
+      var code = doc.getElementById('confCode');
+      var txt = code ? code.textContent.trim() : '';
+      if (!/^FLC-/.test(txt)) return { pass: false, evidence: 'no work-tag code rendered (#confCode: "' + txt + '")', element: '#confCode', node: code };
+      highlight(code, 'work tag');
+      return { pass: true, evidence: 'booking completed end to end in the sandbox, work tag ' + txt };
+    });
+    return steps;
+  },
+
+  pelican: async function(t){
+    var doc = S.doc, win = S.win, steps = [];
+    var broken = false;
+    async function step(name, fn){
+      if (broken){ steps.push({ name: name, pass: false, evidence: 'not reached (flow already broken)', skipped: true }); return; }
+      await sleep(260);
+      var r = await fn();
+      if (!r.pass && !r.soft) broken = !!r.hard;
+      flowStep(steps, name, r.pass, r.evidence, r);
+      t[r.pass ? 'ok' : 'fail']((r.pass ? '✓ ' : '✗ ') + name + ': ' + r.evidence);
+    }
+    await step('Tonight card renders', async function(){
+      var card = doc.getElementById('tonight-card');
+      var head = card && card.querySelector('h2');
+      if (!head || !head.textContent.trim()) return { pass: false, evidence: '#tonight-card has no rendered headline', element: '#tonight-card', node: card, hard: true };
+      highlight(card, 'tonight card');
+      return { pass: true, evidence: 'tonight: "' + head.textContent.trim() + '"' };
+    });
+    await step('Quick-action bar routes', async function(){
+      var links = qa('.action-bar a[href^="#"]', doc);
+      if (!links.length) return { pass: false, evidence: 'no in-page quick actions found in .action-bar', element: '.action-bar' };
+      var bad = links.filter(function(a){ return !doc.getElementById(a.getAttribute('href').slice(1)); });
+      if (bad.length){
+        highlight(bad[0], 'broken quick link');
+        return { pass: false, evidence: '"' + bad[0].textContent.trim() + '" points at ' + bad[0].getAttribute('href') + ' and no element with that id exists',
+          findingKey: 'anchor-' + bad[0].getAttribute('href'), element: '.action-bar', node: bad[0],
+          suggestion: 'Point the quick action back at a real section id.' };
+      }
+      return { pass: true, evidence: links.length + ' quick action(s) resolve to real section ids' };
+    });
+    await step('Show details open', async function(){
+      var a = doc.querySelector('#tonight-card a[href^="#ev-"]') || doc.querySelector('#week-list a[href^="#ev-"]');
+      if (!a) return { pass: false, evidence: 'no event-detail link rendered in the tonight card or week list', element: '#week-list', hard: true };
+      highlight(a, 'event link');
+      a.click();
+      await sleep(320);
+      var detail = doc.getElementById('detail');
+      var nameEl = doc.getElementById('detail-name');
+      if (!detail || detail.classList.contains('hidden') || !nameEl.textContent.trim()){
+        return { pass: false, evidence: 'clicked "' + a.textContent.trim().slice(0, 30) + '" but the detail overlay never opened', element: '#detail', node: detail, hard: true };
+      }
+      return { pass: true, evidence: 'detail overlay opened for "' + nameEl.textContent.trim() + '"' };
+    });
+    await step('Calendar file offered', async function(){
+      var ics = doc.getElementById('detail-ics');
+      var ok = ics && visibleIn(ics, win) && !ics.disabled;
+      if (ics) highlight(ics, 'calendar button');
+      var close = doc.getElementById('detail-close');
+      if (close) close.click();
+      await sleep(150);
+      if (!ok) return { pass: false, evidence: 'no usable "Add to calendar" control in the detail overlay', element: '#detail-ics', node: ics, soft: true };
+      return { pass: true, evidence: '"Add to calendar" present and enabled (not clicked: it would hand the visitor a file)' };
+    });
+    await step('Month calendar populated', async function(){
+      var grid = doc.getElementById('month-grid');
+      var cells = grid ? grid.children.length : 0;
+      if (cells < 20) return { pass: false, evidence: '#month-grid holds ' + cells + ' cells; the calendar did not render', element: '#month-grid', node: grid, soft: true };
+      var chips = qa('#month-grid a[href^="#ev-"]', doc).length;
+      return { pass: true, evidence: cells + ' cells, ' + chips + ' event chips this month' };
+    });
+    await step('Back-room inquiry', async function(){
+      var form = doc.getElementById('inquiry-form');
+      if (!form || !visibleIn(form, win)) return { pass: false, evidence: 'inquiry form missing or hidden', element: '#inquiry-form', node: form };
+      var d = new Date(); d.setDate(d.getDate() + 14);
+      var iso = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      var checks = [ ['iq-date', iso], ['iq-guests', '20'], ['iq-name', 'Site Doctor'], ['iq-email', 'sitedoctor@example.com'] ];
+      for (var i = 0; i < checks.length; i++){
+        var f = doc.getElementById(checks[i][0]);
+        highlight(f, 'inquiry field ' + checks[i][0]);
+        var err = typeInto(f, checks[i][1]);
+        if (err) return { pass: false, evidence: '#' + checks[i][0] + ' ' + err, element: '#' + checks[i][0], node: f,
+          patchType: err.indexOf('disabled') === 0 ? 'enable' : null,
+          findingKey: err.indexOf('disabled') === 0 ? 'disabled-' + checks[i][0] : undefined };
+        await sleep(90);
+      }
+      if (form.requestSubmit) form.requestSubmit();
+      else form.dispatchEvent(new S.win.Event('submit', { bubbles: true, cancelable: true }));
+      await sleep(320);
+      var done = doc.getElementById('inquiry-done');
+      if (!done || done.hidden) return { pass: false, evidence: 'form filled with valid data but no confirmation appeared', element: '#inquiry-done', node: done };
+      highlight(done, 'inquiry confirmation');
+      return { pass: true, evidence: 'inquiry submitted in the sandbox; confirmation panel shown' };
+    });
+    await step('Phone path at 375px', async function(){
+      var tels = qa('a[href^="tel:"]', doc).filter(function(a2){ return visibleIn(a2, win); });
+      if (!tels.length) return { pass: false, evidence: 'no visible tel: link anywhere at 375px; a bar’s phone number is its oldest conversion path',
+        findingKey: 'phone-hidden', element: 'a[href^="tel:"]',
+        suggestion: 'Restore a visible CALL control on mobile (hero button or the fixed quick-action bar).' };
+      highlight(tels[0], 'phone link');
+      return { pass: true, evidence: tels.length + ' visible tel: link(s), first in ' + cssPath(tels[0].parentElement) };
+    });
+    return steps;
+  }
+};
+
+tools.traceUserFlow = async function(_, t){
+  S.win.scrollTo(0, 0);
+  var steps = await flowDrivers[S.target.key](t);
+  S.flowSteps = steps;
+  clearHighlight();
+  var passed = steps.filter(function(s){ return s.pass; }).length;
+  addUncert('The goal flow was executed in the rendered sandbox along one happy path (real clicks and typed values against the page’s own scripts). Other paths, network submits and timing-dependent behavior were not exercised.');
+  return { summary: passed + '/' + steps.length + ' steps passed · ' + S.target.flowName };
+};
+
+/* ---------- probeBehavior: settle open behavioral hypotheses with measurements ---------- */
+tools.probeBehavior = async function(h, t){
+  var doc = S.doc, win = S.win;
+  if (h.kind === 'route'){
+    var g = h.group;
+    var sample = g.items[0];
+    highlight(sample.node, 'unresolved anchor probe');
+    /* the flow trace may have left the hash sitting on this very fragment;
+       clicking again would be a no-op and fake a dead link */
+    if (win.location.hash){
+      try { win.location.hash = 'sd-hash-reset'; } catch (e){}
+      await sleep(220);
+    }
+    var beforeDialogs = qa('[role="dialog"]', doc).filter(function(d){ return visibleIn(d, win); }).length;
+    var beforeY = win.scrollY;
+    sample.node.click();
+    await sleep(320);
+    var afterDialogs = qa('[role="dialog"]', doc).filter(function(d){ return visibleIn(d, win); });
+    var moved = Math.abs(win.scrollY - beforeY) > 4;
+    var idNow = !!doc.getElementById(sample.href.slice(1));
+    if (afterDialogs.length > beforeDialogs){
+      h.status = 'verified';
+      h.evidence = 'clicked ' + sample.href + ' → an overlay opened (' + cssPath(afterDialogs[0]) + '); these ' + g.items.length + ' anchor(s) are script-handled routes, not broken links';
+      var close = afterDialogs[0].querySelector('.close-btn,button');
+      if (close) close.click();
+      await sleep(140);
+      return { summary: 'verified: ' + g.items.length + ' × "' + g.pattern + '" are script routes (overlay observed)' };
+    }
+    if (moved || idNow){
+      h.status = 'verified';
+      h.evidence = 'clicked ' + sample.href + ' → the page responded (scrolled ' + Math.round(Math.abs(win.scrollY - beforeY)) + 'px)';
+      win.scrollTo(0, 0);
+      return { summary: 'verified: "' + g.pattern + '" anchors produce a page response' };
+    }
+    h.status = 'rejected';
+    h.evidence = 'clicked ' + sample.href + ' → nothing: no overlay, no scroll, no matching element id';
+    addFinding('anchor-' + sample.href, { title: 'In-page link goes nowhere (' + sample.href + ')', severity: 'major',
+      tool: 'probeBehavior', element: cssPath(sample.node), node: sample.node,
+      evidence: [g.items.length + ' link(s) match "' + g.pattern + '"; clicking produced no overlay, no scroll and no element has that id'],
+      suggestion: 'Point the link at a real id, or wire the script route it was meant to hit.',
+      goalHint: isGoalElement(sample.node) });
+    return { summary: 'rejected: "' + g.pattern + '" produced no page response → filed as a finding' };
+  }
+  if (h.kind === 'reach'){
+    var maxY = Math.max(0, doc.documentElement.scrollHeight - win.innerHeight);
+    var depths = [0, 0.5, 1];
+    var lines = [], allOk = true;
+    for (var i = 0; i < depths.length; i++){
+      win.scrollTo(0, Math.round(maxY * depths[i]));
+      await sleep(300);
+      var g2 = goalControlVisible();
+      var pct = Math.round(depths[i] * 100);
+      if (g2){
+        lines.push('depth ' + pct + '%: ' + cssPath(g2) + ' on screen');
+        highlight(g2, 'goal control at depth ' + pct + '%');
+      } else {
+        lines.push('depth ' + pct + '%: no goal control on screen');
+        allOk = false;
+      }
+      t.sub(lines[lines.length - 1]);
+    }
+    win.scrollTo(0, 0);
+    await sleep(150);
+    h.evidence = lines.join(' · ');
+    if (allOk){
+      h.status = 'verified';
+      return { summary: 'verified: "' + S.goal + '" is one tap away at every scroll depth (page height ' + Math.round(doc.documentElement.scrollHeight) + 'px)' };
+    }
+    h.status = 'rejected';
+    addFinding('goal-unreachable-depth', { title: 'Goal control lost at deeper scroll positions', severity: 'major',
+      tool: 'probeBehavior', element: S.target.goalSurface, patchType: 'inject-cta', goalHint: true,
+      evidence: lines,
+      suggestion: 'Add a persistent action bar so the goal stays reachable while reading.' });
+    return { summary: 'rejected: the goal control disappears at depth → filed as a finding' };
+  }
+  h.status = 'unverified';
+  return { summary: 'no probe available for this hypothesis kind' };
+};
+
+/* ---------- verifyCandidateFix: patch the sandbox, re-run the failing measurement ---------- */
+tools.verifyCandidateFix = async function(h, t){
+  var f = h.finding;
+  var doc = S.doc, win = S.win;
+  var v = null;
+  if (f.patchType === 'inject-cta'){
+    var before;
+    var cta0 = firstVisibleCta();
+    before = cta0 ? 'goal control found at ' + Math.round(cta0.getBoundingClientRect().top + win.scrollY) + 'px' : 'no visible goal control anywhere on the page (height ' + Math.round(doc.documentElement.scrollHeight) + 'px)';
+    var bar = doc.createElement('div');
+    bar.setAttribute('data-sd-patch', '');
+    bar.setAttribute('style', 'position:fixed;left:0;right:0;bottom:0;z-index:9999;background:#c0362c;padding:12px 16px;text-align:center');
+    var btn = doc.createElement('button');
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('style', 'font:600 16px system-ui,sans-serif;color:#fff6f2;background:transparent;border:1px solid rgba(255,255,255,.5);border-radius:10px;padding:11px 22px;min-height:44px');
+    btn.textContent = S.target.ctaLabel + ' (candidate fix)';
+    bar.appendChild(btn);
+    doc.body.appendChild(bar);
+    await sleep(250);
+    highlight(bar, 'candidate fix: persistent action bar');
+    var r = bar.getBoundingClientRect();
+    var maxY2 = Math.max(0, doc.documentElement.scrollHeight - win.innerHeight);
+    win.scrollTo(0, maxY2); await sleep(200);
+    var deepVisible = inViewport(bar, win);
+    win.scrollTo(0, 0); await sleep(150);
+    v = { before: before,
+      after: 'injected action bar sits ' + Math.round(win.innerHeight - r.top) + 'px tall at the viewport bottom; visible at scroll depth 0% and 100%: ' + (inViewport(bar, win) && deepVisible ? 'yes' : 'no'),
+      note: 'Patch is labeled and lives only in the sandbox copy.' };
+  } else if (f.patchType === 'contrast' && f.node){
+    var m = f.measured;
+    var bgLum = relLum(m.bg);
+    var fix = bgLum > 0.4 ? 'rgb(23,22,31)' : 'rgb(236,236,241)';
+    f.node.setAttribute('data-sd-patch', '');
+    f.node.style.transition = 'none'; /* a mid-flight color transition would poison the re-measurement */
+    f.node.style.color = fix;
+    await sleep(120);
+    var cs2 = win.getComputedStyle(f.node);
+    var fg2 = parseRGB(cs2.color);
+    var after = contrastRatio(fg2, m.bg);
+    highlight(f.node, 'candidate fix: recolored text');
+    v = { before: m.ratio.toFixed(2) + ':1 (needs ' + m.threshold + ':1)',
+      after: after.toFixed(2) + ':1 with color ' + fix,
+      note: 'Same element, same background, only the text color changed.' };
+  } else if (f.patchType === 'overflow' && f.node){
+    var ow0 = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth) - win.innerWidth;
+    f.node.setAttribute('data-sd-patch', '');
+    f.node.style.transition = 'none';
+    f.node.style.maxWidth = '100%';
+    f.node.style.minWidth = '0';
+    f.node.style.width = 'auto';
+    f.node.style.overflowX = 'auto';
+    await sleep(150);
+    var ow1 = Math.max(doc.documentElement.scrollWidth, doc.body.scrollWidth) - win.innerWidth;
+    highlight(f.node, 'candidate fix: constrained width');
+    v = { before: Math.round(ow0) + 'px of horizontal overflow', after: Math.round(Math.max(0, ow1)) + 'px after constraining ' + cssPath(f.node), note: 'The offender scrolls inside its own box now instead of dragging the page sideways.' };
+  } else if (f.patchType === 'label' && f.node){
+    var id2 = f.node.id;
+    var lab = doc.createElement('label');
+    lab.setAttribute('for', id2);
+    lab.setAttribute('data-sd-patch', '');
+    lab.textContent = (id2 || 'field').replace(/^(f|iq-|of-)/, '').replace(/^\w/, function(c){ return c.toUpperCase(); }) + ' (candidate fix)';
+    f.node.parentNode.insertBefore(lab, f.node);
+    await sleep(120);
+    var ok2 = !!doc.querySelector('label[for="' + id2 + '"]');
+    highlight(lab, 'candidate fix: label');
+    v = { before: 'no label association', after: ok2 ? '<label for="' + id2 + '"> present; association check passes' : 'patch failed', note: 'Real fix should carry the field’s actual wording.' };
+  } else if (f.patchType === 'enable' && f.node){
+    var was = f.node.disabled;
+    f.node.removeAttribute('disabled');
+    await sleep(120);
+    highlight(f.node, 'candidate fix: field re-enabled');
+    v = { before: 'disabled=' + was + '; typing impossible', after: 'disabled=' + f.node.disabled + '; field accepts input', note: 'Nothing else blocks the field: the disabled attribute was the whole fault.' };
+  }
+  if (!v){
+    h.status = 'unverified';
+    addUncert('No sandbox patch exists for "' + f.title + '"; the suggested correction was not auto-verified.');
+    return { summary: 'no patcher for this finding type; left as a suggestion' };
+  }
+  h.status = 'verified';
+  f.verification = v;
+  S.verifications.push({ finding: f.key, before: v.before, after: v.after });
+  return { summary: 'VERIFIED IN SANDBOX · before: ' + v.before + ' → after: ' + v.after };
+};
+
+/* ---------- scoreFinding: severity × business impact, deterministic ---------- */
+var IMPACT_W = { goal: 3, friction: 2, polish: 1 };
+tools.scoreFinding = async function(f, t){
+  var isGoal = f.goalHint || (f.node && isGoalElement(f.node));
+  var impact;
+  if (isGoal) impact = 'goal';
+  else if (['dup-link'].indexOf(f.key) !== -1 || f.key.indexOf('heading-') === 0) impact = 'polish';
+  else impact = 'friction';
+  f.impact = impact;
+  f.impactWhy = impact === 'goal'
+    ? 'Sits on ' + S.target.goalShort + '. Every visitor this touches is a lost "' + S.goal + '".'
+    : impact === 'friction'
+      ? 'Off the direct goal path, but adds real friction or excludes visitors (accessibility, weight, layout).'
+      : 'Cosmetic or structural polish; fix in the next pass.';
+  f.priority = SEV_W[f.severity] * IMPACT_W[impact];
+  f.scored = true;
+  return { summary: f.severity + ' × ' + impact + ' → priority ' + f.priority + '/9 · ' + f.title };
+};
+
+/* ============================================================
+   THE PLANNER. Deterministic policy: inspect the state, return
+   the next action. This function is the seat a language model
+   occupies in production versions of this architecture.
+   ============================================================ */
+function nextAction(s){
+  var url = s.target.url;
+  if (!s.pages[url])
+    return { kind: 'tool', phase: 1, tool: 'crawlSite', input: url, inputLabel: '"' + url + '"',
+      why: 'no evidence yet; discovery comes before everything' };
+  if (s.pages[url].status === 'unreachable' || s.pages[url].status >= 400)
+    return { kind: 'stop', reason: 'target page unreachable; nothing to audit' };
+  if (!s.did.goal)
+    return { kind: 'plan', phase: 2, step: 'mapGoal',
+      why: 'a goal only means something once it maps to concrete controls' };
+  if (!s.did.nav)
+    return { kind: 'tool', phase: 3, tool: 'testNavigation', input: null, inputLabel: 'all links', done: 'nav',
+      why: 'dead links are the cheapest faults to catch, test them first' };
+  if (!s.did.forms)
+    return { kind: 'tool', phase: 3, tool: 'inspectForms', input: null, inputLabel: 'all fields', done: 'forms',
+      why: 'forms carry the goal; check labels, types and disabled state' };
+  if (!s.did.a11y)
+    return { kind: 'tool', phase: 3, tool: 'checkAccessibility', input: null, inputLabel: 'alt, headings, contrast, focus', done: 'a11y',
+      why: 'accessibility faults exclude visitors silently; measure, do not eyeball' };
+  if (!s.did.viewport)
+    return { kind: 'tool', phase: 3, tool: 'simulateViewport', input: 375, inputLabel: '375', done: 'viewport',
+      why: 'most visitors are on phones; measure overflow and goal reachability at 375px' };
+  if (!s.did.assets)
+    return { kind: 'tool', phase: 3, tool: 'measureAssets', input: null, inputLabel: 'image bytes', done: 'assets',
+      why: 'weight is a conversion problem; weigh what the page actually ships' };
+  if (!s.did.flow)
+    return { kind: 'tool', phase: 3, tool: 'traceUserFlow', input: null, inputLabel: '"' + s.target.flowName + '"', done: 'flow',
+      why: 'structure can pass while the flow dies; walk the goal path like a visitor' };
+  if (!s.did.hyps)
+    return { kind: 'plan', phase: 4, step: 'formHypotheses',
+      why: 'raw findings first become claims worth testing' };
+  /* verification queue: behavioral probes, then candidate fixes */
+  for (var i = 0; i < s.hypotheses.length; i++){
+    var h = s.hypotheses[i];
+    if (h.status === 'open' && (h.kind === 'route' || h.kind === 'reach'))
+      return { kind: 'tool', phase: 5, tool: 'probeBehavior', input: h, inputLabel: h.id + ' ' + h.kind,
+        why: h.kind === 'route' ? 'unresolved anchors are either script routes or dead links; click one and see' :
+          'a fixed bar claims the goal is always reachable; scroll and measure' };
+  }
+  for (var j = 0; j < s.hypotheses.length; j++){
+    var h2 = s.hypotheses[j];
+    if (h2.status === 'open' && h2.kind === 'fix')
+      return { kind: 'tool', phase: 5, tool: 'verifyCandidateFix', input: h2, inputLabel: h2.id + ' → ' + h2.finding.key,
+        why: 'a suggested fix is a guess until the failing measurement passes with the patch in place' };
+  }
+  /* report: score everything, then stop */
+  for (var k = 0; k < s.findings.length; k++){
+    if (!s.findings[k].scored)
+      return { kind: 'tool', phase: 6, tool: 'scoreFinding', input: s.findings[k], inputLabel: '"' + s.findings[k].key + '"',
+        why: 'severity alone does not rank work; cross it with business impact' };
+  }
+  return { kind: 'stop', reason: 'complete' };
+}
+
+/* ---------- planner-native steps (not tool calls) ---------- */
+var planSteps = {
+  mapGoal: async function(){
+    S.did.goal = true;
+    var found = [];
+    S.target.ctaSelectors.forEach(function(sel){
+      qa(sel, S.doc).forEach(function(n){ if (found.indexOf(n) === -1 && visibleIn(n, S.win)) found.push(n); });
+    });
+    S.controls = found.map(function(n){ return cssPath(n); });
+    logPlan('goal = "' + S.goal + '" (preconfigured for this demo) · ' + found.length + ' goal control(s) on the page: ' +
+      (S.controls.slice(0, 3).join(', ') || 'none yet') + (found.length > 3 ? ', …' : ''));
+    if (found.length) highlight(found[0], 'goal control');
+  },
+  formHypotheses: async function(){
+    S.did.hyps = true;
+    var made = 0;
+    /* unresolved anchor groups → route hypotheses */
+    if (S.navData && S.navData.unresolvedGroups.length){
+      S.navData.unresolvedGroups.slice(0, 3).forEach(function(g){
+        var h = addHyp('route', g.items.length + ' in-page link(s) matching "' + g.pattern + '" resolve to no element id. Claim: they are script-handled routes, not dead links.', { group: g });
+        logPlan(h.id + ': ' + h.text);
+        made++;
+      });
+    }
+    /* fixed goal bar → reachability hypothesis */
+    if (S.viewportData && S.viewportData.bars.some(function(b){ return b.hasGoal; })){
+      var bar = S.viewportData.bars.filter(function(b){ return b.hasGoal; })[0];
+      var h2 = addHyp('reach', 'A fixed bar (' + bar.sel + ', ' + bar.height + 'px) carries a goal control. Claim: "' + S.goal + '" stays one tap away at every scroll depth.', { bar: bar });
+      logPlan(h2.id + ': ' + h2.text);
+      made++;
+    }
+    /* patchable findings → candidate-fix hypotheses */
+    S.findings.forEach(function(f){
+      if (f.patchType && !f.verification){
+        var h3 = addHyp('fix', 'Finding "' + f.title + '" has a candidate fix (' + f.patchType + '). Claim: patching the sandbox copy makes the failing measurement pass.', { finding: f });
+        logPlan(h3.id + ': ' + h3.text);
+        made++;
+      }
+    });
+    if (!made) logPlan('no hypotheses worth testing: nothing unresolved, no fixed goal bar, no patchable findings');
+  }
+};
+
+/* ---------- run loop ---------- */
+var running = false;
+async function runAudit(){
+  if (running) return;
+  running = true;
+  var targetKey = document.querySelector('input[name="sdTarget"]:checked').value;
+  var sabIds = qa('#sabList input:checked').map(function(c){ return c.value; });
+  S = freshState(targetKey, sabIds);
+  currentPhase = 0;
+  lastInspected = null;
+  logBox.innerHTML = '';
+  $('findStream').innerHTML = '';
+  $('reportBlock').hidden = true;
+  $('results').hidden = false;
+  $('runBtn').disabled = true;
+  qa('#sabList input, input[name="sdTarget"]').forEach(function(i2){ i2.disabled = true; });
+  $('runStatus').textContent = 'running · ' + S.target.name + (sabIds.length ? ' · ' + sabIds.length + ' sabotage toggle(s)' : ' · unmodified');
+  setPrevStatus('Sandboxed copy' + (sabIds.length ? ' with <b>' + sabIds.length + ' injected fault(s)</b>' : '') + '. The real demo pages are untouched.');
+  updateMeta();
+  addUncert('This is a static-architecture demo: the audit runs on structure, rendered layout and scripted interactions in a sandbox. It cannot see real traffic, backend behavior, or conversion data, and does not pretend to.');
+
+  var lastTrace = null;
+  try {
+    for (;;){
+      var a = nextAction(S);
+      if (lastTrace) lastTrace.decision = a.kind === 'stop' ? ('stop: ' + a.reason) : a.why;
+      if (a.kind === 'stop'){
+        S.stopped = true;
+        S.stopReason = a.reason === 'complete'
+          ? 'Stopped because the work ran out: critical flows traced, hypotheses evaluated, findings scored. ' + S.iterations + ' tool calls.'
+          : a.reason;
+        break;
+      }
+      if (a.kind === 'plan'){
+        logPhase(a.phase);
+        logPlan(a.why);
+        await planSteps[a.step]();
+        await sleep(300);
+        continue;
+      }
+      if (S.iterations >= ITERATION_CAP){
+        S.stopped = true;
+        S.stopReason = 'Iteration cap reached: ' + ITERATION_CAP + ' tool calls. The queue was not empty; whatever is left is listed under uncertainties, not silently dropped.';
+        var remaining = [];
+        S.findings.forEach(function(f){ if (!f.scored) remaining.push('unscored: ' + f.key); });
+        S.hypotheses.forEach(function(h){ if (h.status === 'open') remaining.push('unverified: ' + h.id); });
+        if (remaining.length) addUncert('Left in the queue at the cap: ' + remaining.join(', ') + '.');
+        break;
+      }
+      logPhase(a.phase);
+      S.iterations++;
+      updateMeta();
+      var t = logTool(a.tool, a.inputLabel);
+      var out;
+      try {
+        out = await tools[a.tool](a.input, t);
+      } catch (err){
+        out = { summary: 'tool error: ' + err.message };
+        addUncert('Tool ' + a.tool + ' failed mid-run (' + err.message + '); its checks are incomplete on this run.');
+        /* never let a crashed tool wedge the planner into a loop */
+        if (a.input && a.input.status === 'open') a.input.status = 'unverified';
+        if (a.input && a.input.scored === false) a.input.scored = true;
+      }
+      if (a.done) S.did[a.done] = true;
+      t.res(out.summary);
+      lastTrace = { n: S.iterations, tool: a.tool, input: a.inputLabel, result: out.summary, decision: null };
+      S.testHistory.push(lastTrace);
+      await sleep(340);
+    }
+  } finally {
+    clearHighlight();
+    logPhase(6);
+    logNode('res', 'report rendered below · ' + S.findings.length + ' finding(s)');
+    $('phaseLive').textContent = 'Audit finished: ' + S.findings.length + ' findings. Report is below the activity log.';
+    renderReport();
+    $('runBtn').disabled = false;
+    qa('#sabList input, input[name="sdTarget"]').forEach(function(i3){ i3.disabled = false; });
+    $('runStatus').textContent = 'done · ' + S.iterations + ' tool calls · ' + ((Date.now() - S.startedAt) / 1000).toFixed(1) + 's';
+    setPrevStatus('Audit finished. Sandboxed copy' + (S.sabotage.length ? ' (with injected faults)' : '') + '; green outlines are verified candidate fixes.');
+    running = false;
+  }
+}
+
+/* ---------- report ---------- */
+function sevCount(sev){ return S.findings.filter(function(f){ return f.severity === sev; }).length; }
+function kvRow(k, v){
+  return '<div class="kv"><span class="k">' + esc(k) + '</span><span class="v">' + v + '</span></div>';
+}
+function findingDetail(f){
+  var out = '';
+  out += kvRow('Tool', '<b>' + esc(f.tools.join(', ')) + '</b>');
+  if (f.element) out += kvRow('Element', esc(f.element));
+  out += kvRow('Evidence', esc(f.evidence.join(' · ')));
+  if (f.suggestion) out += kvRow('Correction', esc(f.suggestion));
+  if (f.verification){
+    out += kvRow('Verified', '<span class="verified">Verified in sandbox</span>');
+    out += kvRow('Before', esc(f.verification.before));
+    out += kvRow('After', esc(f.verification.after));
+    if (f.verification.note) out += kvRow('Note', esc(f.verification.note));
+  } else if (f.patchType){
+    out += kvRow('Verified', 'not verified on this run');
+  }
+  return out;
+}
+function renderReport(){
+  var rb = $('reportBlock');
+  rb.hidden = false;
+  /* summary */
+  var c = sevCount('critical'), m = sevCount('major'), n = sevCount('minor');
+  $('sumStrip').innerHTML =
+    '<span class="sum-chip c-crit"><b>' + c + '</b> critical</span>' +
+    '<span class="sum-chip c-major"><b>' + m + '</b> major</span>' +
+    '<span class="sum-chip c-minor"><b>' + n + '</b> minor</span>' +
+    '<span class="sum-chip"><b>' + S.iterations + '</b> tool calls</span>' +
+    '<span class="sum-chip"><b>' + S.verifications.length + '</b> sandbox-verified</span>' +
+    '<span class="sum-chip"><b>' + S.target.name + '</b></span>';
+  var clean = $('sumClean');
+  if (!S.findings.length){
+    clean.hidden = false;
+    clean.textContent = 'No findings. That is the expected result for the unmodified page, and the honest one: the tools report what they measure, and this page holds up. Flip some sabotage toggles and run again to watch them earn their keep.';
+  } else { clean.hidden = true; }
+  /* fix these first */
+  var ranked = S.findings.slice().sort(function(a, b){
+    return (b.priority - a.priority) || (SEV_W[b.severity] - SEV_W[a.severity]) || (a.order - b.order);
+  });
+  var top = ranked.slice(0, 3);
+  var ff = $('fixFirst');
+  ff.innerHTML = '';
+  if (!top.length){
+    $('fixFirstSec').style.display = 'none';
+  } else {
+    $('fixFirstSec').style.display = '';
+    top.forEach(function(f, i){
+      var d = document.createElement('div');
+      d.className = 'panel fix-card';
+      d.innerHTML =
+        '<div class="fix-head"><span class="fix-rank">' + (i + 1) + '</span>' +
+        '<span class="fix-title">' + esc(f.title) + '</span>' +
+        '<span class="sev sev-' + f.severity + '">' + f.severity + '</span>' +
+        (f.verification ? '<span class="verified">Verified in sandbox</span>' : '') +
+        '</div>' +
+        '<p class="fix-impact"><b>Business impact:</b> ' + esc(f.impactWhy || '') + '</p>' +
+        '<div class="evid">' + esc(f.evidence[0] || '') + '</div>' +
+        '<details class="more"><summary>Detail</summary><div class="more-body">' + findingDetail(f) + '</div></details>';
+      ff.appendChild(d);
+    });
+  }
+  /* user flow map */
+  $('flowGoalLine').textContent = 'Goal: ' + S.goal + ' · traced as "' + S.target.flowName + '" with real clicks and typed values in the sandbox.';
+  var fm = $('flowMap');
+  fm.innerHTML = '';
+  if (!S.flowSteps.length){
+    fm.innerHTML = '<span class="fstep"><span class="st">not traced</span>the run stopped before the flow tool</span>';
+  }
+  S.flowSteps.forEach(function(s2, i2){
+    if (i2 > 0){
+      var ar = document.createElement('span');
+      ar.className = 'farrow'; ar.textContent = '→'; ar.setAttribute('aria-hidden', 'true');
+      fm.appendChild(ar);
+    }
+    var b2 = document.createElement('span');
+    b2.className = 'fstep ' + (s2.pass ? 'pass' : 'fail');
+    b2.innerHTML = '<span class="st">' + (s2.pass ? '✓ pass' : (s2.skipped ? '· not reached' : '✕ fail')) + '</span>' + esc(s2.name);
+    b2.title = s2.evidence;
+    fm.appendChild(b2);
+  });
+  /* technical: all findings */
+  $('techSummary').textContent = 'All findings (' + S.findings.length + ')';
+  var tl = $('techList');
+  tl.innerHTML = '';
+  if (!S.findings.length) tl.innerHTML = '<p class="sec-note" style="margin:0">Nothing measured below threshold on this run.</p>';
+  ranked.forEach(function(f){
+    var d2 = document.createElement('div');
+    d2.className = 'panel fix-card';
+    d2.innerHTML =
+      '<div class="fix-head"><span class="sev sev-' + f.severity + '">' + f.severity + '</span>' +
+      '<span class="fix-title" style="font-size:.98rem">' + esc(f.title) + '</span>' +
+      '<span class="ftool" style="margin-left:auto;font-family:var(--mono);font-size:.68rem;color:var(--ink-3)">priority ' + f.priority + '/9</span></div>' +
+      '<div class="more-body" style="margin-top:8px">' + findingDetail(f) + '</div>';
+    tl.appendChild(d2);
+  });
+  /* agent trace */
+  $('traceSummary').textContent = 'Tool calls (' + S.testHistory.length + ')';
+  var tb = $('traceBox');
+  tb.innerHTML = '';
+  S.testHistory.forEach(function(tr){
+    var d3 = document.createElement('div');
+    d3.className = 'trace-item';
+    d3.innerHTML = String(tr.n < 10 ? '0' + tr.n : tr.n) + ' <span class="tn">' + esc(tr.tool) + '</span>(' + esc(tr.input || '') + ')\n' +
+      '   result: ' + esc(tr.result) + '\n' +
+      '   <span class="dec">planner → ' + esc(tr.decision || 'run ended') + '</span>';
+    tb.appendChild(d3);
+  });
+  /* uncertainties + stop */
+  var ub = $('uncertBox');
+  ub.innerHTML = '';
+  S.uncertainties.forEach(function(u){
+    var li = document.createElement('li');
+    li.textContent = u;
+    ub.appendChild(li);
+  });
+  $('stopLine').innerHTML = '<b>stop reason:</b> ' + esc(S.stopReason || 'unknown');
+}
+
+/* ---------- UI wiring ---------- */
+function renderSabList(){
+  var key = document.querySelector('input[name="sdTarget"]:checked').value;
+  var box = $('sabList');
+  box.innerHTML = '';
+  SABOTAGE[key].forEach(function(sab){
+    var lab = document.createElement('label');
+    lab.className = 'sab-item';
+    lab.innerHTML = '<input type="checkbox" value="' + sab.id + '"><span>' + esc(sab.label) + '</span>';
+    box.appendChild(lab);
+  });
+}
+qa('input[name="sdTarget"]').forEach(function(r){
+  r.addEventListener('change', function(){
+    qa('.target-card').forEach(function(card){
+      card.classList.toggle('on', card.querySelector('input').checked);
+    });
+    renderSabList();
+  });
+});
+$('runBtn').addEventListener('click', runAudit);
+renderSabList();
+
+/* preview scaling: the sandbox stays a true 375px viewport, scaled to fit */
+function fitPreview(){
+  var wrap = $('prevWrap');
+  var frame = $('prevFrame');
+  var w = wrap.clientWidth;
+  var scale = Math.min(1, w / 375);
+  frame.style.transform = 'scale(' + scale + ')';
+  wrap.style.height = Math.round(600 * scale) + 'px';
+}
+window.addEventListener('resize', fitPreview);
+fitPreview();
+
+})();
+</script>
+</body>
+</html>

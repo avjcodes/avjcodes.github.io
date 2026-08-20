@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kestrel Property Management: Tenant Help Assistant (Sample)</title>
+<meta name="description" content="Working sample by Angel Valle Jr.: a document-grounded tenant help assistant for an invented property manager. Retrieval runs in your browser and every answer cites its source.">
+<meta property="og:title" content="Kestrel Property Management: Tenant Help Assistant (Sample)">
+<meta property="og:description" content="Working sample by Angel Valle Jr.: a document-grounded tenant help assistant for an invented property manager. Retrieval runs in your browser and every answer cites its source.">
+<meta property="og:url" content="https://avjcodes.github.io/kestrel-assistant.html">
+<meta property="og:type" content="website">
 <style>
   /* ============ Design tokens ============ */
   :root {
@@ -476,6 +481,35 @@
     box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--accent-ring);
     border-radius: 3px;
   }
+  .foot-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-700);
+  }
+  .foot-credit { margin-top: 6px; color: var(--ink-2); }
+  .foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 24px;
+    margin-top: 2px;
+  }
+  .foot-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-600);
+    border-bottom: none;
+    transition: color 0.16s ease;
+  }
+  .foot-links a:hover { color: var(--accent-500); border-bottom: none; }
 
   /* ============ Small screens ============ */
   @media (max-width: 480px) {
@@ -551,9 +585,16 @@
   </details>
 
   <footer>
-    Sample built by Angel Valle Jr. to show what a document-grounded assistant looks like.
-    Kestrel Property Management is not a real company.
-    <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a>
+    <p class="foot-eyebrow">Working sample</p>
+    <p class="foot-credit">
+      Designed and built by Angel Valle Jr. to show what a document-grounded assistant looks like.
+      Kestrel Property Management is not a real company.
+      <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a>
+    </p>
+    <div class="foot-links">
+      <a href="https://avjcodes.github.io/">SEE MORE WORK &rarr;</a>
+      <a href="https://avjcodes.github.io/#contact">BUILD SOMETHING LIKE THIS &rarr;</a>
+    </div>
   </footer>
 </div>
 

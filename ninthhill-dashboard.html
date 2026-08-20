@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ninth Hill Coffee Roasters: the Monday report, before and after</title>
+<meta name="description" content="Working sample by Angel Valle Jr.: a wholesale reporting pipeline for an invented coffee roaster. A messy hand-typed spreadsheet becomes a dashboard that builds itself from one clean CSV.">
+<meta property="og:title" content="Ninth Hill Coffee Roasters: the Monday report, before and after">
+<meta property="og:description" content="Working sample by Angel Valle Jr.: a wholesale reporting pipeline for an invented coffee roaster. A messy hand-typed spreadsheet becomes a dashboard that builds itself from one clean CSV.">
+<meta property="og:url" content="https://avjcodes.github.io/ninthhill-dashboard.html">
+<meta property="og:type" content="website">
 <style>
   :root {
     color-scheme: light;
@@ -296,6 +301,18 @@
     font-size: 13px; color: var(--muted);
   }
   footer a { color: var(--ink2); }
+  footer .foot-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink2); margin: 0 0 6px;
+  }
+  footer .foot-credit { color: var(--ink2); }
+  footer .foot-links { display: flex; flex-wrap: wrap; gap: 0 26px; margin: 0; }
+  footer .foot-links a {
+    display: inline-flex; align-items: center; min-height: 44px;
+    font-size: 12px; font-weight: 600; letter-spacing: .08em;
+    color: var(--ink2); text-decoration: underline; text-underline-offset: 3px;
+  }
+  footer .foot-links a:hover { color: var(--ink); }
 
   /* tooltip */
   #tt {
@@ -447,7 +464,9 @@
   </section>
 
   <footer>
-    <p>Sample built by Angel Valle Jr. Ninth Hill is not a real roaster; the data pipeline is the point. <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a></p>
+    <p class="foot-eyebrow">Working sample</p>
+    <p class="foot-credit">Designed and built by Angel Valle Jr. Ninth Hill is not a real roaster; the data pipeline is the point. <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a></p>
+    <p class="foot-links"><a href="https://avjcodes.github.io/">SEE MORE WORK &rarr;</a><a href="https://avjcodes.github.io/#contact">BUILD SOMETHING LIKE THIS &rarr;</a></p>
     <p>One HTML file. No libraries, no external requests, no tracking. View source; it is all here.</p>
   </footer>
 
