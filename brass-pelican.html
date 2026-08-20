@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>The Brass Pelican · Live Music Dive Bar (Sample Site)</title>
+<style>
+  :root{
+    color-scheme:dark;
+    --bg:#0b0906;
+    --bg-2:#120d07;
+    --panel:rgba(255,235,200,.035);
+    --panel-solid:#171107;
+    --panel-2:#1d1509;
+    --line:rgba(232,168,61,.16);
+    --line-soft:rgba(232,168,61,.09);
+    --ink:#f2e9d8;
+    --ink-dim:#a89877;
+    --ink-faint:#6f6350;
+    --brass:#e8a83d;
+    --brass-hi:#ffd98a;
+    --brass-dark:#8a6218;
+    --brass-glow:rgba(232,168,61,.35);
+    --font-display:"Avenir Next","Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,sans-serif;
+    --font-body:Georgia,'Times New Roman',serif;
+    --font-mono:ui-monospace,"Cascadia Code",Consolas,"SF Mono",monospace;
+    --ease-out:cubic-bezier(.22,1,.36,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* layered ambient glows behind everything */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(60vw 42vh at 50% -6%, rgba(232,168,61,.13), transparent 62%),
+      radial-gradient(48vw 36vh at 88% 32%, rgba(210,120,30,.05), transparent 65%),
+      radial-gradient(52vw 40vh at 8% 78%, rgba(232,168,61,.045), transparent 65%),
+      linear-gradient(180deg, var(--bg-2), var(--bg) 34%);
+  }
+  a{color:var(--brass)}
+  a:hover{color:var(--brass-hi)}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:3px;border-radius:2px}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+
+  /* film grain via inline SVG filter */
+  .grain{
+    position:fixed;inset:0;z-index:3;pointer-events:none;
+    filter:url(#pelican-grain);
+    opacity:.5;
+  }
+  .svg-defs{position:absolute;width:0;height:0;overflow:hidden}
+
+  /* mono data bits: always tabular */
+  .vitals,.tonight,.when,.tm,.cover,.ct,.dnum,.detail .meta,.share-row,.month-head h3,.menu .price{
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- sample badge ---------- */
+  .sample-badge{
+    position:fixed;top:14px;right:14px;z-index:60;
+    font-family:var(--font-mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brass);
+    background:rgba(10,8,5,.72);
+    border:1px solid var(--line);
+    padding:6px 12px;border-radius:999px;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    box-shadow:0 4px 24px rgba(0,0,0,.5), inset 0 0 12px rgba(232,168,61,.05);
+  }
+
+  /* ---------- hero ---------- */
+  header.hero{
+    position:relative;z-index:1;
+    padding:clamp(72px,14vh,128px) 0 0;
+    text-align:center;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:clamp(2.6rem,11vw,6rem);
+    line-height:.98;
+    letter-spacing:.045em;
+    text-transform:uppercase;
+    color:var(--brass-hi);
+    text-shadow:
+      0 0 6px rgba(255,217,138,.55),
+      0 0 22px var(--brass-glow),
+      0 0 70px rgba(232,168,61,.22),
+      0 2px 0 rgba(0,0,0,.85);
+    animation:neon-breathe 5.5s ease-in-out infinite;
+  }
+  @keyframes neon-breathe{
+    0%,100%{text-shadow:0 0 6px rgba(255,217,138,.55),0 0 22px var(--brass-glow),0 0 70px rgba(232,168,61,.22),0 2px 0 rgba(0,0,0,.85)}
+    50%{text-shadow:0 0 8px rgba(255,217,138,.7),0 0 30px rgba(232,168,61,.45),0 0 90px rgba(232,168,61,.3),0 2px 0 rgba(0,0,0,.85)}
+  }
+  .hero .tagline{
+    margin:18px auto 0;max-width:46ch;
+    font-style:italic;color:var(--ink-dim);
+    font-size:clamp(1rem,2.6vw,1.15rem);
+  }
+  .hero .vitals{
+    margin-top:26px;
+    font-family:var(--font-mono);
+    font-size:.8rem;color:var(--ink-dim);letter-spacing:.06em;
+  }
+  .hero .vitals span{white-space:nowrap}
+  .hero .vitals .dot{color:var(--brass);padding:0 8px;text-shadow:0 0 8px var(--brass-glow)}
+  .call-btn{
+    display:inline-block;margin-top:30px;
+    font-family:var(--font-mono);font-weight:700;font-size:.85rem;
+    letter-spacing:.1em;text-decoration:none;
+    color:#160f04;
+    background:linear-gradient(180deg,#f6c464,var(--brass) 55%,#c98d2a);
+    padding:15px 34px;border-radius:999px;
+    border:1px solid rgba(255,217,138,.6);
+    box-shadow:0 6px 26px rgba(232,168,61,.28), inset 0 1px 0 rgba(255,255,255,.35);
+    transition:transform .18s var(--ease-out), box-shadow .18s var(--ease-out);
+  }
+  .call-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 36px rgba(232,168,61,.45), inset 0 1px 0 rgba(255,255,255,.35);
+    color:#160f04;
+  }
+  .call-btn:active{transform:translateY(1px);box-shadow:0 3px 12px rgba(232,168,61,.3)}
+
+  .tonight{
+    margin-top:clamp(36px,7vh,56px);
+    padding:14px 16px;
+    font-family:var(--font-mono);font-size:.88rem;letter-spacing:.05em;
+    color:var(--ink);
+    background:linear-gradient(90deg, transparent, rgba(232,168,61,.09) 18%, rgba(232,168,61,.09) 82%, transparent);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .tonight b{color:var(--brass);letter-spacing:.14em;text-shadow:0 0 10px var(--brass-glow)}
+  .tonight a{text-decoration-color:rgba(232,168,61,.4);text-underline-offset:3px}
+
+  /* ---------- sections ---------- */
+  section{padding:clamp(56px,9vh,88px) 0;position:relative;z-index:1}
+  section + section::before,
+  footer::before{
+    content:"";display:block;height:1px;
+    max-width:920px;margin:0 auto;
+    background:linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+    transform:translateY(calc(-1 * clamp(56px,9vh,88px)));
+  }
+  h2{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:clamp(1.9rem,6vw,3rem);
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    line-height:1.05;
+    color:var(--ink);
+    margin-bottom:10px;
+  }
+  h2::after{
+    content:"";display:block;width:56px;height:3px;margin-top:14px;
+    background:linear-gradient(90deg,var(--brass),transparent);
+    border-radius:2px;
+    box-shadow:0 0 12px var(--brass-glow);
+  }
+  .sub{color:var(--ink-dim);font-size:.95rem;margin:16px 0 26px;max-width:62ch}
+
+  /* ---------- owner note ---------- */
+  .owner-note{
+    margin:0 0 28px;padding:14px 18px;
+    border:1px solid var(--line-soft);
+    border-left:3px solid var(--brass);
+    border-radius:0 10px 10px 0;
+    background:var(--panel);
+    font-size:.92rem;color:var(--ink-dim);font-style:italic;
+    max-width:62ch;
+  }
+
+  /* ---------- week list ---------- */
+  .week-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .week-list li{
+    opacity:0;
+    animation:row-rise .55s var(--ease-out) forwards;
+  }
+  .week-list li:nth-child(1){animation-delay:.04s}
+  .week-list li:nth-child(2){animation-delay:.1s}
+  .week-list li:nth-child(3){animation-delay:.16s}
+  .week-list li:nth-child(4){animation-delay:.22s}
+  .week-list li:nth-child(5){animation-delay:.28s}
+  .week-list li:nth-child(6){animation-delay:.34s}
+  .week-list li:nth-child(7){animation-delay:.4s}
+  @keyframes row-rise{
+    from{opacity:0;transform:translateY(14px)}
+    to{opacity:1;transform:none}
+  }
+  .week-row{
+    display:grid;
+    grid-template-columns:118px minmax(0,1fr) auto;
+    gap:4px 18px;align-items:center;
+    padding:16px 18px;
+    text-decoration:none;color:var(--ink);
+    background:var(--panel);
+    border:1px solid var(--line-soft);
+    border-radius:14px;
+    transition:transform .2s var(--ease-out), border-color .2s, background .2s, box-shadow .2s;
+  }
+  a.week-row:hover{
+    background:rgba(232,168,61,.07);
+    border-color:var(--line);
+    transform:translateX(6px);
+    box-shadow:0 6px 24px rgba(0,0,0,.35), 0 0 0 1px rgba(232,168,61,.06);
+    color:var(--ink);
+  }
+  a.week-row:focus-visible{outline-offset:2px}
+  .week-row .when{
+    font-family:var(--font-mono);
+    font-size:.74rem;color:var(--ink-dim);
+    text-transform:uppercase;letter-spacing:.12em;
+  }
+  .week-row .when.today{
+    color:var(--brass);font-weight:700;
+    text-shadow:0 0 10px var(--brass-glow);
+  }
+  .week-row .what{min-width:0}
+  .week-row .what .nm{
+    display:block;
+    font-family:var(--font-display);font-weight:600;
+    font-size:1.08rem;letter-spacing:.01em;
+  }
+  .week-row .what .tm{
+    font-size:.78rem;color:var(--ink-dim);
+    font-family:var(--font-mono);letter-spacing:.06em;
+  }
+  .cover{
+    justify-self:end;
+    font-family:var(--font-mono);font-size:.74rem;letter-spacing:.06em;
+    border:1px solid rgba(232,168,61,.35);color:var(--brass);
+    padding:4px 12px;border-radius:999px;white-space:nowrap;
+    background:rgba(232,168,61,.06);
+    transition:background .2s, box-shadow .2s;
+  }
+  a.week-row:hover .cover{
+    background:rgba(232,168,61,.14);
+    box-shadow:0 0 14px rgba(232,168,61,.18);
+  }
+  /* tonight, spotlighted */
+  .week-list li:first-child .week-row{
+    background:linear-gradient(115deg, rgba(232,168,61,.16), rgba(232,168,61,.04) 55%, rgba(232,168,61,.02));
+    border-color:rgba(232,168,61,.4);
+    box-shadow:0 0 0 1px rgba(232,168,61,.12), 0 10px 34px rgba(0,0,0,.4), 0 0 34px rgba(232,168,61,.1);
+  }
+  .week-list li:first-child a.week-row:hover{
+    box-shadow:0 0 0 1px rgba(232,168,61,.22), 0 12px 38px rgba(0,0,0,.45), 0 0 44px rgba(232,168,61,.16);
+  }
+  .week-list li:first-child .what .nm{
+    font-size:1.22rem;font-weight:700;color:var(--brass-hi);
+  }
+  .week-row.dark-night{color:var(--ink-faint);font-style:italic;border-style:dashed}
+  .week-row.dark-night .what{font-size:.95rem}
+
+  /* ---------- detail: overlay panel ---------- */
+  .detail{
+    position:fixed;inset:0;margin:auto;z-index:90;
+    width:min(580px, calc(100vw - 28px));
+    height:fit-content;max-height:min(82vh, 660px);
+    overflow:auto;overscroll-behavior:contain;
+    padding:30px 28px 26px;
+    background:linear-gradient(170deg, #201709, #140e06 70%);
+    border:1px solid rgba(232,168,61,.35);
+    border-radius:18px;
+    box-shadow:0 0 0 1px rgba(232,168,61,.08), 0 30px 90px rgba(0,0,0,.75), 0 0 60px rgba(232,168,61,.1);
+    animation:detail-in .32s var(--ease-out);
+  }
+  .detail::before{
+    content:"";position:fixed;inset:0;z-index:-1;
+    background:rgba(8,6,3,.62);
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    animation:veil-in .32s ease;
+  }
+  @keyframes detail-in{from{opacity:0}to{opacity:1}}
+  @keyframes veil-in{from{opacity:0}to{opacity:1}}
+  .detail.hidden{display:none}
+  .detail h3{
+    font-family:var(--font-display);font-weight:800;
+    font-size:clamp(1.5rem,5vw,2rem);line-height:1.1;
+    letter-spacing:.01em;
+    color:var(--brass-hi);
+    text-shadow:0 0 18px var(--brass-glow);
+    margin-bottom:8px;padding-right:76px;
+  }
+  .detail .meta{
+    font-family:var(--font-mono);font-size:.8rem;letter-spacing:.05em;
+    color:var(--ink-dim);margin-bottom:16px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .detail p{margin-bottom:20px;color:var(--ink);max-width:56ch}
+  .share-row{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    font-family:var(--font-mono);font-size:.72rem;
+    padding:12px 14px;border-radius:10px;
+    background:rgba(0,0,0,.35);
+    border:1px solid var(--line-soft);
+  }
+  .share-row .lbl{color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em}
+  .share-row code{
+    color:var(--ink);max-width:100%;overflow-wrap:anywhere;
+    background:transparent;padding:0;
+  }
+  .share-row button, .detail .close-btn{
+    font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;
+    background:rgba(232,168,61,.08);color:var(--brass);
+    border:1px solid rgba(232,168,61,.35);
+    padding:6px 14px;border-radius:999px;cursor:pointer;
+    transition:background .18s, box-shadow .18s, color .18s, border-color .18s;
+  }
+  .share-row button:hover, .detail .close-btn:hover{
+    background:rgba(232,168,61,.16);
+    box-shadow:0 0 14px rgba(232,168,61,.2);
+  }
+  .share-row button.is-copied{
+    background:var(--brass);color:#160f04;border-color:var(--brass-hi);
+    box-shadow:0 0 18px rgba(232,168,61,.45);
+  }
+  .detail .close-btn{position:absolute;top:16px;right:16px}
+
+  /* ---------- month grid ---------- */
+  .month-head{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin:44px 0 14px;
+  }
+  .month-head h3{
+    font-family:var(--font-display);font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;font-size:.95rem;
+    color:var(--ink);
+  }
+  .month-head button{
+    background:var(--panel);color:var(--brass);
+    border:1px solid var(--line);
+    font-family:var(--font-mono);font-size:.95rem;line-height:1;
+    width:42px;height:42px;border-radius:999px;cursor:pointer;
+    transition:background .18s, box-shadow .18s, border-color .18s, transform .18s var(--ease-out);
+  }
+  .month-head button:hover{
+    background:rgba(232,168,61,.1);
+    border-color:rgba(232,168,61,.45);
+    box-shadow:0 0 16px rgba(232,168,61,.18);
+    transform:translateY(-1px);
+  }
+  .month-head button:active{transform:translateY(1px)}
+  .month-wrap{
+    overflow-x:auto;
+    border:1px solid var(--line-soft);border-radius:14px;
+    background:var(--panel-solid);
+    box-shadow:0 12px 40px rgba(0,0,0,.35);
+  }
+  .month-grid{
+    display:grid;grid-template-columns:repeat(7,1fr);
+    gap:1px;background:rgba(232,168,61,.08);
+    min-width:640px;
+  }
+  .dow{
+    font-family:var(--font-mono);font-size:.66rem;
+    text-transform:uppercase;letter-spacing:.16em;color:var(--ink-dim);
+    padding:10px 8px;background:#0f0a05;text-align:center;
+  }
+  .cell{
+    min-height:86px;padding:8px;font-size:.78rem;position:relative;
+    background:var(--panel-solid);
+    transition:background .18s;
+  }
+  .cell:hover{background:var(--panel-2)}
+  .cell.blank{background:#0d0904}
+  .cell.blank:hover{background:#0d0904}
+  .cell .dnum{
+    font-family:var(--font-mono);color:var(--ink-faint);font-size:.72rem;
+  }
+  .cell.is-today{
+    background:rgba(232,168,61,.07);
+    box-shadow:inset 0 0 0 1px rgba(232,168,61,.55), inset 0 0 22px rgba(232,168,61,.08);
+  }
+  .cell.is-today .dnum{
+    display:inline-grid;place-items:center;
+    min-width:20px;height:20px;padding:0 4px;border-radius:999px;
+    background:var(--brass);color:#160f04;font-weight:700;
+    box-shadow:0 0 12px var(--brass-glow);
+  }
+  .chip{
+    display:block;margin-top:8px;padding:5px 8px;border-radius:8px;
+    background:rgba(232,168,61,.09);
+    border:1px solid rgba(232,168,61,.18);
+    color:var(--ink);text-decoration:none;font-size:.72rem;line-height:1.3;
+    font-family:var(--font-display);font-weight:600;letter-spacing:.01em;
+    overflow-wrap:anywhere;
+    transition:background .18s, border-color .18s, box-shadow .18s;
+  }
+  .chip:hover{
+    background:rgba(232,168,61,.18);
+    border-color:rgba(232,168,61,.45);
+    box-shadow:0 0 14px rgba(232,168,61,.16);
+    color:var(--brass-hi);
+  }
+  .chip .ct{
+    display:block;margin-top:2px;color:var(--ink-dim);
+    font-family:var(--font-mono);font-weight:400;font-size:.62rem;letter-spacing:.04em;
+  }
+
+  /* ---------- drinks ---------- */
+  .menu{list-style:none;max-width:560px}
+  .menu li{display:flex;align-items:baseline;gap:10px;padding:9px 0}
+  .menu .item{white-space:nowrap;font-family:var(--font-display);font-weight:600;font-size:1rem;letter-spacing:.01em}
+  .menu .dots{flex:1;border-bottom:1px dotted rgba(232,168,61,.25);transform:translateY(-4px)}
+  .menu .price{
+    font-family:var(--font-mono);color:var(--brass);
+    text-shadow:0 0 10px rgba(232,168,61,.2);
+  }
+  .menu .note{display:block;font-size:.82rem;color:var(--ink-dim);font-style:italic;margin-top:-4px}
+
+  .fine{color:var(--ink-dim);font-size:.95rem;max-width:60ch}
+  .fine a{text-underline-offset:3px}
+
+  /* ---------- footer ---------- */
+  footer{
+    padding:clamp(56px,9vh,88px) 0 110px;text-align:center;position:relative;z-index:1;
+    font-family:var(--font-mono);font-size:.76rem;letter-spacing:.03em;color:var(--ink-faint);
+  }
+  footer a{color:var(--brass)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:540px){
+    .week-row{grid-template-columns:minmax(0,1fr) auto;padding:14px 15px}
+    .week-row .when{grid-column:1 / -1;margin-bottom:2px}
+    .detail{padding:24px 18px 20px}
+    .sample-badge{top:10px;right:10px;font-size:9.5px;padding:5px 10px}
+  }
+
+  /* ---------- reduced motion ---------- */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{
+      animation-duration:.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;
+    }
+    .week-list li{opacity:1}
+    .hero h1{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <filter id="pelican-grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 0.92  0 0 0 0 0.78  0 0 0 0.05 0"/>
+  </filter>
+</svg>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="sample-badge">SAMPLE &middot; invented business</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>THE BRASS PELICAN</h1>
+    <p class="tagline">Cold beer, a small loud stage, and a pool table with one dead rail. Since whenever.</p>
+    <p class="vitals">
+      <span>000 Example St, San Francisco</span><span class="dot">&bull;</span>
+      <span>Mon&ndash;Fri 3pm&ndash;2am</span><span class="dot">&bull;</span>
+      <span>Sat noon&ndash;2am</span><span class="dot">&bull;</span>
+      <span>Sun noon&ndash;midnight</span>
+    </p>
+    <a class="call-btn" href="tel:+14155550100">CALL THE BAR &middot; (415) 555-0100</a>
+  </div>
+  <div class="tonight" id="tonight-strip">Loading tonight&hellip;</div>
+</header>
+
+<section id="calendar">
+  <div class="wrap">
+    <h2>This Week</h2>
+    <p class="sub">Every show, every cover charge, always current. Tap a night for details and a link you can text somebody.</p>
+    <p class="owner-note">The owner updates this in one file, takes about two minutes a week. That is the whole trick: a calendar that never goes stale.</p>
+
+    <ul class="week-list" id="week-list"></ul>
+
+    <div class="detail hidden" id="detail">
+      <button class="close-btn" id="detail-close" type="button">close &times;</button>
+      <h3 id="detail-name"></h3>
+      <div class="meta" id="detail-when"></div>
+      <p id="detail-desc"></p>
+      <div class="share-row">
+        <span class="lbl">Share this show:</span>
+        <code id="detail-share"></code>
+        <button id="detail-copy" type="button">copy</button>
+      </div>
+    </div>
+
+    <div class="month-head">
+      <button id="prev-month" type="button" aria-label="Previous month">&larr;</button>
+      <h3 id="month-label"></h3>
+      <button id="next-month" type="button" aria-label="Next month">&rarr;</button>
+    </div>
+    <div class="month-wrap">
+      <div class="month-grid" id="month-grid"></div>
+    </div>
+  </div>
+</section>
+
+<section id="drinks">
+  <div class="wrap">
+    <h2>Drinks</h2>
+    <p class="sub">Happy hour 3 to 6, a buck off everything. Cash preferred, card accepted, ATM by the jukebox.</p>
+    <ul class="menu">
+      <li><span class="item">The Pelican</span><span class="dots"></span><span class="price">$8</span></li>
+      <li><span class="note">A pony bottle and a well shot. No substitutions, do not ask.</span></li>
+      <li><span class="item">Fog City Lager, draft</span><span class="dots"></span><span class="price">$6</span></li>
+      <li><span class="item">Barbary Coast IPA, draft</span><span class="dots"></span><span class="price">$7</span></li>
+      <li><span class="item">Well drinks</span><span class="dots"></span><span class="price">$7</span></li>
+      <li><span class="item">House red or white</span><span class="dots"></span><span class="price">$8</span></li>
+      <li><span class="note">The wine comes in a rocks glass. It is fine.</span></li>
+      <li><span class="item">Coffee, bottomless, day shift only</span><span class="dots"></span><span class="price">$3</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="private">
+  <div class="wrap">
+    <h2>Private Events</h2>
+    <p class="fine">Want the whole room? The back half seats about thirty, the stage fits your cousin's band, and we will keep the jukebox off if you insist. Call the bar and ask for whoever picks up.</p>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <h2>Find Us</h2>
+    <p class="fine">
+      000 Example St, San Francisco, CA<br>
+      <a href="tel:+14155550100">(415) 555-0100</a><br>
+      Look for the brass pelican over the door. He has been there longer than any of us.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Sample built by Angel Valle Jr. The Brass Pelican is not a real bar; the calendar is the point.
+    <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- rotating fictional lineups ---------- */
+  var BANDS = [
+    'The Foghorn Brothers','Diesel Cat','Marina Wrecks','Slow Karate','The Night Managers',
+    'Barreleye','Casket Springs','The Alley Oops','Petty Cash Only','Sutro Static'
+  ];
+  var ACOUSTIC = ['Ray Delgado','June Okafor','Sam Little','The Petrellis','Marcy Vaughn','Old Tom Cooper'];
+  var HOSTS = ['Nina Flores','Dex Wardell','Carrie Mott','Benny Ruiz'];
+
+  var DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var MONTHS = ['January','February','March','April','May','June','July',
+                'August','September','October','November','December'];
+
+  /* ---------- date helpers (all local time, no ISO parsing) ---------- */
+  function strip(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function pad(n){ return (n < 10 ? '0' : '') + n; }
+  function mod(n, m){ return ((n % m) + m) % m; }
+
+  // Anchor is a known Monday. Math.round absorbs DST hour shifts.
+  var ANCHOR = new Date(2026, 0, 5);
+  function weekIndex(d){
+    var days = Math.round((strip(d).getTime() - ANCHOR.getTime()) / 86400000);
+    return Math.floor(days / 7);
+  }
+
+  function evId(d){
+    return 'ev-' + d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  function parseEvId(hash){
+    var m = /^#?ev-(\d{4})-(\d{2})-(\d{2})$/.exec(hash || '');
+    if (!m) return null;
+    var y = +m[1], mo = +m[2], da = +m[3];
+    var d = new Date(y, mo - 1, da);
+    // reject rolled-over garbage like ev-2026-02-31
+    if (d.getFullYear() !== y || d.getMonth() !== mo - 1 || d.getDate() !== da) return null;
+    return d;
+  }
+
+  /* ---------- the weekly template: one event per night ---------- */
+  function eventForDate(d){
+    var dow = d.getDay();
+    var wi = weekIndex(d);
+    switch (dow){
+      case 1: return {
+        name: 'Pool League Night', short: 'Pool League', time: '7:00 PM', cover: 'Free',
+        desc: 'House league on the good table (the one without the dead rail). Sign-ups on the corkboard by 6:45. Winners drink slightly cheaper.'
+      };
+      case 2: return {
+        name: 'Trivia with Hec', short: 'Trivia', time: '7:30 PM', cover: 'Free',
+        desc: 'Six rounds, teams of up to five, no phones and Hec will know. First place drinks free next Tuesday. Second place gets read aloud.'
+      };
+      case 3: return {
+        name: 'Vinyl Night', short: 'Vinyl Night', time: '8:00 PM', cover: 'Free',
+        desc: 'Bring a record, we spin a side. House rule: nothing over 24 minutes a side and no double albums after eleven.'
+      };
+      case 4: return {
+        name: 'Acoustic Thursday: ' + ACOUSTIC[mod(wi, ACOUSTIC.length)],
+        short: ACOUSTIC[mod(wi, ACOUSTIC.length)],
+        time: '8:00 PM', cover: 'Free',
+        desc: 'One performer, one stool, one very old PA. Tip jar makes the rounds twice and you should hit it at least once.'
+      };
+      case 5: return {
+        name: BANDS[mod(wi, BANDS.length)],
+        short: BANDS[mod(wi, BANDS.length)],
+        time: '9:00 PM', cover: '$10',
+        desc: 'Live on the big stage, which is nine feet wide. Doors are whenever you walk in, music at nine, done by midnight because the neighbors vote.'
+      };
+      case 6: return {
+        name: BANDS[mod(wi + 5, BANDS.length)],
+        short: BANDS[mod(wi + 5, BANDS.length)],
+        time: '9:00 PM', cover: '$10',
+        desc: 'Saturday headliner. Get here early if you want a stool, the standing room is friendlier than it looks.'
+      };
+      case 0:
+        if (d.getDate() <= 7){
+          return {
+            name: 'First Sunday Comedy', short: 'Comedy',
+            time: '7:00 PM', cover: '$5',
+            desc: 'Five comics, one mic, hosted this month by ' +
+              HOSTS[mod(d.getFullYear() * 12 + d.getMonth(), HOSTS.length)] +
+              '. Front row is a choice you make on purpose.'
+          };
+        }
+        return null;
+    }
+    return null;
+  }
+
+  function fullEvent(d){
+    var ev = eventForDate(d);
+    if (!ev) return null;
+    ev.date = strip(d);
+    ev.id = evId(d);
+    return ev;
+  }
+
+  /* ---------- render: tonight strip ---------- */
+  var today = strip(new Date());
+
+  function renderTonight(){
+    var el = document.getElementById('tonight-strip');
+    var ev = fullEvent(today);
+    el.textContent = '';
+    if (ev){
+      var b = document.createElement('b');
+      b.textContent = 'TONIGHT: ';
+      el.appendChild(b);
+      var a = document.createElement('a');
+      a.href = '#' + ev.id;
+      a.textContent = ev.name;
+      el.appendChild(a);
+      el.appendChild(document.createTextNode(' · ' + ev.time + ' · ' + ev.cover));
+    } else {
+      var b2 = document.createElement('b');
+      b2.textContent = 'TONIGHT: ';
+      el.appendChild(b2);
+      el.appendChild(document.createTextNode('no show. Bar is open, jukebox is loud.'));
+    }
+  }
+
+  /* ---------- render: this week list ---------- */
+  function renderWeek(){
+    var list = document.getElementById('week-list');
+    list.textContent = '';
+    for (var i = 0; i < 7; i++){
+      var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      var ev = fullEvent(d);
+      var li = document.createElement('li');
+      var whenTxt = (i === 0 ? 'Tonight' : DOW[d.getDay()] + ' ' + MONTHS[d.getMonth()].slice(0,3) + ' ' + d.getDate());
+
+      if (ev){
+        var row = document.createElement('a');
+        row.className = 'week-row';
+        row.href = '#' + ev.id;
+
+        var when = document.createElement('span');
+        when.className = 'when' + (i === 0 ? ' today' : '');
+        when.textContent = whenTxt;
+
+        var what = document.createElement('span');
+        what.className = 'what';
+        var nm = document.createElement('span');
+        nm.className = 'nm';
+        nm.textContent = ev.name;
+        var tm = document.createElement('span');
+        tm.className = 'tm';
+        tm.textContent = ' ' + ev.time;
+        what.appendChild(nm);
+        what.appendChild(tm);
+
+        var cov = document.createElement('span');
+        cov.className = 'cover';
+        cov.textContent = ev.cover;
+
+        row.appendChild(when);
+        row.appendChild(what);
+        row.appendChild(cov);
+        li.appendChild(row);
+      } else {
+        var still = document.createElement('span');
+        still.className = 'week-row dark-night';
+        var when2 = document.createElement('span');
+        when2.className = 'when' + (i === 0 ? ' today' : '');
+        when2.textContent = whenTxt;
+        var what2 = document.createElement('span');
+        what2.className = 'what';
+        what2.textContent = 'No show. Pool table and jukebox on duty.';
+        still.appendChild(when2);
+        still.appendChild(what2);
+        li.appendChild(still);
+      }
+      list.appendChild(li);
+    }
+  }
+
+  /* ---------- render: month grid ---------- */
+  var viewMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  function renderMonth(){
+    var grid = document.getElementById('month-grid');
+    var label = document.getElementById('month-label');
+    var y = viewMonth.getFullYear(), m = viewMonth.getMonth();
+    label.textContent = MONTHS[m] + ' ' + y;
+    grid.textContent = '';
+
+    for (var h = 0; h < 7; h++){
+      var hd = document.createElement('div');
+      hd.className = 'dow';
+      hd.textContent = DOW[h];
+      grid.appendChild(hd);
+    }
+
+    var firstDow = new Date(y, m, 1).getDay();
+    var daysInMonth = new Date(y, m + 1, 0).getDate();
+
+    for (var b = 0; b < firstDow; b++){
+      var blank = document.createElement('div');
+      blank.className = 'cell blank';
+      grid.appendChild(blank);
+    }
+
+    for (var day = 1; day <= daysInMonth; day++){
+      var d = new Date(y, m, day);
+      var cell = document.createElement('div');
+      cell.className = 'cell';
+      if (d.getTime() === today.getTime()) cell.className += ' is-today';
+
+      var num = document.createElement('span');
+      num.className = 'dnum';
+      num.textContent = day;
+      cell.appendChild(num);
+
+      var ev = fullEvent(d);
+      if (ev){
+        var chip = document.createElement('a');
+        chip.className = 'chip';
+        chip.href = '#' + ev.id;
+        chip.textContent = ev.short;
+        var ct = document.createElement('span');
+        ct.className = 'ct';
+        ct.textContent = ev.time + ' · ' + ev.cover;
+        chip.appendChild(ct);
+        cell.appendChild(chip);
+      }
+      grid.appendChild(cell);
+    }
+
+    // pad the tail so the last row's borders line up
+    var totalCells = firstDow + daysInMonth;
+    var tail = mod(7 - mod(totalCells, 7), 7);
+    for (var t = 0; t < tail; t++){
+      var tb = document.createElement('div');
+      tb.className = 'cell blank';
+      grid.appendChild(tb);
+    }
+  }
+
+  document.getElementById('prev-month').addEventListener('click', function(){
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1);
+    renderMonth();
+  });
+  document.getElementById('next-month').addEventListener('click', function(){
+    viewMonth = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 1);
+    renderMonth();
+  });
+
+  /* ---------- render: event detail (hash-driven, shareable) ---------- */
+  var detail = document.getElementById('detail');
+
+  function renderDetail(){
+    var d = parseEvId(location.hash);
+    var ev = d ? fullEvent(d) : null;
+    if (!ev){
+      detail.className = 'detail hidden';
+      return;
+    }
+    document.getElementById('detail-name').textContent = ev.name;
+    document.getElementById('detail-when').textContent =
+      DOW[ev.date.getDay()] + ', ' + MONTHS[ev.date.getMonth()] + ' ' + ev.date.getDate() +
+      ', ' + ev.date.getFullYear() + ' · ' + ev.time + ' · Cover: ' + ev.cover;
+    document.getElementById('detail-desc').textContent = ev.desc;
+    var shareUrl = location.href.split('#')[0] + '#' + ev.id;
+    document.getElementById('detail-share').textContent = shareUrl;
+    detail.className = 'detail';
+    detail.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  }
+
+  document.getElementById('detail-close').addEventListener('click', function(){
+    detail.className = 'detail hidden';
+    if (location.hash){
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  });
+
+  document.getElementById('detail-copy').addEventListener('click', function(){
+    var url = document.getElementById('detail-share').textContent;
+    var btn = this;
+    function flash(msg, ok){
+      btn.textContent = msg;
+      btn.className = ok ? 'is-copied' : '';
+      setTimeout(function(){ btn.textContent = 'copy'; btn.className = ''; }, 1400);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(
+        function(){ flash('copied', true); },
+        function(){ flash('select it'); }
+      );
+    } else {
+      var sel = window.getSelection();
+      var range = document.createRange();
+      range.selectNodeContents(document.getElementById('detail-share'));
+      sel.removeAllRanges();
+      sel.addRange(range);
+      flash('select it');
+    }
+  });
+
+  window.addEventListener('hashchange', renderDetail);
+
+  /* ---------- go ---------- */
+  renderTonight();
+  renderWeek();
+  renderMonth();
+  renderDetail(); // handles a shared link opened directly
+})();
+</script>
+</body>
+</html>

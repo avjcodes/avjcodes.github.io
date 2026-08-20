@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Angel Valle Jr. San Francisco developer. Apps, tools and games. Everything labeled Live opens.">
+<title>Angel Valle Jr. · Apps, tools and games</title>
+<link rel="preload" href="assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/ClashDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  /* ================= Fonts ================= */
+  @font-face {
+    font-family: "Clash Display";
+    src: url("assets/fonts/ClashDisplay-Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Clash Display";
+    src: url("assets/fonts/ClashDisplay-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* ================= Design tokens ================= */
+  :root {
+    --bg: #f6f6f8;
+    --bg-deep: #ededf2;
+    --grid-line: rgba(23, 22, 40, 0.045);
+    --surface: rgba(255, 255, 255, 0.72);
+    --surface-2: rgba(255, 255, 255, 0.55);
+    --hairline: rgba(23, 22, 40, 0.10);
+    --hairline-soft: rgba(23, 22, 40, 0.06);
+    --ink: #17161f;
+    --ink-2: #56555f;
+    --ink-3: #6b6a76;
+    --accent-600: #c0362c;
+    --accent-500: #d84a33;
+    --accent-14: rgba(216, 74, 51, 0.14);
+    --accent-09: rgba(216, 74, 51, 0.09);
+    --accent-ring: rgba(216, 74, 51, 0.45);
+    --on-accent: #fff6f2;
+    --badge-live-bg: var(--accent-600);
+    --badge-live-ink: var(--on-accent);
+    --badge-sample-ink: #6b6a76;
+    --ribbon-ink: rgba(23, 22, 40, 0.08);
+    --ribbon-stroke: rgba(23, 22, 40, 0.20);
+    --shadow-card: 0 1px 2px rgba(20, 18, 43, 0.04), 0 10px 28px rgba(20, 18, 43, 0.07);
+    --shadow-card-hover: 0 2px 4px rgba(20, 18, 43, 0.05), 0 22px 56px rgba(20, 18, 43, 0.14);
+    --shadow-btn: 0 4px 16px rgba(192, 54, 44, 0.28);
+    --shadow-btn-hover: 0 8px 26px rgba(192, 54, 44, 0.36);
+    --nav-bg: rgba(246, 246, 248, 0.78);
+    --mono: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --display: "Clash Display", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --r-lg: 18px;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0b10;
+      --bg-deep: #07070b;
+      --grid-line: rgba(235, 234, 255, 0.035);
+      --surface: rgba(240, 239, 255, 0.035);
+      --surface-2: rgba(240, 239, 255, 0.025);
+      --hairline: rgba(235, 234, 255, 0.11);
+      --hairline-soft: rgba(235, 234, 255, 0.06);
+      --ink: #ececf1;
+      --ink-2: #a7a6b3;
+      --ink-3: #8f8e9c;
+      --accent-600: #f77f5b;
+      --accent-500: #f0704a;
+      --accent-14: rgba(240, 112, 74, 0.16);
+      --accent-09: rgba(240, 112, 74, 0.10);
+      --accent-ring: rgba(247, 127, 91, 0.55);
+      --on-accent: #1c0d08;
+      --badge-live-bg: var(--accent-600);
+      --badge-live-ink: var(--on-accent);
+      --badge-sample-ink: #8f8e9c;
+      --ribbon-ink: rgba(235, 234, 255, 0.07);
+      --ribbon-stroke: rgba(235, 234, 255, 0.17);
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.35);
+      --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.55);
+      --shadow-btn: 0 4px 18px rgba(247, 127, 91, 0.25);
+      --shadow-btn-hover: 0 8px 26px rgba(247, 127, 91, 0.35);
+      --nav-bg: rgba(11, 11, 16, 0.72);
+    }
+  }
+
+  /* ================= Base ================= */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    z-index: 0;
+  }
+  ::selection { background: var(--accent-14); }
+  a { color: inherit; }
+  :focus-visible {
+    outline: 2px solid var(--accent-ring);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 20px 96px;
+  }
+
+  /* ================= Nav ================= */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .nav-inner {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .monogram {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+  .monogram .short { display: none; }
+  .monogram .dot {
+    width: 9px; height: 9px;
+    border-radius: 3px;
+    background: var(--accent-500);
+    box-shadow: 0 0 10px var(--accent-14);
+  }
+  .nav-links { margin-left: auto; display: flex; gap: 4px; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--ink-2);
+    padding: 12px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--accent-09); }
+
+  /* ================= Hero ================= */
+  header.hero { padding: clamp(64px, 11vw, 128px) 0 clamp(40px, 6vw, 64px); }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .kicker::before {
+    content: "";
+    width: 22px; height: 1px;
+    background: var(--accent-500);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 7vw, 4.6rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    max-width: 15ch;
+  }
+  .hero h1 .accent {
+    color: var(--accent-600);
+  }
+  .hero .sub {
+    margin-top: 28px;
+    font-size: clamp(1rem, 2.4vw, 1.14rem);
+    color: var(--ink-2);
+    max-width: 52ch;
+  }
+  .hero .cta { margin-top: 40px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-solid {
+    background: var(--accent-600);
+    color: var(--on-accent);
+    box-shadow: var(--shadow-btn);
+  }
+  .btn-solid:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
+  .btn-ghost {
+    background: var(--surface);
+    border-color: var(--hairline);
+    color: var(--ink);
+  }
+  .btn-ghost:hover { transform: translateY(-2px); border-color: var(--accent-ring); }
+  .btn svg { flex: 0 0 auto; }
+
+  /* ================= Capability ribbon ================= */
+  .ribbon {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    padding: 8px 0;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .ribbon-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: ribbon-scroll 40s linear infinite;
+  }
+  .ribbon-row {
+    white-space: nowrap;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.15;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ribbon-ink);
+  }
+  @supports (-webkit-text-stroke: 1px black) {
+    .ribbon-row {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--ribbon-stroke);
+    }
+  }
+  @keyframes ribbon-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ================= Sections ================= */
+  section { padding-top: clamp(52px, 8vw, 88px); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent-600);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent-500); }
+  section h2 {
+    margin-top: 12px;
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3.8vw, 2.3rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+  }
+  .section-note {
+    margin-top: 12px;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+    max-width: 60ch;
+  }
+
+  /* ================= Capability grid ================= */
+  .cap-grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .cap {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 24px 20px 20px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .cap:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-ring);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .cap .icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--accent-09);
+    color: var(--accent-600);
+    margin-bottom: 16px;
+  }
+  .cap h3 { font-size: 1rem; font-weight: 700; letter-spacing: -0.012em; }
+  .cap p { margin-top: 8px; font-size: 0.88rem; color: var(--ink-2); }
+  .cap .receipt {
+    margin-top: 12px;
+    min-height: 44px;
+    padding: 12px 16px 12px 0;
+    margin-bottom: -12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--accent-600);
+  }
+  .cap .receipt::after { content: "\2193"; transition: transform 0.15s ease; }
+  .cap .receipt:hover::after { transform: translateY(2px); }
+
+  /* ================= Work cards ================= */
+  .tier-head {
+    margin-top: 32px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .tier-head + .work-grid { margin-top: 16px; }
+  .tier-title { font-family: var(--display); font-size: 1.1rem; font-weight: 600; letter-spacing: -0.005em; }
+  .tier-sub { font-size: 0.85rem; color: var(--ink-3); }
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .card {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 24px 24px 20px;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-ring);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 999px;
+  }
+  .badge-sample {
+    color: var(--badge-sample-ink);
+    border: 1px dashed var(--hairline);
+    background: var(--surface-2);
+  }
+  .badge-live {
+    color: var(--badge-live-ink);
+    background: var(--badge-live-bg);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge-live::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .card h3 {
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h3 .arrow {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--ink-3);
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+  .card:hover h3 .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
+  .card p { margin-top: 8px; font-size: 0.9rem; color: var(--ink-2); }
+  .card .tech {
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 0.73rem;
+    color: var(--ink-3);
+  }
+  section, #live, .card[id] { scroll-margin-top: 88px; }
+
+  /* ================= Games ================= */
+  .game-grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .game {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .game:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-ring);
+    box-shadow: var(--shadow-card-hover);
+  }
+  .game .shot {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-bottom: 1px solid var(--hairline-soft);
+    background: var(--bg-deep);
+  }
+  .game .shot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+  .game:hover .shot img { transform: scale(1.035); }
+  .game .body { padding: 20px 20px 20px; }
+  .game h3 { font-family: var(--display); font-size: 1.24rem; font-weight: 600; letter-spacing: -0.01em; }
+  .game .status {
+    margin-top: 4px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-600);
+  }
+  .game p { margin-top: 8px; font-size: 0.88rem; color: var(--ink-2); }
+  .game .studio {
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-3);
+  }
+  .game .name-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .play-btn {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 0.84rem;
+    font-weight: 700;
+    padding: 12px 20px;
+    border-radius: 10px;
+    background: var(--accent-600);
+    color: var(--on-accent);
+    box-shadow: var(--shadow-btn);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .play-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-btn-hover); }
+  @media (prefers-reduced-motion: reduce) {
+    .play-btn { transition: none; }
+    .play-btn:hover { transform: none; }
+  }
+
+  /* ================= About / Contact ================= */
+  .about-card {
+    margin-top: 28px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r-lg);
+    padding: 28px 28px;
+    box-shadow: var(--shadow-card);
+    max-width: 640px;
+  }
+  .about-card p { color: var(--ink-2); font-size: 0.98rem; }
+
+  .contact-card {
+    margin-top: 28px;
+    text-align: center;
+    background:
+      radial-gradient(560px 240px at 50% -30%, var(--accent-09) 0%, transparent 70%),
+      var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 22px;
+    padding: clamp(36px, 6vw, 60px) 24px;
+    box-shadow: var(--shadow-card);
+  }
+  .contact-card h2 { margin-top: 0; }
+  .contact-card .line {
+    margin: 16px auto 0;
+    color: var(--ink-2);
+    max-width: 46ch;
+    font-size: 0.98rem;
+  }
+  .contact-card .cta { margin-top: 28px; display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--hairline-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--ink-3);
+  }
+  footer a { color: var(--ink-3); text-decoration: none; }
+  footer a:hover { color: var(--accent-600); }
+
+  /* ================= Reveal / motion ================= */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+    transition-delay: calc(var(--d, 0) * 70ms);
+  }
+  .js .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { opacity: 1; transform: none; transition: none; }
+    .cap, .card, .game, .btn, .game .shot img { transition: none; }
+    .cap:hover, .card:hover, .game:hover, .btn:hover { transform: none; }
+    .game:hover .shot img { transform: none; }
+    .badge-live::before { animation: none; }
+    .card h3 .arrow, .cap .receipt::after { transition: none; }
+    .card:hover h3 .arrow { transform: none; }
+    .cap .receipt:hover::after { transform: none; }
+    .ribbon-track { animation: none; transform: none; width: 100%; }
+    .ribbon-row + .ribbon-row { display: none; }
+  }
+
+  /* ================= Responsive ================= */
+  @media (max-width: 860px) {
+    .cap-grid { grid-template-columns: repeat(2, 1fr); }
+    .game-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 620px) {
+    .cap-grid, .work-grid { grid-template-columns: 1fr; }
+    .nav-links a { padding: 12px 8px; }
+    .monogram .full { display: none; }
+    .monogram .short { display: inline; }
+    .tier-head { flex-direction: column; gap: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Page">
+  <div class="nav-inner">
+    <a class="monogram" href="#top"><span class="dot" aria-hidden="true"></span><span class="full">ANGEL VALLE JR.</span><span class="short">AVJ</span></a>
+    <div class="nav-links">
+      <a href="#build">What I build</a>
+      <a href="#work">Work</a>
+      <a href="#games">Games</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
+    <h1 class="reveal" style="--d:1">Apps, tools and games. <span class="accent">Everything labeled Live opens.</span></h1>
+    <p class="sub reveal" style="--d:2">Custom-built, every one of them. Designed, tested and shipped by me, start to finish.</p>
+    <div class="cta reveal" style="--d:3">
+      <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        theangelvallejr@gmail.com
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/avjcodes" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+        github.com/avjcodes
+      </a>
+    </div>
+  </header>
+
+  <!-- ============ CAPABILITY RIBBON ============ -->
+  <div class="ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+      <span class="ribbon-row">APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS · APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS&nbsp;·&nbsp;</span>
+      <span class="ribbon-row">APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS · APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS&nbsp;·&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ============ WHAT I BUILD ============ -->
+  <section id="build">
+    <p class="eyebrow reveal">01 · Capabilities</p>
+    <h2 class="reveal" style="--d:1">What I build</h2>
+    <p class="section-note reveal" style="--d:2">Every claim here has a receipt on this page. Click through and check.</p>
+    <div class="cap-grid">
+      <div class="cap reveal" style="--d:0">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>AI assistants and document Q&amp;A</h3>
+        <p>Chat interfaces that answer from your actual documents, not from thin air.</p>
+        <a class="receipt" href="#kestrel">receipt: Kestrel</a>
+      </div>
+      <div class="cap reveal" style="--d:1">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></div>
+        <h3>Workflow automation and data pipelines</h3>
+        <p>Messy spreadsheets in, one clean report out, on a schedule.</p>
+        <a class="receipt" href="#ninthhill">receipt: Ninth Hill</a>
+      </div>
+      <div class="cap reveal" style="--d:2">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>Small-business sites with booking</h3>
+        <p>The site takes the booking so the phone can stay on the hook.</p>
+        <a class="receipt" href="#fogline">receipt: Fog Line</a>
+      </div>
+      <div class="cap reveal" style="--d:3">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+        <h3>Sites owners update themselves</h3>
+        <p>Events and content pages you can change without calling a developer.</p>
+        <a class="receipt" href="#pelican">receipt: Brass Pelican</a>
+      </div>
+      <div class="cap reveal" style="--d:4">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <h3>Python tools and dashboards</h3>
+        <p>Small programs that do one job well and keep doing it.</p>
+        <a class="receipt" href="#live">receipt: the GitHub repos</a>
+      </div>
+      <div class="cap reveal" style="--d:5">
+        <div class="icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><path d="M6 12h4M8 10v4"/><circle cx="16" cy="11" r="0.5" fill="currentColor"/><circle cx="18" cy="13" r="0.5" fill="currentColor"/></svg></div>
+        <h3>Desktop games in Godot</h3>
+        <p>Art, code, sound, shipped builds. The whole thing.</p>
+        <a class="receipt" href="#games">receipt: the games</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SELECTED WORK ============ -->
+  <section id="work">
+    <p class="eyebrow reveal">02 · Selected work</p>
+    <h2 class="reveal" style="--d:1">What's live, what's a sample</h2>
+    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category.</p>
+
+    <div class="tier-head reveal" id="live">
+      <span class="tier-title">Live on GitHub</span>
+      <span class="tier-sub">public repos, open now</span>
+    </div>
+    <div class="work-grid">
+      <a class="card reveal" style="--d:0" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3>sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>Turns green-screen video into game-ready sprite sheets. Built because I needed it for my own games.</p>
+        <p class="tech">python</p>
+      </a>
+      <a class="card reveal" style="--d:1" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3>steam-comp-tracker <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>Pulls Steam market data on comparable games so pricing decisions come from numbers, not vibes.</p>
+        <p class="tech">python</p>
+      </a>
+      <a class="card reveal" style="--d:2" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3>markdown-task-dashboard <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>A template repo: plain markdown task files rendered as a local dashboard. No database, no login.</p>
+        <p class="tech">python · template repo</p>
+      </a>
+      <a class="card reveal" style="--d:3" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3>pourcost <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>Bar drink cost calculator. Enter the pour, get the margin.</p>
+        <p class="tech">python</p>
+      </a>
+      <a class="card reveal" style="--d:4" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">
+        <div class="card-top"><span class="badge badge-live">Live</span></div>
+        <h3>vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>A linter for Obsidian-style note vaults. Finds broken links and messy frontmatter before they pile up.</p>
+        <p class="tech">typescript</p>
+      </a>
+    </div>
+
+    <div class="tier-head reveal">
+      <span class="tier-title">Sample builds</span>
+      <span class="tier-sub">invented businesses, real code, each page says so on it</span>
+    </div>
+    <div class="work-grid">
+      <a class="card reveal" style="--d:0" id="kestrel" href="kestrel-assistant.html">
+        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
+        <h3>Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>A tenant help assistant for a property manager. Ask about your lease, it answers from the documents.</p>
+        <p class="tech">client-side retrieval</p>
+      </a>
+      <a class="card reveal" style="--d:1" id="ninthhill" href="ninthhill-dashboard.html">
+        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
+        <h3>Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>The Monday sales report for a coffee roaster, before and after: one spreadsheet mess turned into a readable dashboard.</p>
+        <p class="tech">SVG charts from a cleaned dataset</p>
+      </a>
+      <a class="card reveal" style="--d:2" id="fogline" href="fogline-cycles.html">
+        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
+        <h3>Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>A bike shop site where you book a repair in four steps instead of leaving a voicemail.</p>
+        <p class="tech">4-step booking state machine</p>
+      </a>
+      <a class="card reveal" style="--d:3" id="pelican" href="brass-pelican.html">
+        <div class="card-top"><span class="badge badge-sample">Sample</span></div>
+        <h3>The Brass Pelican <span class="arrow" aria-hidden="true">&#8599;</span></h3>
+        <p>A live music dive bar site with an events calendar the owner updates without touching code.</p>
+        <p class="tech">date-templated calendar</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ GAMES ============ -->
+  <section id="games">
+    <p class="eyebrow reveal">03 · Games</p>
+    <h2 class="reveal" style="--d:1">Made under lowpolysaint</h2>
+    <p class="section-note reveal" style="--d:2">Desktop games built in Godot. Same developer, different hat.</p>
+    <div class="game-grid">
+      <article class="game reveal" style="--d:0">
+        <div class="shot"><img src="assets/01_sleight_of_claw.png" alt="Sleight of Claw gameplay: a crab running a shell game on the beach" loading="lazy"></div>
+        <div class="body">
+          <div class="name-row"><h3>Sleight of Claw</h3><span class="badge badge-live">Live</span></div>
+          <p class="status">Shipped · free in your browser</p>
+          <p>A shell game run by a crab. Live online leaderboard. Loads straight in the browser, no install.</p>
+          <a class="play-btn" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            Play it in your browser
+          </a>
+          <p class="studio">lowpolysaint</p>
+        </div>
+      </article>
+      <article class="game reveal" style="--d:1">
+        <div class="shot"><img src="assets/02_gus_makes_games.png" alt="Gus Makes Games: a pixel-art bedroom where a solo developer works" loading="lazy"></div>
+        <div class="body">
+          <h3>Gus Makes Games</h3>
+          <p class="status">In production · nothing public to open yet</p>
+          <p>A sim about being a solo game developer. Playable end to end in its first build.</p>
+          <p class="studio">lowpolysaint</p>
+        </div>
+      </article>
+      <article class="game reveal" style="--d:2">
+        <div class="shot"><img src="assets/03_pocket_adventurer.png" alt="Pocket Adventurer: a tiny companion revealed at the edge of a desktop screen" loading="lazy"></div>
+        <div class="body">
+          <h3>Pocket Adventurer</h3>
+          <p class="status">Heading to Steam · store page not live yet</p>
+          <p>A desktop companion that lives at the edge of your screen while you work. Coming to Steam.</p>
+          <p class="studio">lowpolysaint</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section id="about">
+    <p class="eyebrow reveal">04 · About</p>
+    <h2 class="reveal" style="--d:1">The short version</h2>
+    <div class="about-card reveal" style="--d:2">
+      <p>I'm a developer in San Francisco. I build and fix things for people: websites, tools, automations, and agentic systems that carry real work on their own. All of it designed, tested and shipped by me, start to finish. I'm also a computer science student at WGU.</p>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="contact-card reveal">
+      <p class="eyebrow" style="justify-content:center">05 · Contact</p>
+      <h2 style="margin-top:12px">Have something in mind?</h2>
+      <p class="line">Describe what you need in a paragraph. If I'm not the right fit for it, my first reply will say so.</p>
+      <div class="cta">
+        <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+          theangelvallejr@gmail.com
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/avjcodes" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.35.96.1-.75.4-1.25.72-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.59.23 2.76.11 3.05.74.81 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+          github.com/avjcodes
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Angel Valle Jr. · San Francisco</span>
+    <span>Games published as <a href="#games">lowpolysaint</a> · <a href="https://github.com/avjcodes" target="_blank" rel="noopener">github.com/avjcodes</a></span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+
+</body>
+</html>

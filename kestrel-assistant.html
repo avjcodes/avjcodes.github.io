@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Property Management: Tenant Help Assistant (Sample)</title>
+<style>
+  /* ============ Design tokens ============ */
+  :root {
+    --bg: #f7f4ee;
+    --bg-deep: #efeae0;
+    --glow-a: rgba(196, 96, 34, 0.10);
+    --glow-b: rgba(196, 96, 34, 0.05);
+    --surface: rgba(255, 255, 255, 0.68);
+    --surface-solid: #fffdf9;
+    --surface-2: rgba(255, 255, 255, 0.55);
+    --input-bg: rgba(255, 255, 255, 0.85);
+    --hairline: rgba(40, 26, 14, 0.10);
+    --hairline-soft: rgba(40, 26, 14, 0.06);
+    --ink: #201a14;
+    --ink-2: #5d544a;
+    --ink-3: #8b8175;
+    --accent-700: #8a3c10;
+    --accent-600: #a84a17;
+    --accent-500: #c25a1e;
+    --accent-400: #d76f31;
+    --accent-15: rgba(194, 90, 30, 0.15);
+    --accent-10: rgba(194, 90, 30, 0.10);
+    --accent-06: rgba(194, 90, 30, 0.06);
+    --accent-ring: rgba(194, 90, 30, 0.35);
+    --on-accent: #fff7f1;
+    --bot-bubble: rgba(255, 255, 255, 0.82);
+    --shadow-card: 0 1px 2px rgba(46, 30, 16, 0.05), 0 8px 24px rgba(46, 30, 16, 0.07), 0 24px 64px rgba(46, 30, 16, 0.08);
+    --shadow-chip: 0 4px 14px rgba(194, 90, 30, 0.16);
+    --scroll-thumb: rgba(40, 26, 14, 0.16);
+    --mono: ui-monospace, Consolas, "Cascadia Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14100d;
+      --bg-deep: #0e0b09;
+      --glow-a: rgba(224, 122, 62, 0.09);
+      --glow-b: rgba(224, 122, 62, 0.04);
+      --surface: rgba(255, 250, 244, 0.045);
+      --surface-solid: #1c1712;
+      --surface-2: rgba(255, 250, 244, 0.035);
+      --input-bg: rgba(255, 250, 244, 0.06);
+      --hairline: rgba(255, 240, 226, 0.11);
+      --hairline-soft: rgba(255, 240, 226, 0.06);
+      --ink: #f0e9e1;
+      --ink-2: #b3a99d;
+      --ink-3: #7d7469;
+      --accent-700: #f0925a;
+      --accent-600: #e8823f;
+      --accent-500: #dd7434;
+      --accent-400: #c96225;
+      --accent-15: rgba(224, 122, 62, 0.16);
+      --accent-10: rgba(224, 122, 62, 0.11);
+      --accent-06: rgba(224, 122, 62, 0.07);
+      --accent-ring: rgba(232, 130, 63, 0.45);
+      --on-accent: #1a0d05;
+      --bot-bubble: rgba(255, 250, 244, 0.055);
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px rgba(0, 0, 0, 0.35), 0 32px 80px rgba(0, 0, 0, 0.4);
+      --shadow-chip: 0 4px 14px rgba(224, 122, 62, 0.2);
+      --scroll-thumb: rgba(255, 240, 226, 0.16);
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(900px 480px at 18% -10%, var(--glow-a) 0%, transparent 60%),
+      radial-gradient(720px 420px at 92% 8%, var(--glow-b) 0%, transparent 65%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 28px 16px 96px;
+  }
+  ::selection { background: var(--accent-15); }
+
+  /* ============ Header ============ */
+  header { padding: 4px 2px 24px; }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .brand svg {
+    flex: 0 0 auto;
+    display: block;
+    border-radius: 11px;
+    box-shadow: 0 2px 8px rgba(194, 90, 30, 0.25), 0 8px 24px rgba(194, 90, 30, 0.15);
+  }
+  .brand-name {
+    font-size: 1.35rem;
+    font-weight: 750;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+  }
+  .brand-name span {
+    background: linear-gradient(120deg, var(--accent-600), var(--accent-400));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--accent-600);
+  }
+  .brand-sub {
+    font-size: 0.68rem;
+    font-weight: 590;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+  .tagline {
+    margin-top: 16px;
+    font-size: 1.02rem;
+    font-weight: 430;
+    color: var(--ink-2);
+    max-width: 48ch;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============ Chat card ============ */
+  .chat-card {
+    position: relative;
+    background: var(--surface);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+    border: 1px solid var(--hairline);
+    border-radius: 22px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .chat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 5%, var(--accent-ring) 50%, transparent 95%);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .chat-log {
+    height: 52vh;
+    min-height: 300px;
+    max-height: 560px;
+    overflow-y: auto;
+    padding: 22px 18px 10px;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) transparent;
+    overscroll-behavior: contain;
+  }
+  .chat-log::-webkit-scrollbar { width: 8px; }
+  .chat-log::-webkit-scrollbar-track { background: transparent; }
+  .chat-log::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 99px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  .chat-log::-webkit-scrollbar-thumb:hover { background-color: var(--accent-ring); background-clip: padding-box; }
+
+  .msg {
+    margin-bottom: 15px;
+    display: flex;
+    animation: msg-in 0.34s cubic-bezier(0.21, 0.9, 0.32, 1) both;
+  }
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(9px) scale(0.985); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .msg-user { justify-content: flex-end; }
+  .bubble {
+    max-width: 86%;
+    padding: 11px 15px;
+    border-radius: 16px;
+    font-size: 0.94rem;
+    letter-spacing: -0.003em;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+  }
+  .msg-user .bubble {
+    background: linear-gradient(160deg, var(--accent-500), var(--accent-400));
+    color: var(--on-accent);
+    font-weight: 480;
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 2px 10px var(--accent-15), 0 6px 20px var(--accent-10);
+  }
+  @media (prefers-color-scheme: dark) {
+    .msg-user .bubble {
+      background: linear-gradient(160deg, var(--accent-400), var(--accent-500));
+      color: #fff4ea;
+    }
+  }
+  .msg-bot .bubble {
+    background: var(--bot-bubble);
+    border: 1px solid var(--hairline-soft);
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 1px 3px rgba(46, 30, 16, 0.04);
+    position: relative;
+  }
+  .msg-bot .bubble::before {
+    content: "";
+    position: absolute;
+    left: -1px; top: 12px; bottom: 12px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent-500), transparent);
+    opacity: 0.7;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    background: var(--accent-500);
+    border-radius: 1px;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+    box-shadow: 0 0 6px var(--accent-ring);
+    animation: blink 0.8s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.15; } }
+
+  /* Thinking indicator (visual only) */
+  .thinking-bubble {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 14px 16px;
+  }
+  .thinking-bubble .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-500);
+    opacity: 0.4;
+    animation: dot-pulse 1.1s ease-in-out infinite;
+  }
+  .thinking-bubble .dot:nth-child(2) { animation-delay: 0.15s; }
+  .thinking-bubble .dot:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes dot-pulse {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    35%      { opacity: 1;   transform: translateY(-3px); }
+  }
+
+  .sources { margin-top: 10px; display: flex; flex-direction: column; gap: 5px; }
+  .source-chip {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--accent-700);
+    background: var(--accent-06);
+    border: 1px solid var(--accent-15);
+    border-radius: 8px;
+    padding: 4px 9px;
+    width: fit-content;
+    max-width: 100%;
+    animation: chip-in 0.4s cubic-bezier(0.21, 0.9, 0.32, 1) both;
+  }
+  @keyframes chip-in {
+    from { opacity: 0; transform: translateX(-7px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .source-none {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--ink-3);
+    margin-top: 10px;
+    animation: chip-in 0.4s cubic-bezier(0.21, 0.9, 0.32, 1) both;
+  }
+
+  /* ============ Suggested chips ============ */
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 18px 14px;
+    border-top: 1px solid var(--hairline-soft);
+    background: var(--surface-2);
+  }
+  .chip {
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 520;
+    letter-spacing: -0.003em;
+    color: var(--accent-700);
+    background: var(--accent-06);
+    border: 1px solid var(--accent-15);
+    border-radius: 999px;
+    padding: 6px 13px;
+    cursor: pointer;
+    transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+  }
+  .chip:hover:not(:disabled) {
+    background: var(--accent-10);
+    border-color: var(--accent-ring);
+    transform: translateY(-1.5px);
+    box-shadow: var(--shadow-chip);
+  }
+  .chip:active:not(:disabled) { transform: translateY(0); box-shadow: none; }
+  .chip:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--accent-ring);
+  }
+  .chip:disabled { opacity: 0.4; cursor: default; }
+
+  /* ============ Input row ============ */
+  .input-row {
+    display: flex;
+    gap: 9px;
+    padding: 13px 16px 15px;
+    border-top: 1px solid var(--hairline);
+    background: var(--surface-2);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    position: sticky;
+    bottom: 0;
+  }
+  #chat-input {
+    flex: 1;
+    min-width: 0;
+    font: inherit;
+    font-size: 0.94rem;
+    padding: 11px 14px;
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--ink);
+    transition: border-color 0.16s ease, box-shadow 0.16s ease;
+  }
+  #chat-input::placeholder { color: var(--ink-3); }
+  #chat-input:focus {
+    outline: none;
+    border-color: var(--accent-500);
+    box-shadow: 0 0 0 3px var(--accent-15);
+  }
+  #send-btn {
+    font: inherit;
+    font-weight: 620;
+    font-size: 0.94rem;
+    letter-spacing: -0.005em;
+    color: var(--on-accent);
+    background: linear-gradient(160deg, var(--accent-500), var(--accent-400));
+    border: none;
+    border-radius: 12px;
+    padding: 11px 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--accent-15);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, filter 0.16s ease;
+  }
+  @media (prefers-color-scheme: dark) {
+    #send-btn { color: #fff4ea; background: linear-gradient(160deg, var(--accent-400), var(--accent-500)); }
+  }
+  #send-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.05);
+    box-shadow: var(--shadow-chip);
+  }
+  #send-btn:active:not(:disabled) { transform: translateY(0); }
+  #send-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--accent-ring);
+  }
+  #send-btn:disabled { opacity: 0.45; cursor: default; }
+
+  /* ============ How this works ============ */
+  .how {
+    margin-top: 20px;
+    background: var(--surface);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    transition: border-color 0.2s ease;
+  }
+  .how[open] { border-color: var(--accent-15); }
+  .how summary {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 13px 18px;
+    font-weight: 620;
+    font-size: 0.88rem;
+    letter-spacing: -0.005em;
+    list-style: none;
+    border-radius: 16px;
+    transition: color 0.16s ease;
+  }
+  .how summary:hover { color: var(--accent-600); }
+  .how summary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--accent-ring);
+  }
+  .how summary::-webkit-details-marker { display: none; }
+  .how summary::before {
+    content: "+";
+    display: inline-block;
+    width: 1.1em;
+    color: var(--accent-500);
+    font-weight: 700;
+    font-size: 1.05em;
+    transition: transform 0.22s cubic-bezier(0.21, 0.9, 0.32, 1);
+  }
+  .how[open] summary::before { transform: rotate(45deg); }
+  .how-body {
+    padding: 2px 18px 16px;
+    font-size: 0.87rem;
+    color: var(--ink-2);
+    animation: msg-in 0.3s cubic-bezier(0.21, 0.9, 0.32, 1) both;
+  }
+  .how-body p + p { margin-top: 9px; }
+  .how-body strong { color: var(--ink); font-weight: 620; }
+
+  /* ============ Badge + footer ============ */
+  .sample-badge {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent-700);
+    background: var(--surface);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--accent-15);
+    border-radius: 999px;
+    padding: 5px 11px;
+    box-shadow: 0 2px 10px rgba(46, 30, 16, 0.08);
+  }
+  .sample-badge::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-500);
+    box-shadow: 0 0 6px var(--accent-ring);
+    animation: badge-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.45; }
+  }
+  footer {
+    margin-top: 30px;
+    padding-top: 16px;
+    border-top: 1px solid var(--hairline-soft);
+    font-size: 0.77rem;
+    color: var(--ink-3);
+    letter-spacing: -0.002em;
+  }
+  footer a {
+    color: var(--accent-600);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-15);
+    transition: border-color 0.16s ease;
+  }
+  footer a:hover { border-bottom-color: var(--accent-500); }
+  footer a:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--surface-solid), 0 0 0 4px var(--accent-ring);
+    border-radius: 3px;
+  }
+
+  /* ============ Small screens ============ */
+  @media (max-width: 480px) {
+    .wrap { padding: 22px 12px 72px; }
+    .chat-log { height: 48vh; padding: 18px 13px 8px; }
+    .bubble { max-width: 92%; font-size: 0.92rem; }
+    .chips { padding: 11px 13px 12px; }
+    .input-row { padding: 11px 12px 13px; }
+    #send-btn { padding: 11px 15px; }
+    .brand-name { font-size: 1.2rem; }
+  }
+
+  /* ============ Reduced motion ============ */
+  @media (prefers-reduced-motion: reduce) {
+    html, .chat-log { scroll-behavior: auto; }
+    .msg, .source-chip, .source-none, .how-body { animation: none; }
+    .thinking-bubble .dot { animation: none; opacity: 0.7; }
+    .sample-badge::before { animation: none; }
+    .cursor { animation: none; }
+    .chip, #send-btn, #chat-input, .how summary::before, footer a { transition: none; }
+    .chip:hover:not(:disabled), #send-btn:hover:not(:disabled) { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-badge" aria-label="This page is a sample for an invented business">SAMPLE &middot; invented business</div>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <svg width="42" height="42" viewBox="0 0 40 40" aria-hidden="true">
+        <defs>
+          <linearGradient id="kmark" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#d76f31"/>
+            <stop offset="1" stop-color="#a84a17"/>
+          </linearGradient>
+        </defs>
+        <rect x="1" y="1" width="38" height="38" rx="10" fill="url(#kmark)"/>
+        <path d="M9 27 L20 8 L24 15 L31 13 L26 20 L29 28 L20 23 L13 30 Z" fill="#fff7f1"/>
+      </svg>
+      <div>
+        <div class="brand-name">Kestrel <span>Property Management</span></div>
+        <div class="brand-sub">40 residences &middot; San Francisco</div>
+      </div>
+    </div>
+    <p class="tagline">Ask about your lease, maintenance, or move-out. Answers come from our actual policy documents.</p>
+  </header>
+
+  <div class="chat-card">
+    <div class="chat-log" id="chat-log" aria-live="polite"></div>
+
+    <div class="chips" id="chips">
+      <button class="chip" type="button">Can I have a cat?</button>
+      <button class="chip" type="button">How do I get my deposit back?</button>
+      <button class="chip" type="button">Who do I call for a maintenance emergency?</button>
+      <button class="chip" type="button">When is rent due?</button>
+    </div>
+
+    <form class="input-row" id="chat-form">
+      <input id="chat-input" type="text" autocomplete="off" maxlength="200"
+             placeholder="Type a question about your unit..." aria-label="Your question">
+      <button id="send-btn" type="submit">Ask</button>
+    </form>
+  </div>
+
+  <details class="how">
+    <summary> How this works</summary>
+    <div class="how-body">
+      <p><strong>The retrieval is real and it is running in your browser right now.</strong> This page carries 16 short excerpts from Kestrel's (invented) policy documents. When you ask a question, a script scores every excerpt against your words, picks the best match, and shows you that exact text with its source. No server, no network requests, nothing leaves this tab.</p>
+      <p>The production version I build for clients uses the same retrieval pattern with an LLM API on top: the model writes the reply, but only from passages retrieved out of your real documents, and every answer cites where it came from. That grounding is what stops it from inventing policies you never wrote. If the documents don't cover a question, it says so and hands the customer to a human, exactly like this demo does.</p>
+    </div>
+  </details>
+
+  <footer>
+    Sample built by Angel Valle Jr. to show what a document-grounded assistant looks like.
+    Kestrel Property Management is not a real company.
+    <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Document chunks ---------- */
+  var CHUNKS = [
+    {
+      doc: "Resident Lease FAQ", sec: "Lease term and renewal",
+      kw: ["lease", "renew", "renewal", "term", "expire", "extend", "sign"],
+      text: "Standard leases at Kestrel run 12 months. We send renewal offers 90 days before your lease ends and need your signed renewal back at least 60 days before the end date. If you stay past your term without renewing, the lease converts to month-to-month at your current rent plus $150."
+    },
+    {
+      doc: "Resident Lease FAQ", sec: "Rent due date and late fees",
+      kw: ["rent", "due", "late", "fee", "grace"],
+      text: "Rent is due on the 1st of each month, with a grace period through 11:59 PM on the 3rd. Starting the 4th, a $75 late fee applies, plus $10 per day after that, capped at $175 total. Three late payments within 12 months counts as a lease violation."
+    },
+    {
+      doc: "Resident Lease FAQ", sec: "Guests and subletting",
+      kw: ["guest", "visitor", "sublet", "subletting", "sublease", "airbnb", "roommate", "stay"],
+      text: "Guests are welcome for up to 14 consecutive nights, or 21 total nights in any 6-month period. Anyone staying longer must be screened and added to the lease. Subletting and short-term rentals (Airbnb, Vrbo, or similar) are not permitted in any Kestrel unit."
+    },
+    {
+      doc: "Resident Lease FAQ", sec: "Renters insurance",
+      kw: ["insurance", "renters", "liability", "coverage"],
+      text: "Every household must carry renters insurance with at least $100,000 in liability coverage for the full lease term, with Kestrel Property Management listed as an interested party. Send proof of coverage to the office within 14 days of move-in and again at each renewal."
+    },
+    {
+      doc: "Maintenance & Repairs Policy", sec: "Emergencies",
+      kw: ["emergency", "urgent", "flood", "flooding", "leak", "gas", "heat", "call"],
+      text: "For emergencies, call our 24-hour maintenance line at (415) 555-0173. Emergencies are: flooding or a major leak, no heat when it is below 55 degrees outside, a gas smell, no working toilet in the unit, or a break-in that leaves a door or window unable to lock. If you smell gas, leave the unit first, call PG&E at 1-800-743-5000, then call us."
+    },
+    {
+      doc: "Maintenance & Repairs Policy", sec: "Routine repair requests",
+      kw: ["repair", "request", "fix", "portal", "maintenance", "broken"],
+      text: "Submit routine repair requests through the resident portal and include a photo if you can. We respond within 1 business day and schedule most repairs within 3 to 5 business days. Requests made by text message or in the hallway are easy to lose, so the portal is the fastest path to a fix."
+    },
+    {
+      doc: "Maintenance & Repairs Policy", sec: "Appliances and wear",
+      kw: ["appliance", "refrigerator", "fridge", "stove", "oven", "dishwasher", "washer", "dryer"],
+      text: "Kestrel repairs or replaces appliances that fail from normal use at no cost to you: refrigerator, stove, dishwasher, and in-unit washer and dryer where provided. Damage beyond normal wear, like a cracked glass cooktop or a chewed door seal, is billed back to the resident at cost."
+    },
+    {
+      doc: "Maintenance & Repairs Policy", sec: "Entry notice",
+      kw: ["entry", "enter", "notice", "inspection", "access", "landlord"],
+      text: "Except in emergencies, we give at least 48 hours written notice before entering your unit, and we schedule entries between 9 AM and 6 PM on weekdays. You do not need to be home, but you can ask to be present. Emergency entry (active flooding, gas, fire) requires no notice."
+    },
+    {
+      doc: "Move-Out Checklist", sec: "Giving notice",
+      kw: ["move", "moving", "vacate", "leave", "notice", "break", "terminate", "early"],
+      text: "To move out, give written notice at least 30 days before your departure date, through the portal or by email to office@kestrelpm.com. Mid-month notice is fine; you are responsible for rent through the full 30-day window. Breaking a lease early costs 1.5x one month's rent, plus rent until a replacement resident moves in."
+    },
+    {
+      doc: "Move-Out Checklist", sec: "Security deposit return",
+      kw: ["deposit", "security", "refund", "return", "back", "deduction"],
+      text: "Your security deposit comes back within 21 days of move-out, as California law requires, with an itemized statement of any deductions. You can request a pre-move-out inspection up to two weeks before you leave, and we will list exactly what to fix to get the full amount back. Normal wear and tear is never deducted."
+    },
+    {
+      doc: "Move-Out Checklist", sec: "Cleaning standard",
+      kw: ["clean", "cleaning", "carpet", "trash", "checklist"],
+      text: "Leave the unit as clean as you received it: wipe out appliances, clean the bathroom, and remove everything, including items in storage areas. If carpets were professionally cleaned before you moved in, provide a receipt for professional carpet cleaning at move-out, or a flat $250 charge applies. Items left behind are hauled at $95 per hour."
+    },
+    {
+      doc: "Move-Out Checklist", sec: "Keys and fobs",
+      kw: ["key", "fob", "remote", "garage", "mailbox"],
+      text: "Return all unit keys, mailbox keys, garage remotes, and entry fobs to the office by 5 PM on your move-out day. Missing items are deducted from your deposit: $25 per key, $85 per fob, $110 per garage remote. Rent keeps accruing until every key is back."
+    },
+    {
+      doc: "Pet Policy", sec: "Cats and dogs",
+      kw: ["cat", "dog", "pet", "puppy", "kitten", "animal"],
+      text: "Cats and dogs are welcome in most Kestrel units, up to 2 pets per home. Cats: a $300 refundable pet deposit plus $35 per month pet rent, each. Dogs: a $500 deposit plus $50 per month, 60 lbs and under, with breed restrictions listed in the full policy. Register your pet with the office before it moves in."
+    },
+    {
+      doc: "Pet Policy", sec: "Service and support animals",
+      kw: ["service", "support", "esa", "emotional", "assistance", "disability"],
+      text: "Service animals and documented emotional support animals are not pets under the law: no pet deposit, no pet rent, no breed or weight limits. Send the documentation to the office and we approve within 5 business days. All animals must still be licensed and vaccinated per San Francisco requirements."
+    },
+    {
+      doc: "Rent & Payments Guide", sec: "How to pay",
+      kw: ["pay", "payment", "ach", "bank", "card", "credit", "check", "cash", "rent"],
+      text: "Pay rent through the resident portal: ACH bank transfer is free, debit cards run a flat $4.95, and credit cards carry a 2.9% processing fee. We do not accept cash, Venmo, or Zelle. Paper checks are accepted at the office through the end of 2026, then everything moves to the portal."
+    },
+    {
+      doc: "Rent & Payments Guide", sec: "Autopay and payment plans",
+      kw: ["autopay", "automatic", "plan", "hardship", "behind", "struggling"],
+      text: "Autopay through the portal is free with ACH, and it wipes one late fee off your record per year if a payment ever misfires. If you know rent will be late, tell us before the 1st: we can set up a payment plan once per 12 months with no lease violation recorded. Silence is what leads to notices."
+    }
+  ];
+
+  var OFFICE = "I don't have that in my documents, so I won't guess. Here's how to reach the office: call (415) 555-0142 weekdays 9 AM to 5 PM, or email office@kestrelpm.com and we reply within 1 business day.";
+
+  /* ---------- Tokenizing and scoring ---------- */
+  var STOP = {};
+  ("a an the is are am was were be been being do does did done i im my me mine we our us you your yours it its of to in on for and or but if at by with about into over under how what when where who whom why which can could should would will shall may might must have has had having get got getting there this that these those from as not no nor so than then too very just also only own same s t don now up out off again once he she they them his her their").split(" ").forEach(function (w) { STOP[w] = 1; });
+
+  function norm(t) {
+    if (t.length > 3 && t.charAt(t.length - 1) === "s" && t.charAt(t.length - 2) !== "s") {
+      return t.slice(0, -1);
+    }
+    return t;
+  }
+
+  function tokenize(str) {
+    var raw = str.toLowerCase().replace(/[^a-z0-9\s-]/g, " ").split(/[\s-]+/);
+    var out = [];
+    for (var i = 0; i < raw.length; i++) {
+      var t = raw[i];
+      if (!t || t.length < 2 || STOP[t]) continue;
+      out.push(norm(t));
+    }
+    return out;
+  }
+
+  // Precompute per-chunk keyword sets and text token lists
+  CHUNKS.forEach(function (c) {
+    c.kwSet = {};
+    c.kw.forEach(function (k) { c.kwSet[norm(k)] = 1; });
+    c.tokens = tokenize(c.sec + " " + c.text);
+  });
+
+  function retrieve(query) {
+    var qTokens = tokenize(query);
+    var seen = {};
+    var unique = qTokens.filter(function (t) {
+      if (seen[t]) return false;
+      seen[t] = 1;
+      return true;
+    });
+
+    var scored = CHUNKS.map(function (c) {
+      var s = 0;
+      unique.forEach(function (t) {
+        if (c.kwSet[t]) {
+          s += 3;
+        } else {
+          var count = 0;
+          for (var i = 0; i < c.tokens.length; i++) {
+            if (c.tokens[i] === t) count++;
+          }
+          s += Math.min(count, 2);
+        }
+      });
+      return { chunk: c, score: s };
+    });
+
+    scored.sort(function (a, b) { return b.score - a.score; });
+
+    if (!scored.length || scored[0].score < 3) return null;
+
+    var picks = [scored[0].chunk];
+    if (scored[1] && scored[1].score >= 3 && scored[1].score >= scored[0].score * 0.6) {
+      picks.push(scored[1].chunk);
+    }
+    return picks;
+  }
+
+  /* ---------- Chat UI ---------- */
+  var log = document.getElementById("chat-log");
+  var form = document.getElementById("chat-form");
+  var input = document.getElementById("chat-input");
+  var sendBtn = document.getElementById("send-btn");
+  var chipsWrap = document.getElementById("chips");
+  var busy = false;
+
+  function scrollLog() { log.scrollTop = log.scrollHeight; }
+
+  function addMsg(role, text) {
+    var row = document.createElement("div");
+    row.className = "msg msg-" + role;
+    var bubble = document.createElement("div");
+    bubble.className = "bubble";
+    if (text) bubble.textContent = text;
+    row.appendChild(bubble);
+    log.appendChild(row);
+    scrollLog();
+    return bubble;
+  }
+
+  /* Visual-only thinking indicator, shown during the pre-answer pause */
+  var thinkingRow = null;
+  function showThinking() {
+    thinkingRow = document.createElement("div");
+    thinkingRow.className = "msg msg-bot";
+    var b = document.createElement("div");
+    b.className = "bubble thinking-bubble";
+    b.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < 3; i++) {
+      var d = document.createElement("span");
+      d.className = "dot";
+      b.appendChild(d);
+    }
+    thinkingRow.appendChild(b);
+    log.appendChild(thinkingRow);
+    scrollLog();
+  }
+  function hideThinking() {
+    if (thinkingRow) { thinkingRow.remove(); thinkingRow = null; }
+  }
+
+  function setBusy(state) {
+    busy = state;
+    sendBtn.disabled = state;
+    var chips = chipsWrap.querySelectorAll(".chip");
+    for (var i = 0; i < chips.length; i++) chips[i].disabled = state;
+  }
+
+  function typeInto(bubble, fullText, done) {
+    var span = document.createElement("span");
+    var cursor = document.createElement("span");
+    cursor.className = "cursor";
+    bubble.appendChild(span);
+    bubble.appendChild(cursor);
+    var start = Date.now();
+    var timer = setInterval(function () {
+      var i = Math.floor((Date.now() - start) / 7);
+      span.textContent = fullText.slice(0, i);
+      scrollLog();
+      if (i >= fullText.length) {
+        clearInterval(timer);
+        span.textContent = fullText;
+        cursor.remove();
+        done();
+      }
+    }, 14);
+  }
+
+  function answer(query) {
+    hideThinking();
+    var picks = retrieve(query);
+    var bubble = addMsg("bot", "");
+    var replyText, sources;
+
+    if (!picks) {
+      replyText = OFFICE;
+      sources = null;
+    } else {
+      replyText = picks.map(function (c) { return c.text; }).join("\n\n");
+      sources = picks;
+    }
+
+    setBusy(true);
+    typeInto(bubble, replyText, function () {
+      if (sources) {
+        var box = document.createElement("div");
+        box.className = "sources";
+        sources.forEach(function (c) {
+          var chip = document.createElement("div");
+          chip.className = "source-chip";
+          chip.textContent = "Source: " + c.doc + ", “" + c.sec + "”";
+          box.appendChild(chip);
+        });
+        bubble.appendChild(box);
+      } else {
+        var none = document.createElement("div");
+        none.className = "source-none";
+        none.textContent = "No matching section in the sample documents.";
+        bubble.appendChild(none);
+      }
+      scrollLog();
+      setBusy(false);
+      input.focus();
+    });
+  }
+
+  function ask(text) {
+    var q = text.trim();
+    if (!q || busy) return;
+    addMsg("user", q);
+    input.value = "";
+    showThinking();
+    setTimeout(function () { answer(q); }, 350);
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    ask(input.value);
+  });
+
+  chipsWrap.addEventListener("click", function (e) {
+    var btn = e.target.closest(".chip");
+    if (btn && !busy) ask(btn.textContent);
+  });
+
+  /* ---------- Greeting ---------- */
+  addMsg("bot", "Hi, I'm Kestrel's tenant help assistant. Ask me about your lease, repairs, rent, pets, or moving out. Every answer comes straight from our policy documents, and I'll show you the exact source. If it isn't in the documents, I'll say so instead of guessing.");
+})();
+</script>
+
+</body>
+</html>

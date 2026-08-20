@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fog Line Cycles | Book a repair (sample)</title>
+<style>
+  /* ============================================================
+     FOG LINE CYCLES - visual system v2
+     Layered neutrals, hairline borders, soft shadows.
+     Workshop character carried by the accent orange, the mono
+     labels, one restrained caution stripe, and the shop tag.
+     ============================================================ */
+  :root{
+    --accent:#e04f1d;
+    --accent-hi:#c2410c;
+    --accent-soft:rgba(224,79,29,.08);
+    --accent-ring:rgba(224,79,29,.28);
+    --ink:#1a1c1f;
+    --ink-soft:#5d6167;
+    --ink-faint:#8b9097;
+    --bg:#f1efeb;
+    --bg-deep:#e9e6e0;
+    --card:#ffffff;
+    --raise:#faf9f7;
+    --line:#e5e1da;
+    --line-strong:#d2cdc4;
+    --good:#1e7a3c;
+    --bad:#bf3428;
+    --bad-soft:rgba(191,52,40,.06);
+    --hero-ink:#141517;
+    --hero-ink-2:#1e2023;
+    --hero-text:#f2f0ec;
+    --hero-dim:#a9a49a;
+    --tag-paper:#f6ecd6;
+    --tag-paper-2:#efe1c2;
+    --tag-ink:#3a2f1c;
+    --tag-soft:#7c6c4d;
+    --tag-line:#dccfa9;
+    --sh-1:0 1px 2px rgba(21,20,18,.05),0 1px 1px rgba(21,20,18,.04);
+    --sh-2:0 1px 2px rgba(21,20,18,.05),0 10px 30px -8px rgba(21,20,18,.12);
+    --sh-3:0 2px 4px rgba(21,20,18,.08),0 18px 50px -12px rgba(21,20,18,.22);
+    --r-sm:8px;
+    --r-md:12px;
+    --r-lg:16px;
+    --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI Variable Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --display:"Segoe UI Variable Display","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media(prefers-color-scheme:dark){
+    :root{
+      --accent:#ff6a35;
+      --accent-hi:#ff7f52;
+      --accent-soft:rgba(255,106,53,.1);
+      --accent-ring:rgba(255,106,53,.34);
+      --ink:#ebecee;
+      --ink-soft:#a6abb2;
+      --ink-faint:#767c84;
+      --bg:#101214;
+      --bg-deep:#0b0d0e;
+      --card:#191c1f;
+      --raise:#1f2226;
+      --line:#282c31;
+      --line-strong:#363b41;
+      --good:#4cb873;
+      --bad:#f26a5c;
+      --bad-soft:rgba(242,106,92,.08);
+      --hero-ink:#0c0d0f;
+      --hero-ink-2:#131518;
+      --hero-text:#f0efec;
+      --hero-dim:#8f8b83;
+      --tag-paper:#292216;
+      --tag-paper-2:#211b11;
+      --tag-ink:#ecdcba;
+      --tag-soft:#a3936f;
+      --tag-line:#4a3f28;
+      --sh-1:0 1px 2px rgba(0,0,0,.3);
+      --sh-2:0 1px 2px rgba(0,0,0,.35),0 10px 30px -8px rgba(0,0,0,.5);
+      --sh-3:0 2px 4px rgba(0,0,0,.4),0 18px 50px -12px rgba(0,0,0,.65);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    background:
+      radial-gradient(1200px 500px at 80% -100px,var(--bg-deep),transparent 70%),
+      var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:88px; /* room for the mobile book bar */
+  }
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+
+  ::selection{background:var(--accent);color:#fff}
+
+  /* custom focus ring, everywhere */
+  :focus{outline:none}
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+
+  /* ---------- sample badge ---------- */
+  .badge{
+    position:fixed;top:12px;right:12px;z-index:60;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;
+    background:rgba(20,21,23,.82);color:#ffd9c7;
+    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    padding:6px 11px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:var(--sh-2);
+  }
+
+  /* ---------- hero ---------- */
+  header{
+    background:
+      radial-gradient(900px 420px at 15% -60%,var(--hero-ink-2),transparent 75%),
+      var(--hero-ink);
+    color:var(--hero-text);
+    padding:56px 0 40px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    /* faint oversize wordmark ghosted into the hero */
+    content:"FLC";
+    position:absolute;right:-24px;bottom:-52px;
+    font-family:var(--display);font-weight:800;font-size:14rem;
+    letter-spacing:-.04em;line-height:1;
+    color:rgba(255,255,255,.028);
+    pointer-events:none;user-select:none;
+  }
+  .stripe{
+    height:8px;
+    background:repeating-linear-gradient(-45deg,var(--accent) 0 14px,var(--hero-ink) 14px 28px);
+    border-bottom:1px solid var(--line);
+    opacity:.92;
+  }
+  .shop-tag{
+    font-family:var(--mono);font-size:11.5px;color:var(--hero-dim);
+    letter-spacing:.18em;text-transform:uppercase;
+  }
+  .shop-tag::before{
+    content:"";display:inline-block;width:22px;height:1px;
+    background:var(--accent);vertical-align:middle;margin-right:10px;
+  }
+  h1{
+    font-family:var(--display);
+    font-size:clamp(2.4rem,9vw,3.6rem);
+    font-weight:800;
+    text-transform:uppercase;letter-spacing:-.015em;line-height:.98;
+    margin:14px 0 14px;
+  }
+  h1 .fog{
+    color:var(--accent);
+    text-shadow:0 0 32px rgba(224,79,29,.35);
+  }
+  .oneliner{
+    font-size:1.08rem;max-width:36ch;color:#d9d6cf;
+    font-weight:400;
+  }
+  .facts{
+    margin-top:24px;display:flex;flex-wrap:wrap;gap:8px 10px;
+    font-family:var(--mono);font-size:12px;color:var(--hero-dim);
+    font-variant-numeric:tabular-nums;
+  }
+  .facts span{
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:999px;padding:6px 12px;
+    background:rgba(255,255,255,.03);
+  }
+  .facts b{color:var(--hero-text);font-weight:600}
+  .hero-cta{margin-top:28px}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    font-family:var(--sans);font-weight:650;font-size:.98rem;
+    letter-spacing:.01em;
+    padding:13px 26px;
+    color:#fff;
+    background:linear-gradient(180deg,var(--accent),var(--accent-hi));
+    border:1px solid var(--accent-hi);
+    border-radius:var(--r-md);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 1px 2px rgba(21,20,18,.2),0 8px 20px -6px var(--accent-ring);
+    transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+  }
+  .btn:hover{
+    filter:brightness(1.06);
+    transform:translateY(-1px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 4px rgba(21,20,18,.2),0 12px 26px -6px var(--accent-ring);
+  }
+  .btn:active{transform:translateY(0);filter:brightness(.97);box-shadow:inset 0 1px 2px rgba(0,0,0,.18)}
+  .btn:disabled{
+    cursor:not-allowed;
+    background:var(--raise);
+    color:var(--ink-faint);
+    border-color:var(--line);
+    box-shadow:none;
+    filter:none;transform:none;
+  }
+  .btn.ghost{
+    background:var(--card);color:var(--ink);font-weight:550;
+    border:1px solid var(--line-strong);
+    box-shadow:var(--sh-1);
+  }
+  .btn.ghost:hover{background:var(--raise);filter:none;border-color:var(--ink-faint)}
+
+  /* ---------- sticky mobile bar ---------- */
+  .bookbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    background:rgba(20,21,23,.86);
+    -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    border-top:1px solid rgba(255,255,255,.12);
+    box-shadow:0 -8px 30px rgba(0,0,0,.25);
+    transform:translateY(0);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  .bookbar.off{transform:translateY(110%)}
+  .bookbar .btn{width:100%;text-align:center}
+  @media(min-width:720px){
+    .bookbar{display:none}
+    body{padding-bottom:0}
+  }
+
+  /* ---------- sections ---------- */
+  section{padding:44px 0}
+  .kicker{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+  }
+  h2{
+    font-family:var(--display);
+    font-size:2rem;font-weight:800;
+    letter-spacing:-.015em;line-height:1.05;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+
+  .owner-note{
+    margin:16px 0 26px;padding:14px 18px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:var(--r-sm);
+    box-shadow:var(--sh-1);
+    font-size:.94rem;color:var(--ink-soft);
+  }
+  .owner-note b{color:var(--ink)}
+
+  /* ---------- flow panel ---------- */
+  .panel-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-lg);
+    box-shadow:var(--sh-2);
+    padding:24px 20px 26px;
+    overflow:hidden;
+  }
+
+  /* progress rail: numbered stops + connector bars that fill */
+  .progress{
+    list-style:none;display:flex;gap:0;margin-bottom:28px;
+    font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .progress li{
+    flex:1;text-align:center;position:relative;
+    color:var(--ink-faint);padding-top:36px;
+    transition:color .3s ease;
+  }
+  .progress li::before{
+    content:attr(data-n);
+    position:absolute;top:0;left:50%;transform:translateX(-50%);
+    width:28px;height:28px;line-height:26px;text-align:center;
+    border-radius:999px;
+    border:1px solid var(--line-strong);
+    background:var(--raise);color:var(--ink-faint);
+    font-weight:700;font-size:12px;
+    font-variant-numeric:tabular-nums;
+    transition:background .3s ease,border-color .3s ease,color .3s ease,box-shadow .3s ease;
+  }
+  .progress li::after{
+    content:"";position:absolute;top:13.5px;left:calc(50% + 18px);
+    width:calc(100% - 36px);height:2px;border-radius:2px;
+    background:
+      linear-gradient(var(--accent),var(--accent)) no-repeat left/0% 100%,
+      var(--line);
+    transition:background-size .45s cubic-bezier(.4,0,.2,1);
+  }
+  .progress li:last-child::after{display:none}
+  .progress li.done{color:var(--ink-soft)}
+  .progress li.done::before{
+    content:"\2713";
+    background:var(--ink);border-color:var(--ink);color:var(--card);
+  }
+  .progress li.done::after{background-size:100% 100%,auto}
+  .progress li.current{color:var(--accent);font-weight:700}
+  .progress li.current::before{
+    background:linear-gradient(180deg,var(--accent),var(--accent-hi));
+    border-color:var(--accent-hi);color:#fff;
+    box-shadow:0 0 0 4px var(--accent-soft),0 4px 12px -2px var(--accent-ring);
+  }
+
+  /* step panels: slide + fade on entry */
+  .panel{display:none}
+  .panel.active{
+    display:block;
+    animation:panelIn .38s cubic-bezier(.22,.9,.3,1) both;
+  }
+  @keyframes panelIn{
+    from{opacity:0;transform:translateX(18px)}
+    to{opacity:1;transform:none}
+  }
+  .panel h3{
+    font-family:var(--display);
+    font-size:1.3rem;font-weight:750;letter-spacing:-.01em;
+    margin-bottom:4px;
+  }
+  .panel .sub{color:var(--ink-soft);font-size:.92rem;margin-bottom:18px}
+
+  /* step 1: services */
+  .svc{
+    width:100%;text-align:left;cursor:pointer;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-md);
+    padding:14px 16px;margin-bottom:10px;
+    display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+    font-family:var(--sans);font-size:1rem;color:var(--ink);
+    box-shadow:var(--sh-1);
+    transition:border-color .18s ease,box-shadow .18s ease,background .18s ease,transform .18s ease;
+    position:relative;
+  }
+  .svc:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:var(--sh-2)}
+  .svc.sel{
+    border-color:var(--accent);
+    background:linear-gradient(0deg,var(--accent-soft),var(--accent-soft)),var(--card);
+    box-shadow:0 0 0 1px var(--accent),var(--sh-2);
+  }
+  .svc.sel::after{
+    content:"\2713";
+    position:absolute;top:10px;right:10px;
+    width:20px;height:20px;line-height:20px;text-align:center;
+    border-radius:999px;font-size:11px;font-weight:700;
+    background:var(--accent);color:#fff;
+  }
+  .svc .nm{font-weight:650;letter-spacing:-.005em}
+  .svc .ds{display:block;font-size:.85rem;color:var(--ink-soft);font-weight:400;margin-top:3px;line-height:1.45}
+  .svc .pr{
+    font-family:var(--mono);font-size:.76rem;text-align:right;
+    white-space:nowrap;color:var(--ink-soft);
+    font-variant-numeric:tabular-nums;
+    padding-right:2px;
+  }
+  .svc .pr b{display:block;font-size:.95rem;color:var(--accent);font-weight:700;margin-bottom:1px}
+
+  /* step 2: days + slots */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+  .chip{
+    cursor:pointer;font-family:var(--mono);font-size:.78rem;
+    font-variant-numeric:tabular-nums;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--r-sm);
+    padding:9px 12px;text-align:center;color:var(--ink);min-width:82px;
+    box-shadow:var(--sh-1);
+    transition:border-color .15s ease,background .15s ease,box-shadow .15s ease,transform .15s ease;
+  }
+  .chip b{display:block;font-family:var(--sans);font-size:.95rem;font-weight:650;letter-spacing:-.005em}
+  .chip:hover{border-color:var(--line-strong);transform:translateY(-1px);box-shadow:var(--sh-2)}
+  .chip.sel{
+    border-color:var(--accent);
+    background:linear-gradient(0deg,var(--accent-soft),var(--accent-soft)),var(--card);
+    box-shadow:0 0 0 1px var(--accent),var(--sh-1);
+    color:var(--accent);
+  }
+  .chip.sel b{color:var(--ink)}
+  .chip:disabled,.chip.taken{
+    cursor:not-allowed;
+    color:var(--ink-faint);
+    background:
+      repeating-linear-gradient(-45deg,transparent 0 5px,rgba(128,128,128,.05) 5px 6px),
+      var(--raise);
+    border-color:var(--line);
+    border-style:dashed;
+    text-decoration:line-through;
+    text-decoration-color:var(--ink-faint);
+    box-shadow:none;transform:none;
+  }
+  .slot-hint{font-family:var(--mono);font-size:.82rem;color:var(--ink-soft);margin-bottom:12px}
+  .legend{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint);margin-top:2px}
+
+  /* step 3: form */
+  .field{margin-bottom:18px}
+  .field label{display:block;font-weight:650;font-size:.92rem;margin-bottom:6px;letter-spacing:-.005em}
+  .field .hint{font-weight:400;color:var(--ink-soft);font-size:.8rem}
+  .field input,.field textarea{
+    width:100%;font-family:var(--sans);font-size:1rem;color:var(--ink);
+    background:var(--raise);
+    border:1px solid var(--line-strong);
+    border-radius:var(--r-sm);
+    padding:12px 14px;
+    box-shadow:inset 0 1px 2px rgba(21,20,18,.04);
+    transition:border-color .15s ease,box-shadow .15s ease,background .15s ease;
+  }
+  .field input::placeholder,.field textarea::placeholder{color:var(--ink-faint)}
+  .field input:focus,.field textarea:focus{
+    outline:none;
+    border-color:var(--accent);
+    background:var(--card);
+    box-shadow:0 0 0 3px var(--accent-soft);
+  }
+  .field.bad input,.field.bad textarea{
+    border-color:var(--bad);
+    background:var(--bad-soft);
+    box-shadow:0 0 0 3px rgba(191,52,40,.08);
+  }
+  .err{display:none;color:var(--bad);font-size:.84rem;margin-top:6px}
+  .field.bad .err{display:block}
+
+  /* step 4: the work tag, rendered like the physical thing */
+  .tag-card{
+    position:relative;
+    background:
+      linear-gradient(160deg,rgba(255,255,255,.35),transparent 45%),
+      linear-gradient(180deg,var(--tag-paper),var(--tag-paper-2));
+    color:var(--tag-ink);
+    border:1px solid var(--tag-line);
+    border-radius:6px 18px 6px 6px;
+    padding:20px 18px 16px 46px;
+    margin:20px 0 22px;
+    transform:rotate(-1.4deg);
+    box-shadow:var(--sh-3);
+  }
+  .tag-hole{
+    position:absolute;top:50%;left:14px;transform:translateY(-50%);
+    width:16px;height:16px;border-radius:999px;
+    background:var(--bg);
+    box-shadow:
+      inset 0 1px 3px rgba(0,0,0,.35),
+      0 0 0 3px var(--tag-paper-2),
+      0 0 0 4px var(--tag-line);
+  }
+  .tag-hole::after{
+    /* reinforcement ring, like the gummed washer on a real tag */
+    content:"";position:absolute;inset:-7px;border-radius:999px;
+    border:1px dashed var(--tag-line);
+  }
+  .tag-row{
+    display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+    padding:10px 0;border-bottom:1px dashed var(--tag-line);font-size:.95rem;
+  }
+  .tag-row:last-child{border-bottom:none}
+  .tag-row .k{
+    font-family:var(--mono);font-size:.7rem;text-transform:uppercase;
+    letter-spacing:.14em;color:var(--tag-soft);white-space:nowrap;
+  }
+  .tag-row .v{text-align:right;color:var(--tag-ink)}
+  .tag-row .v b{display:block;font-weight:700;letter-spacing:-.005em}
+  .chg{
+    background:none;border:none;cursor:pointer;padding:0;
+    font-family:var(--mono);font-size:.72rem;color:var(--accent-hi);
+    text-decoration:underline;text-underline-offset:2px;
+  }
+  @media(prefers-color-scheme:dark){
+    .chg{color:var(--accent)}
+  }
+  .chg:hover{color:var(--accent)}
+  .conf-code{
+    font-family:var(--mono);font-size:1.6rem;font-weight:700;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.14em;color:var(--accent-hi);
+  }
+  @media(prefers-color-scheme:dark){
+    .conf-code{color:var(--accent)}
+  }
+  .demo-note{
+    margin-top:18px;padding:13px 16px;
+    background:var(--raise);
+    border:1px solid var(--line);
+    border-left:3px solid var(--ink-faint);
+    border-radius:var(--r-sm);
+    font-size:.88rem;color:var(--ink-soft);
+  }
+
+  .nav{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+  .nav .spacer{flex:1}
+
+  /* ---------- footer ---------- */
+  footer{
+    background:var(--hero-ink);color:var(--hero-dim);
+    padding:30px 0 34px;margin-top:28px;
+    font-size:.88rem;
+    border-top:3px solid var(--accent);
+  }
+  footer a{color:var(--hero-text);text-decoration-color:var(--accent);text-underline-offset:3px}
+  footer .fine{font-family:var(--mono);font-size:.76rem;margin-top:10px;color:var(--hero-dim);opacity:.75}
+
+  @media(min-width:720px){
+    header{padding:80px 0 52px}
+    .panel-box{padding:32px 32px 34px}
+    .progress{font-size:11px}
+    .tag-card{padding:24px 24px 20px 56px}
+  }
+
+  /* motion respect: kill entrances, keep instant state changes */
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .panel.active{animation:none}
+    .progress li::after,.progress li::before,
+    .btn,.svc,.chip,.bookbar{transition:none}
+    .btn:hover,.svc:hover,.chip:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="badge">SAMPLE · invented business</div>
+
+<header>
+  <div class="wrap">
+    <div class="shop-tag">Service Dept. / Est. whenever the fog lifted</div>
+    <h1>Fog <span class="fog">Line</span> Cycles</h1>
+    <p class="oneliner">Bike repair in the fog belt. We fix what the hills and the salt air chew up.</p>
+    <div class="facts">
+      <span><b>Tue to Sun</b> 10am to 6pm</span>
+      <span><b>Closed Mondays</b> (we ride too)</span>
+      <span><b>000 Example Ave</b>, San Francisco</span>
+    </div>
+    <div class="hero-cta">
+      <button class="btn" id="heroBook" type="button">Book a repair</button>
+    </div>
+  </div>
+</header>
+<div class="stripe"></div>
+
+<section id="book">
+  <div class="wrap">
+    <p class="kicker">No phone tag, no sticky notes</p>
+    <h2 id="flowtop">Get on the stand</h2>
+    <p class="owner-note"><b>Shop owners, this is the pitch:</b> bookings land while you are elbow-deep in a repair stand. The customer picks a slot, you get the job, nobody plays phone tag.</p>
+
+    <div class="panel-box">
+      <ol class="progress" id="progress">
+        <li data-n="1">Service</li>
+        <li data-n="2">Time</li>
+        <li data-n="3">Details</li>
+        <li data-n="4">Done</li>
+      </ol>
+
+      <!-- STEP 1 -->
+      <div class="panel active" id="p1">
+        <h3>What is the bike doing?</h3>
+        <p class="sub">Prices are starting points. Parts are extra, surprises get a call first.</p>
+        <div id="svcList"></div>
+        <div class="nav">
+          <span class="spacer"></span>
+          <button class="btn" id="next1" type="button" disabled>Next: pick a time</button>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="panel" id="p2">
+        <h3>When can you drop it off?</h3>
+        <p class="sub">Next seven open days. Mondays we are out riding, not answering the door.</p>
+        <div class="chips" id="dayList"></div>
+        <p class="slot-hint" id="slotHint">Pick a day and the open slots show up here.</p>
+        <div class="chips" id="slotList"></div>
+        <p class="legend" id="slotLegend" style="display:none">Crossed out means somebody beat you to it.</p>
+        <div class="nav">
+          <button class="btn ghost" id="back2" type="button">Back</button>
+          <button class="btn" id="next2" type="button" disabled>Next: your details</button>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="panel" id="p3">
+        <h3>Who does the bike belong to?</h3>
+        <p class="sub">Just enough to put a name on the work tag and reach you when it is ready.</p>
+        <div class="field" id="fldName">
+          <label for="fName">Your name</label>
+          <input id="fName" type="text" autocomplete="name" placeholder="Sam Rider">
+          <p class="err">We need a name to put on the work tag.</p>
+        </div>
+        <div class="field" id="fldContact">
+          <label for="fContact">Phone or email</label>
+          <input id="fContact" type="text" autocomplete="tel" placeholder="(415) 555-0000 or you@example.com">
+          <p class="err">Give us a phone number or an email so we can tell you when it is done.</p>
+        </div>
+        <div class="field">
+          <label for="fNotes">About the bike <span class="hint">(optional, but the noise description helps)</span></label>
+          <textarea id="fNotes" rows="3" placeholder="Blue Surly, clicks on the third pedal stroke, only uphill"></textarea>
+        </div>
+        <div class="nav">
+          <button class="btn ghost" id="back3" type="button">Back</button>
+          <button class="btn" id="next3" type="button">Review and book</button>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="panel" id="p4">
+        <h3>You are on the stand.</h3>
+        <p class="sub">Here is your work tag. Screenshot it or just remember the code.</p>
+        <div class="tag-card">
+          <div class="tag-hole" aria-hidden="true"></div>
+          <div class="tag-row">
+            <span class="k">Work tag</span>
+            <span class="v"><span class="conf-code" id="confCode">FLC-0000</span></span>
+          </div>
+          <div class="tag-row">
+            <span class="k">Service</span>
+            <span class="v" id="sumService"></span>
+          </div>
+          <div class="tag-row">
+            <span class="k">Drop-off</span>
+            <span class="v" id="sumTime"></span>
+          </div>
+          <div class="tag-row">
+            <span class="k">Customer</span>
+            <span class="v" id="sumContact"></span>
+          </div>
+          <div class="tag-row" id="sumNotesRow">
+            <span class="k">Notes</span>
+            <span class="v" id="sumNotes"></span>
+          </div>
+        </div>
+        <p class="demo-note">This is a demo, so nothing was actually booked. In the real version this emails the shop and adds it to their calendar.</p>
+        <div class="nav">
+          <button class="btn ghost" id="back4" type="button">Back</button>
+          <button class="btn" id="restart" type="button">Book another repair</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Sample built by Angel Valle Jr. Fog Line Cycles is not a real shop; the booking flow is the point. <a href="mailto:theangelvallejr@gmail.com">theangelvallejr@gmail.com</a></p>
+    <p class="fine">One HTML file. No trackers, no external requests, loads before your coffee cools.</p>
+  </div>
+</footer>
+
+<div class="bookbar" id="bookBar">
+  <button class="btn" id="barBook" type="button">Book a repair</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- data ---------- */
+  var SERVICES = [
+    { id:"tune",  name:"Basic tune-up",            desc:"Gears, brakes, every bolt, tire pressure. The works.", price:"from $89", time:"about 2 hours" },
+    { id:"flat",  name:"Flat fix",                  desc:"Tube swap, plus we hunt the glass that caused it.",    price:"from $18", time:"20 minutes" },
+    { id:"brake", name:"Brake service",             desc:"Pads, cables or a bleed. Lever feel dialed back in.",  price:"from $49", time:"about 1 hour" },
+    { id:"drive", name:"Drivetrain clean and tune", desc:"Degrease, re-lube, shifting indexed so it stops skipping.", price:"from $75", time:"1 to 2 hours" },
+    { id:"look",  name:"Not sure, look at it",      desc:"Describe the noise. We will find it.",                 price:"free estimate", time:"15 minutes" }
+  ];
+  var SLOT_TIMES = ["10:00 am","11:00 am","12:00 pm","1:30 pm","2:30 pm","3:30 pm","4:30 pm"];
+  var WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var MO = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  /* next 7 OPEN days from today, skipping Mondays; Date handles month/year rollover */
+  function buildDays(){
+    var out = [], today = new Date(), i = 1;
+    while (out.length < 7 && i < 15){
+      var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
+      if (d.getDay() !== 1){ /* closed Mondays */
+        out.push({
+          date: d,
+          key: d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate(),
+          top: (i === 1) ? "Tmrw" : WD[d.getDay()],
+          sub: MO[d.getMonth()] + " " + d.getDate(),
+          full: WD[d.getDay()] + ", " + MO[d.getMonth()] + " " + d.getDate()
+        });
+      }
+      i++;
+    }
+    return out;
+  }
+  var DAYS = buildDays();
+
+  /* deterministic hash so "taken" slots are stable per day, not random each load */
+  function hash(str){
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function slotsFor(dayKey){
+    var list = SLOT_TIMES.map(function(t){
+      return { t: t, taken: hash("fogline|" + dayKey + "|" + t) % 3 === 0 };
+    });
+    /* never let a whole day read as full in the demo */
+    if (list.every(function(s){ return s.taken; })) list[0].taken = false;
+    return list;
+  }
+
+  /* ---------- state ---------- */
+  var state = { service: null, dayIdx: null, slot: null, name: "", contact: "", notes: "" };
+  var step = 1;
+
+  /* ---------- step switching ---------- */
+  function go(n, scroll){
+    step = n;
+    for (var i = 1; i <= 4; i++){
+      $("p" + i).classList.toggle("active", i === n);
+    }
+    var items = $("progress").children;
+    for (var j = 0; j < 4; j++){
+      items[j].classList.toggle("done", j + 1 < n);
+      items[j].classList.toggle("current", j + 1 === n);
+    }
+    if (n === 4) buildSummary();
+    if (scroll) $("flowtop").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* ---------- step 1: services ---------- */
+  function renderServices(){
+    var box = $("svcList");
+    box.innerHTML = "";
+    SERVICES.forEach(function(s){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "svc" + (state.service === s.id ? " sel" : "");
+      b.innerHTML =
+        '<span><span class="nm">' + s.name + '</span><span class="ds">' + s.desc + '</span></span>' +
+        '<span class="pr"><b>' + s.price + '</b>' + s.time + '</span>';
+      b.addEventListener("click", function(){
+        state.service = s.id;
+        renderServices();
+        $("next1").disabled = false;
+      });
+      box.appendChild(b);
+    });
+    $("next1").disabled = !state.service;
+  }
+
+  /* ---------- step 2: days + slots ---------- */
+  function renderDays(){
+    var box = $("dayList");
+    box.innerHTML = "";
+    DAYS.forEach(function(day, idx){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip" + (state.dayIdx === idx ? " sel" : "");
+      b.innerHTML = "<b>" + day.top + "</b>" + day.sub;
+      b.addEventListener("click", function(){
+        if (state.dayIdx !== idx) state.slot = null; /* new day, old slot no longer applies */
+        state.dayIdx = idx;
+        renderDays();
+        renderSlots();
+        updateNext2();
+      });
+      box.appendChild(b);
+    });
+  }
+  function renderSlots(){
+    var box = $("slotList"), hint = $("slotHint"), legend = $("slotLegend");
+    box.innerHTML = "";
+    if (state.dayIdx === null){
+      hint.textContent = "Pick a day and the open slots show up here.";
+      legend.style.display = "none";
+      return;
+    }
+    var day = DAYS[state.dayIdx];
+    hint.textContent = "Open slots for " + day.full + ":";
+    legend.style.display = "block";
+    slotsFor(day.key).forEach(function(s){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip" + (s.taken ? " taken" : "") + (!s.taken && state.slot === s.t ? " sel" : "");
+      b.textContent = s.t;
+      if (s.taken){
+        b.disabled = true;
+      } else {
+        b.addEventListener("click", function(){
+          state.slot = s.t;
+          renderSlots();
+          updateNext2();
+        });
+      }
+      box.appendChild(b);
+    });
+  }
+  function updateNext2(){
+    $("next2").disabled = !(state.dayIdx !== null && state.slot);
+  }
+
+  /* ---------- step 3: validation ---------- */
+  function looksLikeContact(v){
+    var digits = v.replace(/\D/g, "");
+    var phoneOk = digits.length >= 7 && digits.length <= 15;
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    return phoneOk || emailOk;
+  }
+  function validateDetails(){
+    state.name = $("fName").value.trim();
+    state.contact = $("fContact").value.trim();
+    state.notes = $("fNotes").value.trim();
+    var okName = state.name.length > 0;
+    var okContact = looksLikeContact(state.contact);
+    $("fldName").classList.toggle("bad", !okName);
+    $("fldContact").classList.toggle("bad", !okContact);
+    if (!okName){ $("fName").focus(); return false; }
+    if (!okContact){ $("fContact").focus(); return false; }
+    return true;
+  }
+  /* clear the red as soon as they start fixing it */
+  $("fName").addEventListener("input", function(){ $("fldName").classList.remove("bad"); });
+  $("fContact").addEventListener("input", function(){ $("fldContact").classList.remove("bad"); });
+
+  /* ---------- step 4: summary ---------- */
+  function svcById(id){
+    for (var i = 0; i < SERVICES.length; i++){ if (SERVICES[i].id === id) return SERVICES[i]; }
+    return null;
+  }
+  function esc(s){
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+  function changeLink(target){
+    return ' <button class="chg" type="button" data-go="' + target + '">change</button>';
+  }
+  function buildSummary(){
+    var s = svcById(state.service);
+    var day = DAYS[state.dayIdx];
+    $("sumService").innerHTML = "<b>" + s.name + "</b>" + s.price + ", " + s.time + changeLink("1");
+    $("sumTime").innerHTML = "<b>" + day.full + "</b>" + state.slot + changeLink("2");
+    $("sumContact").innerHTML = "<b>" + esc(state.name) + "</b>" + esc(state.contact) + changeLink("3");
+    if (state.notes){
+      $("sumNotesRow").style.display = "";
+      $("sumNotes").textContent = state.notes;
+    } else {
+      $("sumNotesRow").style.display = "none";
+    }
+    var code = hash("tag|" + state.name + "|" + state.contact + "|" + day.key + "|" + state.slot) % 1679616;
+    $("confCode").textContent = "FLC-" + code.toString(36).toUpperCase().padStart(4, "0");
+    /* wire the change links (fresh nodes each build) */
+    var links = document.querySelectorAll("#p4 .chg");
+    for (var i = 0; i < links.length; i++){
+      links[i].addEventListener("click", function(e){
+        go(parseInt(e.currentTarget.getAttribute("data-go"), 10), true);
+      });
+    }
+  }
+
+  /* ---------- navigation wiring ---------- */
+  $("next1").addEventListener("click", function(){ if (state.service) go(2, true); });
+  $("back2").addEventListener("click", function(){ go(1, true); });
+  $("next2").addEventListener("click", function(){ if (state.dayIdx !== null && state.slot) go(3, true); });
+  $("back3").addEventListener("click", function(){ go(2, true); });
+  $("next3").addEventListener("click", function(){ if (validateDetails()) go(4, true); });
+  $("back4").addEventListener("click", function(){ go(3, true); });
+  $("restart").addEventListener("click", function(){
+    state = { service: null, dayIdx: null, slot: null, name: "", contact: "", notes: "" };
+    $("fName").value = ""; $("fContact").value = ""; $("fNotes").value = "";
+    $("fldName").classList.remove("bad"); $("fldContact").classList.remove("bad");
+    renderServices(); renderDays(); renderSlots(); updateNext2();
+    go(1, true);
+  });
+
+  /* hero + sticky bar buttons scroll to the flow */
+  function toFlow(){ $("book").scrollIntoView({ behavior: "smooth", block: "start" }); }
+  $("heroBook").addEventListener("click", toFlow);
+  $("barBook").addEventListener("click", toFlow);
+
+  /* hide the mobile bar while the booking section is on screen */
+  if ("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      $("bookBar").classList.toggle("off", entries[0].isIntersecting);
+    }, { threshold: 0.12 });
+    io.observe($("book"));
+  }
+
+  /* ---------- boot ---------- */
+  renderServices();
+  renderDays();
+  renderSlots();
+  updateNext2();
+  go(1, false);
+})();
+</script>
+</body>
+</html>
