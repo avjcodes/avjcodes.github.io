@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Bookshop That Opens With the Boats · Longshore</title>
+<meta name="description" content="In a harbour town that sends its boats out at five, the only shop with a light on sells poetry, tide tables and a loaf that takes two days to make. A Longshore feature by Ines Calloway.">
+<link rel="canonical" href="https://avjcodes.github.io/meridian-article.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Longshore">
+<meta property="og:title" content="The Bookshop That Opens With the Boats">
+<meta property="og:description" content="In a harbour town that sends its boats out at five, the only shop with a light on sells poetry, tide tables and a loaf that takes two days to make.">
+<meta property="og:url" content="https://avjcodes.github.io/meridian-article.html">
+<meta property="og:image" content="https://avjcodes.github.io/assets/editorial/email-hero.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:image:alt" content="Fishing boats moored in a calm harbour at first light, hills on the horizon.">
+<meta property="article:published_time" content="2026-08-20T06:00:00-04:00">
+<meta property="article:author" content="Ines Calloway">
+<meta property="article:section" content="Places">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Bookshop That Opens With the Boats">
+<meta name="twitter:description" content="The only shop with a light on at five sells poetry, tide tables and a two-day loaf.">
+<meta name="twitter:image" content="https://avjcodes.github.io/assets/editorial/email-hero.jpg">
+<meta name="theme-color" content="#f3f3ef" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2712%27 fill=%27%231f5f63%27/%3E%3Ctext x=%2750%27 y=%2770%27 font-size=%2760%27 font-family=%27Georgia,serif%27 text-anchor=%27middle%27 fill=%27%23f3f3ef%27%3EL%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/Gambarino-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/Sentient-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<!--
+  SAMPLE: "Longshore" is an invented publication built as a portfolio sample by Angel Valle Jr.
+  Port Ellery, Teale and Daughter Books and every person named in the story are fictional.
+
+  PHOTO CREDITS (Unsplash License, https://unsplash.com/license):
+    hero-harbour-dawn.webp / email-hero.jpg   Jugwang Son        https://unsplash.com/photos/UUv0hBbmyM0
+    boats-first-light.webp                    scott clark        https://unsplash.com/photos/Bplw59h6lFI
+    shop-front-room.webp                      Philipp Hubert     https://unsplash.com/photos/YoQbGvLu8DE
+    loaf-in-tin.webp                          Diego Arenas de Rodrigo  https://unsplash.com/photos/JVY7VSBEhEo
+    hands-dough.webp / email-teaser-table.jpg DDP                https://unsplash.com/photos/zqg6ctfkYuo
+    table-new-fiction.webp / email-teaser-press.jpg  Abdsamad Kabir-kushoro  https://unsplash.com/photos/JQpgb0CijyI
+  Photos were cropped and re-encoded (WebP, longest edge 1600px) for this page.
+
+  FONTS: Gambarino (display), Sentient (text) and Satoshi (labels) by Indian Type Foundry via Fontshare,
+  self-hosted under the ITF Free Font License v2.0 (assets/fonts/FFL.txt).
+
+  SHARED TOKENS with meridian-newsletter.html: paper #f3f3ef, ink #171c20, tide #1f5f63, rule #cfd2cc.
+-->
+<style>
+  @font-face { font-family: "Gambarino"; src: url("assets/fonts/Gambarino-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Sentient"; src: url("assets/fonts/Sentient-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Sentient"; src: url("assets/fonts/Sentient-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: "Sentient"; src: url("assets/fonts/Sentient-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Satoshi"; src: url("assets/fonts/Satoshi-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+  @font-face { font-family: "Satoshi"; src: url("assets/fonts/Satoshi-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
+  /* ---------- tokens (DESIGN.md: Longshore) ----------
+     subject words: working harbour, early, paper.
+     signature: the masthead folio strip. everything else stays quiet. */
+  :root {
+    --paper: #f3f3ef;
+    --paper-2: #e9eae4;
+    --ink: #171c20;
+    --ink-2: #464d53;
+    --ink-3: #5c636a;
+    --tide: #1f5f63;
+    --tide-deep: #174b4e;
+    --tide-wash: rgba(31, 95, 99, 0.10);
+    --rule: #cfd2cc;
+    --rule-soft: #e0e2dd;
+    --on-tide: #f3f3ef;
+    --display: "Gambarino", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --text: "Sentient", Georgia, "Times New Roman", serif;
+    --label: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif;
+    /* 4px grid */
+    --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px; --s-10: 128px;
+    --measure: 66ch;
+    --t-body: 1.1875rem;   /* 19px */
+    --t-small: 0.9375rem;  /* 15px */
+    --t-label: 0.75rem;    /* 12px */
+    --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #14181b;
+      --paper-2: #1b2024;
+      --ink: #e9e7e0;
+      --ink-2: #b3b5ae;
+      --ink-3: #8f938e;
+      --tide: #7fc2c3;
+      --tide-deep: #9ad3d3;
+      --tide-wash: rgba(127, 194, 195, 0.12);
+      --rule: #353c41;
+      --rule-soft: #272d31;
+      --on-tide: #0f1b1c;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: var(--t-body);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: oldstyle-nums;
+  }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: var(--tide); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { color: var(--tide-deep); }
+  :focus-visible { outline: 2px solid var(--tide); outline-offset: 3px; }
+  ::selection { background: var(--tide-wash); }
+  time, .folio, .num { font-variant-numeric: tabular-nums lining-nums; }
+
+  .label {
+    font-family: var(--label);
+    font-weight: 700;
+    font-size: var(--t-label);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ---------- sample badge ---------- */
+  .sample-badge {
+    position: fixed; top: var(--s-4); right: var(--s-4); z-index: 20;
+    font-family: var(--label); font-weight: 700; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ink-2); background: var(--paper); border: 1px dashed var(--ink-3); border-radius: 999px;
+    padding: 8px 12px; line-height: 1;
+  }
+
+  /* ---------- masthead (the signature) ---------- */
+  .masthead { border-bottom: 1px solid var(--ink); }
+  .masthead-inner { max-width: 1200px; margin: 0 auto; padding: var(--s-6) var(--s-5) var(--s-4); text-align: center; }
+  .masthead-name {
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(3.25rem, 11vw, 8.5rem);
+    line-height: 0.9; letter-spacing: 0.02em; text-transform: uppercase;
+    color: var(--ink);
+  }
+  .masthead-name a { color: inherit; text-decoration: none; }
+  .folio {
+    margin-top: var(--s-4);
+    display: flex; justify-content: space-between; align-items: center; gap: var(--s-4);
+    border-top: 1px solid var(--ink); padding-top: var(--s-3);
+  }
+  .folio .label { color: var(--ink-2); }
+  .folio .mid { color: var(--tide); }
+
+  /* ---------- article header ---------- */
+  .story-head { max-width: 840px; margin: 0 auto; padding: var(--s-8) var(--s-5) var(--s-6); text-align: center; }
+  .kicker { color: var(--tide); display: inline-flex; align-items: center; gap: var(--s-3); }
+  .kicker::before, .kicker::after { content: ""; width: 24px; height: 1px; background: var(--tide); }
+  .story-head h1 {
+    margin-top: var(--s-5);
+    font-family: var(--display); font-weight: 400;
+    font-size: clamp(2.5rem, 6.4vw, 4.75rem);
+    line-height: 1.02; letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .dek {
+    margin: var(--s-5) auto 0; max-width: 38ch;
+    font-size: clamp(1.1875rem, 2.2vw, 1.4375rem); line-height: 1.45; color: var(--ink-2);
+    font-style: italic; text-wrap: pretty;
+  }
+  .byline { margin-top: var(--s-6); display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-2) var(--s-4); font-family: var(--label); font-weight: 500; font-size: var(--t-small); color: var(--ink-2); }
+  .byline b { font-weight: 700; color: var(--ink); }
+  .byline .sep { color: var(--rule); }
+
+  /* ---------- figures ---------- */
+  figure { margin: 0; }
+  figcaption {
+    margin-top: var(--s-3);
+    font-family: var(--label); font-weight: 500; font-size: 0.8125rem; line-height: 1.5; color: var(--ink-3);
+  }
+  figcaption .cr { display: block; margin-top: 2px; font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .bleed { width: 100%; }
+  .bleed img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--paper-2); }
+  .bleed figcaption { max-width: var(--measure); margin-left: auto; margin-right: auto; padding: 0 var(--s-5); }
+
+  /* ---------- body ---------- */
+  .body { max-width: var(--measure); margin: var(--s-8) auto 0; padding: 0 var(--s-5); }
+  .body p { margin-top: var(--s-5); text-wrap: pretty; }
+  .body p:first-of-type { margin-top: 0; }
+  .body p.opener::first-letter {
+    font-family: var(--display); font-size: 4.6em; line-height: 0.78;
+    float: left; padding: 0.08em 0.12em 0 0; color: var(--tide);
+  }
+  .body h2 {
+    margin-top: var(--s-8);
+    font-family: var(--display); font-weight: 400; font-size: 1.875rem; line-height: 1.15; letter-spacing: 0;
+  }
+  .body h2 + p { margin-top: var(--s-4); }
+  .break { margin: var(--s-8) auto; display: flex; justify-content: center; gap: var(--s-3); color: var(--tide); }
+  .break span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .pull {
+    margin: var(--s-7) 0; padding: var(--s-5) 0;
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
+    font-family: var(--display); font-size: clamp(1.5rem, 3.2vw, 2rem); line-height: 1.2; color: var(--ink);
+    text-wrap: balance;
+  }
+  .pull cite { display: block; margin-top: var(--s-3); font-family: var(--label); font-style: normal; font-weight: 500; font-size: var(--t-small); color: var(--ink-3); }
+
+  .inset { margin: var(--s-7) 0; }
+  .inset img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; background: var(--paper-2); }
+  .inset-right { float: right; width: 44%; margin: var(--s-2) 0 var(--s-4) var(--s-6); }
+  .inset-right img { aspect-ratio: 4 / 5; }
+
+  .pair { margin: var(--s-7) auto; max-width: 1040px; padding: 0 var(--s-5); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-4); align-items: start; }
+  .pair img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--paper-2); }
+  .pair figcaption { max-width: 40ch; }
+
+  .details {
+    margin: var(--s-7) 0 0; padding: var(--s-5); background: var(--paper-2); border-left: 2px solid var(--tide);
+    font-size: var(--t-small); line-height: 1.55;
+  }
+  .details .label { color: var(--tide); display: block; margin-bottom: var(--s-2); }
+  .details p { margin-top: var(--s-2); color: var(--ink-2); }
+
+  /* ---------- signup module ---------- */
+  .signup { max-width: var(--measure); margin: var(--s-9) auto 0; padding: 0 var(--s-5); }
+  .signup-card { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); padding: var(--s-6) 0; }
+  .signup h2 { font-family: var(--display); font-weight: 400; font-size: 1.875rem; line-height: 1.15; margin-top: var(--s-3); }
+  .signup p { margin-top: var(--s-3); color: var(--ink-2); font-size: var(--t-small); max-width: 48ch; }
+  .signup form { margin-top: var(--s-5); display: flex; gap: var(--s-2); flex-wrap: wrap; }
+  .signup label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .signup input {
+    flex: 1 1 240px; min-height: 48px; padding: 0 var(--s-4);
+    font: 500 1rem var(--label); color: var(--ink); background: var(--paper); border: 1px solid var(--ink-3); border-radius: 4px;
+  }
+  .signup input:focus { outline: 2px solid var(--tide); outline-offset: 2px; border-color: var(--tide); }
+  .signup input[aria-invalid="true"] { border-color: #a6352a; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 var(--s-5);
+    font: 700 0.9375rem var(--label); letter-spacing: 0.04em; text-decoration: none; cursor: pointer;
+    color: var(--on-tide); background: var(--tide); border: 1px solid var(--tide); border-radius: 2px;
+    transition: background-color 0.15s var(--ease), transform 0.15s var(--ease);
+  }
+  .btn:hover { background: var(--tide-deep); border-color: var(--tide-deep); color: var(--on-tide); transform: translateY(-1px); }
+  .signup .msg { margin-top: var(--s-3); min-height: 24px; font-family: var(--label); font-weight: 500; font-size: var(--t-small); color: var(--ink-2); }
+  .signup .msg.err { color: #a6352a; }
+  @media (prefers-color-scheme: dark) { .signup .msg.err, .signup input[aria-invalid="true"] { color: #f0907f; border-color: #f0907f; } }
+  .signup .msg.ok { color: var(--tide-deep); }
+  .signup .fine { margin-top: var(--s-2); font-size: 0.8125rem; color: var(--ink-3); }
+
+  /* ---------- related ---------- */
+  .related { max-width: 1040px; margin: var(--s-9) auto 0; padding: 0 var(--s-5); }
+  .related .label { display: block; border-top: 1px solid var(--ink); padding-top: var(--s-3); }
+  .related ul { list-style: none; margin-top: var(--s-5); display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s-6) var(--s-5); }
+  .related a { display: block; color: inherit; text-decoration: none; }
+  .related img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--paper-2); transition: opacity 0.2s var(--ease); }
+  .related a:hover img { opacity: 0.88; }
+  .related .sec { margin-top: var(--s-3); color: var(--tide); }
+  .related h3 { margin-top: var(--s-2); font-family: var(--display); font-weight: 400; font-size: 1.375rem; line-height: 1.2; }
+  .related a:hover h3 { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .related p { margin-top: var(--s-2); font-size: var(--t-small); color: var(--ink-2); }
+  .related .placeholder { aspect-ratio: 4 / 3; background: var(--paper-2); display: grid; place-items: center; font-family: var(--display); font-size: 3rem; color: var(--rule); }
+
+  /* ---------- colophon / funnel ---------- */
+  .colophon { max-width: 1040px; margin: var(--s-9) auto 0; padding: var(--s-6) var(--s-5) var(--s-8); border-top: 1px solid var(--ink); }
+  .colophon .wordmark { font-family: var(--display); font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .colophon .credits { margin-top: var(--s-3); font-family: var(--label); font-weight: 500; font-size: 0.8125rem; line-height: 1.6; color: var(--ink-3); max-width: 70ch; }
+  .funnel { margin-top: var(--s-6); padding-top: var(--s-5); border-top: 1px solid var(--rule); font-family: var(--label); font-size: 0.8125rem; color: var(--ink-2); }
+  .funnel b { font-weight: 700; color: var(--ink); }
+  .funnel .links { margin-top: var(--s-3); display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); }
+  .funnel .links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--tide); }
+  .funnel .links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ---------- motion, responsive ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .btn, .related img { transition: none; }
+    .btn:hover { transform: none; }
+  }
+  @media (max-width: 860px) {
+    .related ul { grid-template-columns: 1fr; gap: var(--s-6); }
+    .inset-right { width: 50%; margin-left: var(--s-5); }
+  }
+  @media (max-width: 600px) {
+    :root { --t-body: 1.0625rem; }
+    .masthead-inner { padding-top: var(--s-7); }
+    .folio { flex-wrap: wrap; justify-content: center; text-align: center; }
+    .story-head { padding-top: var(--s-7); }
+    .pair { grid-template-columns: 1fr; gap: var(--s-6); }
+    .inset-right { float: none; width: 100%; margin: var(--s-7) 0; }
+    .inset-right img { aspect-ratio: 4 / 5; }
+    .sample-badge { top: auto; bottom: var(--s-4); right: var(--s-4); }
+  }
+</style>
+</head>
+<body>
+
+<div class="sample-badge" role="note">Sample · invented publication</div>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <p class="masthead-name"><a href="#" aria-label="Longshore, home">Longshore</a></p>
+    <div class="folio" aria-label="Issue information">
+      <span class="label">Issue 47</span>
+      <span class="label mid">Books · Travel · Food · Culture</span>
+      <span class="label"><time datetime="2026-08-20">August 20, 2026</time></span>
+    </div>
+  </div>
+</header>
+
+<main>
+<article>
+  <header class="story-head">
+    <p class="label kicker">Places</p>
+    <h1>The Bookshop That Opens With the Boats</h1>
+    <p class="dek">In a harbour town that sends its boats out at five, the only shop with a light on sells poetry, tide tables and a loaf that takes two days to make.</p>
+    <p class="byline">
+      <span>By <b>Ines Calloway</b></span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span><time datetime="2026-08-20">August 20, 2026</time></span>
+      <span class="sep" aria-hidden="true">·</span>
+      <span>6 min read</span>
+    </p>
+  </header>
+
+  <figure class="bleed">
+    <img src="assets/editorial/hero-harbour-dawn.webp" width="1600" height="900" alt="Fishing boats moored in a calm harbour at first light, with low hills on the horizon and the sky turning from violet to orange." fetchpriority="high">
+    <figcaption>Port Ellery harbour at ten to five. The light in the bookshop window comes on before any engine does. <span class="cr">Photograph: Jugwang Son</span></figcaption>
+  </figure>
+
+  <div class="body">
+    <p class="opener">The light in the window of Teale and Daughter comes on at twenty past five, which is roughly ten minutes before the first diesel engine turns over in the harbour below it. Nobody planned this. Margo Teale, who has owned the shop since 1998 and baked in the back of it since 2009, says she simply noticed one winter that the men walking down to the boats looked at her window the way you look at a lit kitchen from a cold street. So she started unlocking the door.</p>
+
+    <p>Port Ellery is not a pretty town in the way the brochures mean it. The seafront is a working one, with a fish market that hoses itself down at noon and a lot where the ice trucks back in. The bookshop sits one street back, in a building that was a chandlery until the seventies and still has the iron hooks in the ceiling beams where coils of rope once hung. Margo uses them for drying herbs and, in December, for the paper stars her granddaughter makes.</p>
+
+    <figure class="inset inset-right">
+      <img src="assets/editorial/boats-first-light.webp" width="1600" height="2000" alt="A small fishing boat moored on glassy water under a hazy red sunrise, the far shore a dark line of trees." loading="lazy">
+      <figcaption>The first boat out is usually Kerrigan's. He buys his half loaf on the way down and eats it on the way out. <span class="cr">Photograph: scott clark</span></figcaption>
+    </figure>
+
+    <p>The shop is two rooms. The front room is books: new fiction on the table by the door, poetry on the shelf that catches the morning, a wall of secondhand paperbacks sold at whatever Margo thinks they are worth that day. The back room is the bakery, and the back room is why the fishermen come in.</p>
+
+    <p>She makes one kind of bread. It is a dense, dark loaf, mostly rye, with a crust that cracks along a single slash she cuts with a bread knife older than the shop. The dough takes two days: a starter fed the night before, a long cold rest in the walk-in that used to hold the chandlery's paint, then a bake at a quarter to five in an oven that was delivered by boat because the van could not get down the lane. She sells it in halves, wrapped in yesterday's newspaper, for four dollars.</p>
+
+    <p>The tide tables are her other stock in trade, and they are free. She prints them herself on the backs of last season's unsold flyers, a month at a time, and leaves the stack by the register under a flat grey stone from the beach. The fishermen do not need them; they know the water the way you know your own stairs in the dark. The tables are for the rest of us, she says, the visitors and the retired and the people off the first train, who arrive in Port Ellery wanting to understand the place and can at least begin by knowing when it will be wet.</p>
+
+    <blockquote class="pull">
+      <p>"I am not a baker. I am a bookseller who got tired of watching people walk past hungry."</p>
+      <cite>Margo Teale</cite>
+    </blockquote>
+
+    <p>By half past five there are usually four or five of them in the front room, standing, because the only chair is Margo's. They do not browse, exactly. They pick up whatever is on the table and read the first page while they wait for the loaves to come out, and sometimes they buy it. Dan Kerrigan, who has fished out of Port Ellery for thirty-one years, told me he had read more since the shop started opening early than in the rest of his life put together.</p>
+
+    <p>"It's the standing up," he said. "You read different standing up. You don't settle in. You just find out whether you want it."</p>
+
+    <div class="break" aria-hidden="true"><span></span><span></span><span></span></div>
+
+    <h2>A box of her father's things</h2>
+
+    <p>Margo's father ran the bakery on the quay until it closed in 1986, outbid for its lease by a company that wanted the frontage for a fried-clam stand. She was twenty-one and had no interest in bread. She went to the city, worked in a university library for a decade, came back when her mother got ill, and never quite left. The bookshop was meant to be a two-year thing.</p>
+
+    <p>The bread came later, and by her own account by accident. A regular customer, a retired teacher named Hal Brisco, turned up one afternoon with a box of her father's things he had been keeping: a recipe card, a cane proofing basket, the knife. She tried the recipe once for the shop's tenth birthday. Then she tried it again because people asked. Then she bought the oven.</p>
+  </div>
+
+  <div class="pair">
+    <figure>
+      <img src="assets/editorial/shop-front-room.webp" width="1600" height="2000" alt="A narrow bookshop doorway framed by white shelves, new paperbacks fanned on a table in front and a second room of floor-to-ceiling books beyond." loading="lazy">
+      <figcaption>The front room, seen from the doorway. The poetry shelf is on the left, where the morning gets to it first. <span class="cr">Photograph: Philipp Hubert</span></figcaption>
+    </figure>
+    <figure>
+      <img src="assets/editorial/loaf-in-tin.webp" width="1600" height="2000" alt="Two hands holding a dark rye loaf in a metal tin, the crust scored with a single long slash, on a scrubbed wooden board." loading="lazy">
+      <figcaption>The loaf: mostly rye, one slash, two days. It is out of the tin by five and gone by seven. <span class="cr">Photograph: Diego Arenas de Rodrigo</span></figcaption>
+    </figure>
+  </div>
+
+  <div class="body">
+    <p>It would be easy to make this sound quainter than it is. The shop is not warm in January. The oven keeps the back room bearable and the front room gets whatever leaks through the doorway. Margo wears fingerless gloves to work the register. The floor is uneven enough that the poetry shelf has a folded coaster under one foot, and has had since at least 2004, which was the year the roof was redone and the year she stopped noticing it.</p>
+
+    <blockquote class="pull">
+      <p>"You read different standing up. You don't settle in. You just find out whether you want it."</p>
+      <cite>Dan Kerrigan, skipper</cite>
+    </blockquote>
+
+    <p>What it is, instead, is a shop with a theory about mornings. The theory is that the first hour of a working day is the only hour that belongs entirely to the person living it, and that a town which gives its people somewhere to spend that hour, with a light on and something worth reading and bread they can smell before they see it, has decided something about itself.</p>
+
+    <p>Margo does not put it that way. When I asked her what the shop was for, she said, "It's for the boats," and went to check the oven.</p>
+
+    <figure class="inset">
+      <img src="assets/editorial/hands-dough.webp" width="1600" height="1067" alt="A baker's flour-dusted hands folding a pale slab of dough on a wooden counter." loading="lazy">
+      <figcaption>Folding the dough at four. The starter is fed the night before and the dough rests in the old paint store overnight. <span class="cr">Photograph: DDP</span></figcaption>
+    </figure>
+
+    <p>I left at seven with half a loaf under my arm and a secondhand poetry collection I had not meant to buy. On the quay the boats were already small. The newspaper wrapping was the previous Thursday's, and on the inside, where the bread had pressed against it, there was a story about the harbour dredging. It had gone slightly translucent with butter. I read it on the train, standing up.</p>
+
+    <aside class="details">
+      <span class="label">If you go</span>
+      <p><b>Teale and Daughter Books</b>, 14 Rope Walk, Port Ellery. Open 5:20am to 2pm, Tuesday to Saturday. The loaf sells out by seven; the poetry does not. Tide tables are free with any purchase, and with most non-purchases.</p>
+      <p>Port Ellery is two hours from the city by the coast line. The first train arrives at 6:48, which is too late for the bread and exactly right for the light.</p>
+    </aside>
+  </div>
+
+  <section class="signup" aria-labelledby="signup-title">
+    <div class="signup-card">
+      <span class="label">The Longshore letter</span>
+      <h2 id="signup-title">One story like this, every Thursday.</h2>
+      <p>The week's feature, two shorter pieces and a line from the editor. No lists of ten things. Unsubscribe any time.</p>
+      <form id="signup-form" novalidate>
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" inputmode="email" required>
+        <button type="submit" class="btn">Subscribe</button>
+      </form>
+      <p class="msg" id="signup-msg" aria-live="polite"></p>
+      <p class="fine">Sample form. Nothing is sent or stored; on the live site this posts to Mailchimp's embedded form endpoint.</p>
+    </div>
+  </section>
+
+  <footer class="related" aria-labelledby="related-title">
+    <span class="label" id="related-title">More from Longshore</span>
+    <ul>
+      <li><a href="#"><img src="assets/editorial/table-new-fiction.webp" width="1600" height="1200" alt="A long white table stacked with bright new paperbacks, a customer's hand reaching for one." loading="lazy"><span class="label sec">Books</span><h3>A Press in a Boathouse</h3><p>The smallest publisher on the coast prints four titles a year and sells most of them at the door.</p></a></li>
+      <li><a href="#"><img src="assets/editorial/hands-dough.webp" width="1600" height="1067" alt="Flour-dusted hands working dough on a wooden counter." loading="lazy"><span class="label sec">Food</span><h3>The Long Table at Cape Ardent</h3><p>Forty strangers, one fish, and a host who refuses to tell anyone where to sit.</p></a></li>
+      <li><a href="#"><div class="placeholder" aria-hidden="true">L</div><span class="label sec">Travel</span><h3>What to Pack for a Town With No Signal</h3><p>A reader's guide to the four coastal villages where your phone gives up before you do.</p></a></li>
+    </ul>
+  </footer>
+</article>
+</main>
+
+<footer class="colophon">
+  <p class="wordmark">Longshore</p>
+  <p class="credits">Longshore is an invented publication; Port Ellery, Teale and Daughter Books and the people in this story are fictional. Photographs via Unsplash by Jugwang Son, scott clark, Philipp Hubert, Diego Arenas de Rodrigo, DDP and Abdsamad Kabir-kushoro, cropped and optimised for this page. Type: Gambarino, Sentient and Satoshi by Indian Type Foundry (Fontshare, ITF Free Font License).</p>
+  <div class="funnel">
+    <p><b>WORKING SAMPLE</b> · Designed and built by Angel Valle Jr. The layout, photo editing, typography, signup module and the matching <a href="meridian-newsletter.html">Mailchimp-ready newsletter</a> are the sample.</p>
+    <p class="links"><a href="https://avjcodes.github.io/">See more work &rarr;</a><a href="https://avjcodes.github.io/#contact">Build something like this &rarr;</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('signup-form');
+  var input = document.getElementById('email');
+  var msg = document.getElementById('signup-msg');
+  if (!form) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = input.value.trim();
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v);
+    if (!ok) {
+      input.setAttribute('aria-invalid', 'true');
+      msg.className = 'msg err';
+      msg.textContent = v ? 'That does not look like a complete address. Check for a missing dot or @.' : 'Add an email address and we will send the Thursday letter.';
+      input.focus();
+      return;
+    }
+    input.removeAttribute('aria-invalid');
+    msg.className = 'msg ok';
+    msg.textContent = 'Thanks. This is a sample, so nothing was sent to ' + v + '. On the live site you would get a confirmation email now.';
+    input.value = '';
+  });
+  input.addEventListener('input', function () {
+    if (input.getAttribute('aria-invalid')) { input.removeAttribute('aria-invalid'); msg.className = 'msg'; msg.textContent = ''; }
+  });
+})();
+</script>
+</body>
+</html>

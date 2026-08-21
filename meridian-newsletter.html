@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Longshore Letter · Weekly Newsletter Sample</title>
+<meta name="description" content="Weekly newsletter sample for Longshore, an invented lifestyle publication. Mailchimp-ready HTML: table layout, inline styles, bulletproof buttons, tested structure for Gmail and Outlook. Built by Angel Valle Jr.">
+<link rel="canonical" href="https://avjcodes.github.io/meridian-newsletter.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Longshore Letter · newsletter sample">
+<meta property="og:description" content="Mailchimp-ready weekly newsletter built from a feature article: table layout, inline styles, Gmail and Outlook safe.">
+<meta property="og:url" content="https://avjcodes.github.io/meridian-newsletter.html">
+<meta property="og:image" content="https://avjcodes.github.io/assets/editorial/email-hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e4e5e0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181b" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2712%27 fill=%27%231f5f63%27/%3E%3Ctext x=%2750%27 y=%2770%27 font-size=%2760%27 font-family=%27Georgia,serif%27 text-anchor=%27middle%27 fill=%27%23f3f3ef%27%3EL%3C/text%3E%3C/svg%3E">
+<!--
+  SAMPLE: "Longshore" is an invented publication. Built as a portfolio sample by Angel Valle Jr.
+  PHOTO CREDITS (Unsplash License): email-hero.jpg Jugwang Son https://unsplash.com/photos/UUv0hBbmyM0 ·
+  email-teaser-press.jpg Abdsamad Kabir-kushoro https://unsplash.com/photos/JQpgb0CijyI ·
+  email-teaser-table.jpg DDP https://unsplash.com/photos/zqg6ctfkYuo
+  SHARED TOKENS with meridian-article.html: paper #f3f3ef, ink #171c20, tide #1f5f63, rule #cfd2cc.
+  The email itself (between the EMAIL START / EMAIL END comments) is the paste-into-Mailchimp block.
+-->
+<style>
+  /* Page chrome only. Nothing below applies inside the email block, which carries its own inline styles. */
+  :root { --ground: #e4e5e0; --chrome-ink: #171c20; --chrome-ink-2: #464d53; --chrome-ink-3: #5c636a; --tide: #1f5f63; --chrome-paper: #f3f3ef; --chrome-rule: #cfd2cc; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) { :root { --ground: #14181b; --chrome-ink: #e9e7e0; --chrome-ink-2: #b3b5ae; --chrome-ink-3: #8f938e; --tide: #7fc2c3; --chrome-paper: #1b2024; --chrome-rule: #353c41; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  body { background: var(--ground); color: var(--chrome-ink); font-family: "Satoshi", system-ui, -apple-system, "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+  @font-face { font-family: "Satoshi"; src: url("assets/fonts/Satoshi-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+  @font-face { font-family: "Satoshi"; src: url("assets/fonts/Satoshi-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+  @font-face { font-family: "Gambarino"; src: url("assets/fonts/Gambarino-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+  .chrome { max-width: 640px; margin: 0 auto; padding: 32px 20px 16px; }
+  .sample-badge { display: inline-block; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--chrome-ink-2); border: 1px dashed var(--chrome-ink-3); border-radius: 999px; padding: 8px 12px; line-height: 1; }
+  .chrome h1 { margin: 16px 0 0; font-family: "Gambarino", Georgia, serif; font-weight: 400; font-size: 28px; line-height: 1.1; }
+  .chrome .note { margin: 12px 0 0; font-size: 15px; line-height: 1.55; color: var(--chrome-ink-2); max-width: 60ch; }
+  .chrome .note a { color: var(--tide); }
+  .meta { margin: 24px 0 0; border-top: 1px solid var(--chrome-rule); border-bottom: 1px solid var(--chrome-rule); padding: 12px 0; font-size: 14px; line-height: 1.6; }
+  .meta dt { display: inline; font-weight: 700; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--chrome-ink-3); }
+  .meta dd { display: inline; margin: 0 0 0 8px; color: var(--chrome-ink); }
+  .meta div + div { margin-top: 4px; }
+  .email-stage { padding: 24px 0 8px; }
+  .colophon { max-width: 640px; margin: 0 auto; padding: 24px 20px 64px; font-size: 13px; line-height: 1.6; color: var(--chrome-ink-3); }
+  .colophon p { margin: 0; }
+  .colophon .funnel { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--chrome-rule); color: var(--chrome-ink-2); }
+  .colophon b { color: var(--chrome-ink); }
+  .colophon .links { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+  .colophon .links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--tide); }
+  .colophon .links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  :focus-visible { outline: 2px solid var(--tide); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <span class="sample-badge">Sample · invented publication</span>
+  <h1>The Longshore Letter, issue 47</h1>
+  <p class="note">Weekly newsletter sample, built as Mailchimp-ready HTML: table layout, inline styles, tested structure for Gmail and Outlook. Built from <a href="meridian-article.html">this week's feature article</a>.</p>
+  <dl class="meta">
+    <div><dt>Subject</dt><dd>The shop that opens with the boats</dd></div>
+    <div><dt>Preheader</dt><dd>Plus: a press in a boathouse, and forty strangers at one table.</dd></div>
+  </dl>
+</div>
+
+<div class="email-stage">
+<!-- ===================== EMAIL START (paste from here into Mailchimp's Code block) ===================== -->
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<style>table, td { font-family: Georgia, 'Times New Roman', serif; }</style>
+<![endif]-->
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">Plus: a press in a boathouse, and forty strangers at one table.&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+
+<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;mso-table-lspace:0;mso-table-rspace:0;">
+<tr>
+<td align="center" style="padding:0;">
+<!--[if mso]><table role="presentation" width="600" border="0" cellspacing="0" cellpadding="0" align="center"><tr><td><![endif]-->
+<table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;max-width:600px;width:100%;background-color:#f3f3ef;mso-table-lspace:0;mso-table-rspace:0;">
+
+  <!-- masthead -->
+  <tr>
+    <td align="center" style="padding:32px 24px 16px 24px;border-bottom:1px solid #171c20;">
+      <a href="https://avjcodes.github.io/meridian-article.html" style="text-decoration:none;color:#171c20;">
+        <img src="assets/editorial/email-masthead.png" width="268" height="48" alt="LONGSHORE" style="display:block;width:268px;max-width:100%;height:auto;border:0;font-family:Georgia,'Times New Roman',serif;font-size:36px;font-weight:normal;letter-spacing:3px;color:#171c20;text-align:center;">
+      </a>
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tr><td colspan="3" style="font-size:1px;line-height:12px;height:12px;">&nbsp;</td></tr>
+        <tr>
+          <td align="left" width="33%" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#464d53;">Issue 47</td>
+          <td align="center" width="34%" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#1f5f63;">The Letter</td>
+          <td align="right" width="33%" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#464d53;">Aug 20, 2026</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- lead image -->
+  <tr>
+    <td style="padding:0;">
+      <a href="https://avjcodes.github.io/meridian-article.html" style="text-decoration:none;">
+        <img src="assets/editorial/email-hero.jpg" width="600" height="338" alt="Fishing boats moored in a calm harbour at first light, hills on the horizon." style="display:block;width:100%;max-width:600px;height:auto;border:0;">
+      </a>
+    </td>
+  </tr>
+
+  <!-- lead story -->
+  <tr>
+    <td align="left" style="padding:28px 32px 8px 32px;">
+      <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#1f5f63;">Places &middot; This week's feature</p>
+      <h1 style="margin:12px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:34px;line-height:38px;color:#171c20;">The Bookshop That Opens With the Boats</h1>
+      <p style="margin:16px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:18px;line-height:27px;color:#464d53;">In a harbour town that sends its boats out at five, the only shop with a light on sells poetry, tide tables and a loaf that takes two days to make.</p>
+      <p style="margin:16px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:17px;line-height:27px;color:#171c20;">Margo Teale has run Teale and Daughter Books since 1998 and baked in the back of it since 2009. The light comes on at twenty past five, ten minutes before the first engine in the harbour. Ines Calloway spent a morning there, standing up, and left with half a loaf and a poetry collection she had not meant to buy.</p>
+      <p style="margin:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:20px;color:#5c636a;">By Ines Calloway &middot; 6 min read</p>
+    </td>
+  </tr>
+  <tr>
+    <td align="left" style="padding:16px 32px 32px 32px;">
+      <!-- bulletproof button -->
+      <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tr>
+          <td align="center" bgcolor="#1f5f63" style="border-radius:2px;background-color:#1f5f63;">
+            <a href="https://avjcodes.github.io/meridian-article.html" target="_blank" style="display:inline-block;padding:14px 28px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;line-height:20px;letter-spacing:1px;color:#f3f3ef;text-decoration:none;border:1px solid #1f5f63;border-radius:2px;mso-padding-alt:0;">
+              <!--[if mso]><i style="letter-spacing:28px;mso-font-width:-100%;mso-text-raise:20pt;">&nbsp;</i><![endif]-->
+              <span style="mso-text-raise:10pt;">Read the story &rarr;</span>
+              <!--[if mso]><i style="letter-spacing:28px;mso-font-width:-100%;">&nbsp;</i><![endif]-->
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- rule -->
+  <tr><td style="padding:0 32px;"><table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td style="border-top:1px solid #171c20;font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td></tr>
+
+  <!-- teasers -->
+  <tr>
+    <td align="left" style="padding:24px 32px 0 32px;">
+      <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#5c636a;">Also this week</p>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:16px 32px 0 32px;">
+      <!--[if mso]><table role="presentation" width="536" border="0" cellspacing="0" cellpadding="0"><tr><td width="256" valign="top"><![endif]-->
+      <div style="display:inline-block;width:100%;max-width:256px;vertical-align:top;">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+          <tr><td style="padding:0 0 12px 0;"><a href="https://avjcodes.github.io/meridian-article.html#press" style="text-decoration:none;"><img src="assets/editorial/email-teaser-press.jpg" width="256" height="192" alt="A long white table stacked with bright new paperbacks." style="display:block;width:100%;max-width:256px;height:auto;border:0;"></a></td></tr>
+          <tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#1f5f63;">Books</td></tr>
+          <tr><td style="padding:6px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:25px;color:#171c20;"><a href="https://avjcodes.github.io/meridian-article.html#press" style="color:#171c20;text-decoration:none;">A Press in a Boathouse</a></td></tr>
+          <tr><td style="padding:6px 0 24px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:22px;color:#464d53;">The smallest publisher on the coast prints four titles a year and sells most of them at the door.</td></tr>
+        </table>
+      </div>
+      <!--[if mso]></td><td width="24">&nbsp;</td><td width="256" valign="top"><![endif]-->
+      <div style="display:inline-block;width:24px;font-size:1px;line-height:1px;">&nbsp;</div>
+      <div style="display:inline-block;width:100%;max-width:256px;vertical-align:top;">
+        <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+          <tr><td style="padding:0 0 12px 0;"><a href="https://avjcodes.github.io/meridian-article.html#table" style="text-decoration:none;"><img src="assets/editorial/email-teaser-table.jpg" width="256" height="192" alt="Flour-dusted hands folding dough on a wooden counter." style="display:block;width:100%;max-width:256px;height:auto;border:0;"></a></td></tr>
+          <tr><td style="font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#1f5f63;">Food</td></tr>
+          <tr><td style="padding:6px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:20px;line-height:25px;color:#171c20;"><a href="https://avjcodes.github.io/meridian-article.html#table" style="color:#171c20;text-decoration:none;">The Long Table at Cape Ardent</a></td></tr>
+          <tr><td style="padding:6px 0 24px 0;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:22px;color:#464d53;">Forty strangers, one fish, and a host who refuses to tell anyone where to sit.</td></tr>
+        </table>
+      </div>
+      <!--[if mso]></td></tr></table><![endif]-->
+    </td>
+  </tr>
+
+  <!-- from the editor -->
+  <tr>
+    <td style="padding:8px 32px 32px 32px;">
+      <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse;">
+        <tr>
+          <td bgcolor="#e9eae4" style="background-color:#e9eae4;border-left:2px solid #1f5f63;padding:20px 24px;">
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;letter-spacing:2px;text-transform:uppercase;color:#1f5f63;">From the editor</p>
+            <p style="margin:8px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:25px;color:#171c20;">Three stories this week, none of them about a place you can get to before seven. That is on purpose. Reply to this email and tell us the earliest shop you know of; we will visit the best answer.</p>
+            <p style="margin:8px 0 0 0;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;line-height:22px;color:#464d53;">Rosalind Achebe-Marr, editor</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- footer -->
+  <tr>
+    <td align="center" style="padding:24px 32px 32px 32px;border-top:1px solid #cfd2cc;">
+      <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:18px;line-height:24px;letter-spacing:2px;text-transform:uppercase;color:#171c20;">Longshore</p>
+      <p style="margin:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#5c636a;">Books, travel, food and culture, once a week on Thursday.</p>
+      <p style="margin:16px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#5c636a;">Longshore Editions, 9 Rope Walk, Port Ellery 02990 (invented address)</p>
+      <p style="margin:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:18px;color:#5c636a;">
+        <a href="*|UNSUB|*" style="color:#1f5f63;text-decoration:underline;">Unsubscribe</a>
+        &nbsp;&middot;&nbsp;
+        <a href="*|UPDATE_PROFILE|*" style="color:#1f5f63;text-decoration:underline;">Update preferences</a>
+        &nbsp;&middot;&nbsp;
+        <a href="*|ARCHIVE|*" style="color:#1f5f63;text-decoration:underline;">View in browser</a>
+      </p>
+      <p style="margin:12px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:16px;color:#5c636a;">*|UNSUB|*, *|UPDATE_PROFILE|* and *|ARCHIVE|* are Mailchimp merge tags; Mailchimp fills them at send time. Photographs: Jugwang Son, Abdsamad Kabir-kushoro, DDP via Unsplash.</p>
+    </td>
+  </tr>
+
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td>
+</tr>
+</table>
+<!-- ===================== EMAIL END ===================== -->
+</div>
+
+<footer class="colophon">
+  <p>Longshore is an invented publication; every name, address and story is fictional. Email-safety notes: 600px single column, nested tables with role="presentation", every style inline, Georgia and Arial as the in-email faces (web fonts are not reliable in Gmail or Outlook), bulletproof button with an MSO padding fallback, ghost tables for the two-column teaser row so Outlook holds the columns and phones stack them, alt text on every image, hidden preheader, and Mailchimp merge tags for the legally required footer links.</p>
+  <div class="funnel">
+    <p><b>WORKING SAMPLE</b> · Designed and built by Angel Valle Jr. Read the <a href="meridian-article.html" style="color:var(--tide);">feature article</a> this letter was built from.</p>
+    <p class="links"><a href="https://avjcodes.github.io/">See more work &rarr;</a><a href="https://avjcodes.github.io/#contact">Build something like this &rarr;</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
