@@ -62,8 +62,7 @@
     --badge-live-bg: var(--accent-600);
     --badge-live-ink: var(--on-accent);
     --badge-sample-ink: #6b6a76;
-    --ribbon-ink: rgba(23, 22, 40, 0.08);
-    --ribbon-stroke: rgba(23, 22, 40, 0.20);
+    --tape-paper: #fbfaf6;
     --games-tint: rgba(192, 54, 44, 0.035);
     --overlay: rgba(23, 22, 40, 0.34);
     --palette-bg: #ffffff;
@@ -99,8 +98,7 @@
       --badge-live-bg: var(--accent-600);
       --badge-live-ink: var(--on-accent);
       --badge-sample-ink: #8f8e9c;
-      --ribbon-ink: rgba(235, 234, 255, 0.07);
-      --ribbon-stroke: rgba(235, 234, 255, 0.17);
+      --tape-paper: #131316;
       --games-tint: rgba(247, 127, 91, 0.045);
       --overlay: rgba(0, 0, 0, 0.55);
       --palette-bg: #15151c;
@@ -325,43 +323,39 @@
     flex: 0 0 108px;
   }
 
-  /* ================= Capability ribbon ================= */
-  .ribbon {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-top: clamp(32px, 5vw, 56px);
-    overflow: hidden;
-    padding: 8px 0;
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .ribbon-track {
-    display: flex;
-    width: max-content;
-    will-change: transform;
-    animation: ribbon-scroll 40s linear infinite;
-  }
-  .ribbon-row {
-    white-space: nowrap;
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(2rem, 5vw, 3.4rem);
-    line-height: 1.15;
+  /* ================= Receipt tape ================= */
+  .tape {
+    max-width: 560px;
+    margin: clamp(36px, 5vw, 60px) auto 0;
+    background: var(--tape-paper);
+    border-left: 1px solid var(--hairline);
+    border-right: 1px solid var(--hairline);
+    padding: 18px 24px 20px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
     letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ribbon-ink);
+    color: var(--ink-2);
+    position: relative;
   }
-  @supports (-webkit-text-stroke: 1px black) {
-    .ribbon-row {
-      color: transparent;
-      -webkit-text-stroke: 1.5px var(--ribbon-stroke);
-    }
+  .tape::before, .tape::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0; right: 0; height: 8px;
+    background-image: radial-gradient(circle at 6px 4px, var(--bg) 3px, transparent 3.5px);
+    background-size: 14px 8px;
+    background-repeat: repeat-x;
   }
-  @keyframes ribbon-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+  .tape::before { top: -1px; background-position: 0 -4px; }
+  .tape::after { bottom: -1px; background-position: 7px 8px; }
+  .tape-head {
+    text-align: center; text-transform: uppercase; letter-spacing: 0.18em;
+    font-weight: 700; color: var(--ink); margin-bottom: 10px;
   }
+  .tape-row { display: flex; justify-content: space-between; gap: 16px; padding: 3px 0; }
+  .tape-row span:last-child { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 600; }
+  .tape-rule { border: 0; border-top: 1px dashed var(--hairline); margin: 8px 0; }
+  .tape-foot { text-align: center; margin-top: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-size: 0.66rem; }
 
   /* ================= Sections ================= */
   section { padding-top: clamp(52px, 8vw, 88px); }
@@ -1024,8 +1018,6 @@
     .card h3 .arrow, .cap .receipt::after { transition: none; }
     .card h3 a:hover .arrow { transform: none; }
     .cap .receipt:hover::after { transform: none; }
-    .ribbon-track { animation: none; transform: none; width: 100%; }
-    .ribbon-row + .ribbon-row { display: none; }
   }
 
   /* ================= Responsive ================= */
@@ -1100,12 +1092,17 @@
   </section>
 
   <!-- ============ CAPABILITY RIBBON ============ -->
-  <div class="ribbon" aria-hidden="true">
-    <div class="ribbon-track">
-      <span class="ribbon-row">APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS · APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS&nbsp;·&nbsp;</span>
-      <span class="ribbon-row">APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS · APPS · TOOLS · GAMES · AGENTS · DASHBOARDS · AUTOMATIONS&nbsp;·&nbsp;</span>
-    </div>
-  </div>
+  <aside class="tape" aria-label="Site receipt: live counts of what this page contains">
+    <p class="tape-head">Receipt</p>
+    <div class="tape-row"><span>Numbered receipts</span><span id="tapeRcpt">7</span></div>
+    <div class="tape-row"><span>Open in one click</span><span id="tapeLive">13</span></div>
+    <div class="tape-row"><span>Case studies</span><span id="tapeCases">6</span></div>
+    <div class="tape-row"><span>Playable games</span><span id="tapeGames">1</span></div>
+    <hr class="tape-rule">
+    <div class="tape-row"><span>Last shipped</span><span id="tapeShip">AUG 21</span></div>
+    <div class="tape-row"><span>External trackers</span><span>0</span></div>
+    <p class="tape-foot">Counted from this page at load · thank you for inspecting</p>
+  </aside>
 
   <!-- ============ WHAT I BUILD ============ -->
   <section id="build">
@@ -1397,6 +1394,7 @@
     <h2 class="reveal" style="--d:1">Ship log</h2>
     <p class="section-note reveal" style="--d:2">Milestones, not commit noise. All dates 2026.</p>
     <ul class="shiplog reveal" style="--d:3">
+      <li><span class="log-date">AUG 21</span><span>Shipped Site Doctor, an agentic QA demo, and made Sleight of Claw playable on this page</span></li>
       <li><span class="log-date">AUG 20</span><span>Portfolio launched: this site, plus four openable sample builds</span></li>
       <li><span class="log-date">AUG 11</span><span>Sleight of Claw updated on itch (published Aug 9)</span></li>
       <li><span class="log-date">JUL 22</span><span>markdown-task-dashboard: writeback + template-repo release</span></li>
@@ -1615,6 +1613,20 @@
     else { window.addEventListener('resize', fit); }
     f.focus();
   });
+})();
+
+(function(){
+  function set(id,v){var e=document.getElementById(id); if(e) e.textContent=v;}
+  try{
+    var doors=document.querySelectorAll('#work a.rcpt, #lab a.rcpt, .game a.rcpt, .game .play-btn, .tool-name ~ a.rcpt');
+    set('tapeLive', doors.length);
+    var nums=document.querySelectorAll('.rcpt .rno');
+    var count=0; nums.forEach(function(n){ if(/^\d+$/.test(n.textContent)) count++; });
+    set('tapeRcpt', count);
+    set('tapeCases', document.querySelectorAll('details.case-details').length);
+    set('tapeGames', document.getElementById('socPlayBtn')?1:document.querySelectorAll('.game .badge-live').length);
+    var d=document.querySelector('#shiplog .log-date'); if(d) set('tapeShip', d.textContent.trim());
+  }catch(e){}
 })();
 </script>
 
