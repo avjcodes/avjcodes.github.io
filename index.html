@@ -486,14 +486,17 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    color: inherit;
+    transition: color 0.15s ease;
   }
+  .card h3 a:hover, .card h3 a:focus-visible { color: var(--accent-600); }
   .card h3 .arrow {
     font-family: var(--mono);
     font-size: 0.9rem;
     color: var(--ink-3);
     transition: transform 0.15s ease, color 0.15s ease;
   }
-  .card h3 a:hover .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
+  .card h3 a:hover .arrow, .card h3 a:focus-visible .arrow { transform: translate(3px, -3px); color: var(--accent-600); }
   .card > p, .card .overview { margin-top: 8px; font-size: 0.9rem; color: var(--ink-2); }
   section, #live, .card[id], .lab-item[id] { scroll-margin-top: 88px; }
 
@@ -542,6 +545,8 @@
     flex: 0 0 210px;
   }
   .tool-list .rcpt { margin: -12px 0 -12px auto; }
+  .tool-name a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
+  .tool-name a:hover, .tool-name a:focus-visible { color: var(--accent-600); }
 
   /* ================= Case-study disclosure ================= */
   .case-details { margin-top: 16px; border-top: 1px solid var(--hairline-soft); }
@@ -656,6 +661,8 @@
     font-weight: 600;
     letter-spacing: -0.005em;
   }
+  .lab-item h3 a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
+  .lab-item h3 a:hover, .lab-item h3 a:focus-visible { color: var(--accent-600); }
   .lab-item p { margin-top: 8px; font-size: 0.86rem; color: var(--ink-2); }
 
   /* ================= Games ================= */
@@ -731,7 +738,9 @@
   }
   .game:hover .shot img { transform: scale(1.035); }
   .game .body { padding: 20px 20px 20px; }
-  .game h3 { font-family: var(--display); font-size: 1.24rem; font-weight: 600; letter-spacing: -0.01em; }
+  .game h3 { font-family: var(--display); font-size: 1.24rem; font-weight: 600; letter-spacing: -0.01em; transition: color 0.15s ease; }
+  .game h3 a { color: inherit; text-decoration: none; transition: color 0.15s ease; }
+  .game h3 a:hover, .game h3 a:focus-visible { color: var(--accent-600); }
   .game .status {
     margin-top: 4px;
     font-family: var(--mono);
@@ -979,7 +988,7 @@
     .cap:hover, .card:hover, .game:hover, .btn:hover { transform: none; }
     .game:hover .shot img { transform: none; }
     .badge-live::before { animation: none; }
-    .card h3 .arrow, .cap .receipt::after { transition: none; }
+    .card h3 .arrow, .cap .receipt::after, .card h3 a, .lab-item h3, .lab-item h3 a, .game h3, .game h3 a, .tool-name { transition: none; }
     .card h3 a:hover .arrow { transform: none; }
     .cap .receipt:hover::after { transform: none; }
   }
@@ -1246,17 +1255,17 @@
     </div>
     <ul class="tool-list reveal" style="--d:1">
       <li>
-        <span class="tool-name">steam-comp-tracker</span>
+        <span class="tool-name"><a href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">steam-comp-tracker</a></span>
         <span class="tool-desc">Tracks comparable Steam games over time: review velocity, price moves, tag overlap.</span>
         <a class="rcpt" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
       </li>
       <li>
-        <span class="tool-name">markdown-task-dashboard</span>
+        <span class="tool-name"><a href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">markdown-task-dashboard</a></span>
         <span class="tool-desc">A local dashboard for solo projects with a real deadline.</span>
         <a class="rcpt" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
       </li>
       <li>
-        <span class="tool-name">pourcost</span>
+        <span class="tool-name"><a href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">pourcost</a></span>
         <span class="tool-desc">Bar math from the command line: pour cost percent, menu pricing, inventory value.</span>
         <a class="rcpt" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
       </li>
@@ -1272,14 +1281,14 @@
 
       <article class="lab-item reveal" style="--d:0" id="pelican">
         <p class="lab-tag">Sample build</p>
-        <h3>The Brass Pelican</h3>
+        <h3><a href="brass-pelican.html">The Brass Pelican</a></h3>
         <p>A dive-bar site that knows what is on tonight: events generate from weekly templates relative to today, an owner demo adds a real show to the calendar in under a minute, and the back room takes private-event inquiries. Built because three real bars I researched had empty calendars on their sites.</p>
         <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">DEMO<span class="rno" aria-hidden="true">&#8599;</span></a></div>
       </article>
 
       <article class="lab-item reveal" style="--d:1" id="longshore">
         <p class="lab-tag">Sample build</p>
-        <h3>Longshore, an editorial feature and its newsletter</h3>
+        <h3><a href="meridian-article.html">Longshore, an editorial feature and its newsletter</a></h3>
         <p>A magazine-grade long-form article for an invented publication, then the same story as a weekly newsletter built as Mailchimp-ready email HTML: table layout, inline styles, a button that survives Outlook. Same typography and tokens across web and email. Real photographs, credited.</p>
         <div class="rcpt-row"><a class="rcpt" href="meridian-article.html">ARTICLE<span class="rno" aria-hidden="true">&#8599;</span></a><a class="rcpt" href="meridian-newsletter.html">NEWSLETTER<span class="rno" aria-hidden="true">&#8599;</span></a></div>
       </article>
@@ -1317,7 +1326,7 @@
           </button>
         </div>
         <div class="body">
-          <div class="name-row"><h3>Sleight of Claw</h3><span class="badge badge-live">Live · Play now</span></div>
+          <div class="name-row"><h3><a href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">Sleight of Claw</a></h3><span class="badge badge-live">Live · Play now</span></div>
           <p>You're the hustler, not the mark: hide the pearl, shuffle the shells, read the tourist. Live online leaderboard that records every session, not just your best.</p>
           <a class="play-btn" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
