@@ -69,7 +69,7 @@ function brushedRoughness(size = 1024) {
   return tex;
 }
 
-/* The seal itself, composed twice: once in colour (cream linework on the house
+/* The seal itself, composed twice: once in color (cream linework on the house
    green, the way it prints) and once as a height map, so the same artwork is
    both what you see and what the light catches. */
 function sealFaces(title, sub, crestImage, ground, line, size = 1024) {
@@ -246,7 +246,7 @@ export function mountMedallion(canvas, opts = {}) {
   const dark = matchMedia('(prefers-color-scheme: dark)').matches;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   // NOTE: --brass is the ink value for print and CSS. A metal's albedo sits far
-  // brighter than the colour the same alloy reads as on paper, so the disc uses
+  // brighter than the color the same alloy reads as on paper, so the disc uses
   // its own value and only borrows the hue.
   const brass = new THREE.Color(opts.metal || '#D8B45C');
 
