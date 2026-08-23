@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-labelledby="seal-title">
+  <title id="seal-title">The Brass Pelican, cocktails and live music, San Francisco</title>
+  <defs>
+    <path id="seal-top" d="M49.08 156.72A157.00 157.00 0 0 1 350.92 156.72"/>
+    <path id="seal-bottom" d="M55.81 241.35A150.00 150.00 0 0 0 344.19 241.35"/>
+  </defs>
+  <g fill="none" stroke="currentColor">
+    <circle cx="200.0" cy="200.0" r="192.0" stroke-width="3"/>
+    <circle cx="200.0" cy="200.0" r="181.0" stroke-width="1.2"/>
+    <circle cx="200.0" cy="200.0" r="128.0" stroke-width="1.2" stroke-dasharray="1.5 6" opacity=".55"/>
+  </g>
+  <g fill="currentColor" stroke="none"><rect x="363.00" y="195.00" width="10" height="10" transform="rotate(45 368.00 200.00)"/><rect x="27.00" y="195.00" width="10" height="10" transform="rotate(45 32.00 200.00)"/></g>
+  <text fill="currentColor" font-family="var(--display, Georgia), Georgia, serif" font-size="30" font-weight="600" letter-spacing="2.5" text-anchor="middle">
+    <textPath href="#seal-top" startOffset="50%">THE BRASS PELICAN</textPath>
+  </text>
+  <text fill="currentColor" font-family="var(--mono, ui-monospace), ui-monospace, monospace" font-size="15" letter-spacing="4.2" text-anchor="middle">
+    <textPath href="#seal-bottom" startOffset="50%">COCKTAILS &amp; LIVE MUSIC</textPath>
+  </text>
+  <g id="crest-slot" transform="translate(200 196)">
+    <image href="crest.png" x="-64" y="-62" width="128" height="128" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+  </svg>
