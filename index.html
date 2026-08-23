@@ -1029,6 +1029,13 @@
   .hero-field .note{position:absolute;right:0;bottom:-4px;font:500 11px/1 var(--mono, ui-monospace, monospace);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
   .hero-field .note a{color:var(--accent-500);text-decoration:none}
   @media (max-width:820px){.hero{grid-template-columns:1fr}.hero-field{grid-column:1;grid-row:auto;min-height:260px}}
+
+  /* Card thumbnails: real captures of each demo, edge to edge at the top of the card */
+  .card-thumb { display:block; margin:-24px -24px 18px; border-radius: var(--r-lg) var(--r-lg) 0 0; overflow:hidden; border-bottom:1px solid var(--hairline); background: var(--surface-2); aspect-ratio: 16 / 9; position:relative; }
+  .card-thumb img { width:100%; height:100%; object-fit:cover; object-position: top center; display:block; transition: transform .35s ease; }
+  .card-thumb.contain img { object-fit:contain; padding:10px; }
+  .card:hover .card-thumb img { transform: scale(1.015); }
+  @media (prefers-reduced-motion: reduce) { .card-thumb img { transition:none; } .card:hover .card-thumb img { transform:none; } }
 </style>
 </head>
 <body>
@@ -1148,6 +1155,7 @@
     <div class="work-grid">
 
       <article class="card reveal" style="--d:0" id="sitedoctor">
+        <a class="card-thumb" href="site-doctor.html" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/site-doctor-preview.png" alt="Site Doctor mid-run: activity log, findings summary and prioritized fix list" width="1200" height="675"></a>
         <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
         <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
@@ -1170,6 +1178,7 @@
       </article>
 
       <article class="card reveal" style="--d:1" id="kestrel">
+        <a class="card-thumb" href="kestrel-assistant.html" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/kestrel-preview.png" alt="Kestrel assistant answering a deposit question and citing its source document" width="1200" height="675"></a>
         <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
@@ -1178,7 +1187,7 @@
           <summary>Case study</summary>
           <div class="case-body">
             <figure class="case-shot">
-              <img loading="lazy" src="assets/kestrel-preview.png" alt="Kestrel chat after asking how to get a deposit back: the assistant answers from the move-out policy and cites its source document under the reply">
+              <img loading="lazy" src="assets/kestrel-preview.png" alt="Kestrel tenant desk: the deposit question answered as an excerpt card from the Move-Out Checklist, with the policy library on the right lighting up the cited section">
               <figcaption>Real capture of the working demo.</figcaption>
             </figure>
             <p class="blk"><span class="blk-label">Why I built it</span>To show clients what a real document-grounded assistant looks like without hand-waving. The page IS the demo.</p>
@@ -1190,6 +1199,7 @@
       </article>
 
       <article class="card reveal" style="--d:2" id="fogline">
+        <a class="card-thumb" href="fogline-cycles.html" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/fogline-preview.png" alt="Fog Line Cycles: customer work tag beside the shop schedule board" width="1200" height="675"></a>
         <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
@@ -1210,6 +1220,7 @@
       </article>
 
       <article class="card reveal" style="--d:3" id="ninthhill">
+        <a class="card-thumb" href="ninthhill-dashboard.html" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/ninthhill-preview.png" alt="Ninth Hill dashboard: the Monday report after the pipeline replaced the spreadsheet" width="1200" height="675"></a>
         <div class="card-top"><span class="ptype">Data pipeline / dashboard</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
@@ -1230,6 +1241,7 @@
       </article>
 
       <article class="card reveal" style="--d:4">
+        <a class="card-thumb contain" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/sprite-raw-vs-keyed.png" alt="Raw green-screen sprite frame beside the keyed result" width="630" height="402"></a>
         <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</p>
