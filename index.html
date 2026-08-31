@@ -1242,6 +1242,24 @@
       </article>
 
       <article class="card reveal" style="--d:4">
+        <a class="card-thumb contain" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/proofloop-preview.png" alt="ProofLoop mark: a looped circuit with a checkpoint node, labeled Plan, Run, Check, beside the wordmark" width="1200" height="675"></a>
+        <div class="card-top"><span class="ptype">Developer tool / agent safety</span><span class="badge badge-live">Live</span></div>
+        <h3><a href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">proofloop <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">Runs AI agents inside hard limits on cost, time and steps, with a separate model that checks whether the answer actually met the goal.</p>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>AI agents rarely do the same thing twice. That makes them hard to trust with anything that costs money or touches real data. The run that worked in testing is not the one you get in production.</p>
+            <p class="blk"><span class="blk-label">Why I built it</span>I run agents across my own projects every day. I wanted a harness that stops a run cold instead of letting it wander, and that shows me how much its behavior actually varies instead of me assuming it's stable.</p>
+            <p class="blk"><span class="blk-label">The build</span>Three stages. A planner turns the goal into an ordered plan that can only name tools I registered. An executor validates every argument and checks the cost, time and step budget before each move. A separate checker model decides whether the result satisfies the goal. Runs halt when they hit a limit instead of warning and continuing, and every decision lands in structured JSON logs.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>An eval command runs the same goal several times and reports how much the answers diverge, so nondeterminism gets measured instead of assumed. Failed runs propose lessons, but a lesson only reaches the planner after I approve it by hand. Nothing it learns gets reused without a person in the loop.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Python and the Anthropic API. Tests run against mocked calls, so the suite stays fast and deterministic.</p>
+          </div>
+        </details>
+      </article>
+
+            <article class="card reveal" style="--d:6">
         <a class="card-thumb contain" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/sprite-raw-vs-keyed.png" alt="Raw green-screen sprite frame beside the keyed result" width="630" height="402"></a>
         <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
@@ -1265,7 +1283,7 @@
         </details>
       </article>
 
-      <article class="card reveal" style="--d:5">
+      <article class="card reveal" style="--d:7">
         <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A structure linter for Obsidian vaults: broken wikilinks, missing anchors, orphan notes, frontmatter rules.</p>
