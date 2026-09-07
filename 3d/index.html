@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Game-ready 3D work by Angel Valle Jr.: a modular trim-sheeted counter kit with authored LODs and collision, PSX-style enemies, low-poly characters. Blender to Unreal, Unity and Godot.">
+<meta property="og:title" content="Angel Valle Jr. · 3D work">
+<meta property="og:description" content="Game-ready props and characters in Blender. Trim sheets, authored LODs, collision, exports for Unreal, Unity and Godot.">
+<meta property="og:url" content="https://avjcodes.github.io/3d/">
+<meta property="og:image" content="https://avjcodes.github.io/3d/img/counter-hero.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2718%27 fill=%27%230b0b10%27/%3E%3Ctext x=%2750%27 y=%2766%27 font-size=%2748%27 text-anchor=%27middle%27 fill=%27%23f0704a%27 font-family=%27sans-serif%27 font-weight=%27700%27%3E3D%3C/text%3E%3C/svg%3E">
+<link rel="canonical" href="https://avjcodes.github.io/3d/">
+<meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
+<title>Angel Valle Jr. · 3D work</title>
+<link rel="preload" href="../assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  @font-face {
+    font-family: "Clash Display";
+    src: url("../assets/fonts/ClashDisplay-Semibold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+  :root {
+    --bg: #f6f6f8;
+    --bg-deep: #ededf2;
+    --grid-line: rgba(23, 22, 40, 0.045);
+    --surface: rgba(255, 255, 255, 0.72);
+    --hairline: rgba(23, 22, 40, 0.10);
+    --hairline-soft: rgba(23, 22, 40, 0.06);
+    --ink: #17161f;
+    --ink-2: #56555f;
+    --ink-3: #6b6a76;
+    --accent-600: #c0362c;
+    --accent-500: #d84a33;
+    --accent-14: rgba(216, 74, 51, 0.14);
+    --accent-09: rgba(216, 74, 51, 0.09);
+    --accent-ring: rgba(216, 74, 51, 0.45);
+    --plate: #24252a;
+    --shadow-card: 0 1px 2px rgba(20, 18, 43, 0.04), 0 10px 28px rgba(20, 18, 43, 0.07);
+    --shadow-card-hover: 0 2px 4px rgba(20, 18, 43, 0.05), 0 22px 56px rgba(20, 18, 43, 0.14);
+    --nav-bg: rgba(246, 246, 248, 0.78);
+    --mono: ui-monospace, "Cascadia Mono", Consolas, Menlo, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --display: "Clash Display", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --r-lg: 18px;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b0b10;
+      --bg-deep: #07070b;
+      --grid-line: rgba(235, 234, 255, 0.035);
+      --surface: rgba(240, 239, 255, 0.035);
+      --hairline: rgba(235, 234, 255, 0.11);
+      --hairline-soft: rgba(235, 234, 255, 0.06);
+      --ink: #ececf1;
+      --ink-2: #a7a6b3;
+      --ink-3: #8f8e9c;
+      --accent-600: #f77f5b;
+      --accent-500: #f0704a;
+      --accent-14: rgba(240, 112, 74, 0.16);
+      --accent-09: rgba(240, 112, 74, 0.10);
+      --accent-ring: rgba(247, 127, 91, 0.55);
+      --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.35);
+      --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.4), 0 24px 64px rgba(0, 0, 0, 0.55);
+      --nav-bg: rgba(11, 11, 16, 0.72);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; }
+  body {
+    font-family: var(--sans);
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+    background-attachment: fixed;
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    mask-image: linear-gradient(180deg, #000 0%, transparent 46%);
+    z-index: 0;
+  }
+  ::selection { background: var(--accent-14); }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent-ring); outline-offset: 3px; border-radius: 6px; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--hairline-soft);
+  }
+  .nav-inner { max-width: 1020px; margin: 0 auto; padding: 16px 20px; display: flex; align-items: center; gap: 20px; }
+  .monogram {
+    font-family: var(--display); font-weight: 600; font-size: 0.95rem; letter-spacing: 0.08em;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .monogram .dot { width: 9px; height: 9px; border-radius: 3px; background: var(--accent-500); box-shadow: 0 0 10px var(--accent-14); }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.82rem; font-weight: 500; color: var(--ink-2);
+    padding: 12px 12px; border-radius: 8px; white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--accent-09); }
+
+  @media (max-width: 520px) {
+    .nav-links a { padding: 10px 8px; font-size: 0.78rem; }
+    .nav-links a[href="#how"] { display: none; }
+  }
+  .wrap { position: relative; z-index: 1; max-width: 1020px; margin: 0 auto; padding: 0 20px 96px; }
+
+  header.top { padding: 64px 0 28px; }
+  .kicker { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.06em; color: var(--ink-3); text-transform: uppercase; }
+  h1 {
+    font-family: var(--display); font-weight: 600; font-size: clamp(2rem, 5vw, 3.1rem);
+    line-height: 1.05; letter-spacing: -0.01em; margin: 12px 0 14px; max-width: 16ch;
+  }
+  h1 .accent { color: var(--accent-600); }
+  .sub { font-size: 1.05rem; color: var(--ink-2); max-width: 58ch; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--hairline-soft); }
+  .facts span { font-family: var(--mono); font-size: 0.8rem; color: var(--ink-3); }
+
+  section { padding: 34px 0 6px; }
+  h2 { font-family: var(--display); font-weight: 600; font-size: 1.45rem; letter-spacing: -0.005em; }
+  .lede { color: var(--ink-2); max-width: 66ch; margin: 8px 0 18px; }
+  .meta { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); margin: 6px 0 18px; }
+
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(12, 1fr); }
+  figure {
+    margin: 0; border: 1px solid var(--hairline); border-radius: var(--r-lg); overflow: hidden;
+    background: var(--surface); box-shadow: var(--shadow-card);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+  }
+  figure:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
+  figure a { display: block; background: var(--plate); }
+  figure img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .ratio-wide a { aspect-ratio: 16 / 10; }
+  .ratio-tall a { aspect-ratio: 3 / 4; }
+  .ratio-square a { aspect-ratio: 1 / 1; }
+  .ratio-panel a { aspect-ratio: 13 / 5; }
+  figcaption { padding: 12px 14px 13px; font-size: 0.88rem; color: var(--ink-2); line-height: 1.5; }
+  figcaption b { color: var(--ink); font-weight: 600; }
+  .span-12 { grid-column: span 12; }
+  .span-8 { grid-column: span 8; }
+  .span-6 { grid-column: span 6; }
+  .span-4 { grid-column: span 4; }
+  .span-3 { grid-column: span 3; }
+  @media (max-width: 760px) {
+    .span-8, .span-6, .span-4, .span-3 { grid-column: span 6; }
+    .ratio-panel a { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 460px) {
+    .span-6, .span-4, .span-3 { grid-column: span 12; }
+  }
+
+  .how { margin-top: 40px; padding: 22px 24px; border: 1px solid var(--hairline); border-radius: var(--r-lg); background: var(--surface); }
+  .how h2 { font-size: 1.15rem; margin-bottom: 8px; }
+  .how ul { list-style: none; display: grid; gap: 6px 28px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .how li { color: var(--ink-2); font-size: 0.93rem; padding-left: 16px; position: relative; }
+  .how li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 6px; border-radius: 2px; background: var(--accent-500); }
+
+  .contact { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 600; font-size: 0.92rem;
+    padding: 11px 16px; border-radius: 10px; border: 1px solid var(--hairline);
+    background: var(--surface); transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .btn-solid { background: var(--accent-600); color: #fff6f2; border-color: transparent; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-ghost:hover { background: var(--accent-09); }
+  footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--hairline-soft); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; font-size: 0.82rem; color: var(--ink-3); }
+  footer a { color: var(--ink-2); }
+</style>
+</head>
+<body>
+
+<nav aria-label="Page">
+  <div class="nav-inner">
+    <a class="monogram" href="../"><span class="dot" aria-hidden="true"></span><span>ANGEL VALLE JR.</span></a>
+    <div class="nav-links">
+      <a href="#props">Props</a>
+      <a href="#characters">Characters</a>
+      <a href="#how">Pipeline</a>
+      <a href="../">All work</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+  <header class="top">
+    <p class="kicker">Angel Valle Jr. · San Francisco · 3D</p>
+    <h1>Game-ready props and characters, <span class="accent">built in Blender.</span></h1>
+    <p class="sub">Modular kits, trim sheets, authored LODs, collision and clean exports for Unreal, Unity and Godot. Everything below is measured, not eyeballed: seams, texel density and tri counts are checked before anything ships.</p>
+    <div class="facts">
+      <span>Blender 4</span>
+      <span>FBX · glTF · .blend delivered</span>
+      <span>ORM-packed PBR, DirectX and OpenGL normals</span>
+      <span>Scripted passes for variants, LODs and export checks</span>
+    </div>
+  </header>
+
+  <section id="props">
+    <h2>Modular counter kit, Lyle's Den</h2>
+    <p class="lede">A pizzeria front counter for a first-person horror project in Unreal Engine 5, built as five modules on a 0.25 m grid: two straights, a filler, an end cap and a corner. One 2K trim sheet covers every piece, and the wear is layered in the order the room aged: sun fade, hand wear, water, then dust last.</p>
+    <p class="meta">LOD0 1,372 to 2,260 tris per module · authored LOD1 and LOD2 · UCX collision · second UV channel · texel density 9.8 px/cm against a 10.24 target, every face inside band · seam gaps 0.000000 m at every join</p>
+    <div class="grid">
+      <figure class="span-12 ratio-panel">
+        <a href="img/counter-hero.jpg" target="_blank" rel="noopener"><img src="img/counter-hero.jpg" alt="Front of the modular counter under one warm practical light, laminate wood, red band, brass foot rail" width="1800" height="1145"></a>
+        <figcaption><b>Beauty pass.</b> One practical light, the rest falling to black, matching the client's concept art. Laminate fascia, red accent band, brass foot rail with standoffs, stainless top.</figcaption>
+      </figure>
+      <figure class="span-6 ratio-wide">
+        <a href="img/counter-kit.jpg" target="_blank" rel="noopener"><img src="img/counter-kit.jpg" alt="The full L-shaped counter assembled from the modules, neutral lighting" width="1600" height="1018" loading="lazy"></a>
+        <figcaption><b>Kit assembled.</b> Straight A and B (same geometry, different wear map so a run does not visibly repeat), filler, end cap and corner, tiled on the grid with pivots at bottom, back, left.</figcaption>
+      </figure>
+      <figure class="span-6 ratio-wide">
+        <a href="img/counter-wire.jpg" target="_blank" rel="noopener"><img src="img/counter-wire.jpg" alt="Wireframe of a counter module showing support bevels and clean quads" width="1600" height="1200" loading="lazy"></a>
+        <figcaption><b>Topology.</b> 2.5 mm two-segment support bevels at LOD0, one segment at LOD1, none at LOD2. LODs are authored by hand so the trim-sheet UVs survive.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-wide">
+        <a href="img/counter-trimsheet.jpg" target="_blank" rel="noopener"><img src="img/counter-trimsheet.jpg" alt="Trim sheet layout with laminate, metal, rubber and hardware strips" width="1600" height="615" loading="lazy"></a>
+        <figcaption><b>Trim sheet.</b> One 2K sheet, strips for laminate, stainless, brass, rubber and hardware. Every module reads from it, so the whole location shares one material.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-wide">
+        <a href="img/counter-wear.jpg" target="_blank" rel="noopener"><img src="img/counter-wear.jpg" alt="Counter with wear masks applied: sun fade, polish, grime and dust" width="1600" height="1000" loading="lazy"></a>
+        <figcaption><b>Wear pass.</b> Four masks in the order the room aged, dust last so it reads as abandoned rather than dirty and in use.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-wide">
+        <a href="img/counter-detail.jpg" target="_blank" rel="noopener"><img src="img/counter-detail.jpg" alt="Close view of the counter ledge, brass rail standoff and laminate edge under the practical light" width="1600" height="1018" loading="lazy"></a>
+        <figcaption><b>Detail pass.</b> Ledge overhang, rail standoffs and the laminate edge at macro distance. Seams were checked numerically before export and the kit re-imported into an empty scene to verify.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="characters">
+    <h2>Characters</h2>
+    <p class="lede">Low-poly and PSX-era characters with hand-placed topology, palette or pixel textures, and a rig that survives the export gate. Two enemies for an apartment-block pack were built to read apart at a glance: one tall and gaunt, one short and top-heavy.</p>
+    <div class="grid">
+      <figure class="span-6 ratio-wide">
+        <a href="img/psx-pair.jpg" target="_blank" rel="noopener"><img src="img/psx-pair.jpg" alt="Two PSX-style enemies side by side: the gaunt tenant in a stained undershirt and the wide superintendent in coveralls" width="900" height="620" loading="lazy"></a>
+        <figcaption><b>PSX apartment-block enemies.</b> Tenant 1.819 m, super 1.723 m with 42 percent more volume, different garment, different silhouette. Built to a spec with measured proportions, rigged and exported as glTF.</figcaption>
+      </figure>
+      <figure class="span-3 ratio-tall">
+        <a href="img/psx-super.jpg" target="_blank" rel="noopener"><img src="img/psx-super.jpg" alt="Three-quarter view of the superintendent enemy in stained coveralls" width="900" height="1200" loading="lazy"></a>
+        <figcaption><b>The super.</b> Pixel-textured coveralls, tool belt, no visible neck by design. About an hour and twenty minutes from brief to export.</figcaption>
+      </figure>
+      <figure class="span-3 ratio-tall">
+        <a href="img/psx-super-wire.jpg" target="_blank" rel="noopener"><img src="img/psx-super-wire.jpg" alt="Wireframe of the superintendent showing quad loops at shoulders, elbows and knees" width="900" height="1200" loading="lazy"></a>
+        <figcaption><b>Wireframe.</b> Loops where the rig needs them, nothing where it does not.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-tall">
+        <a href="img/caretaker.jpg" target="_blank" rel="noopener"><img src="img/caretaker.jpg" alt="Low-poly caretaker character in a cap, red shirt and blue overalls with yellow gloves" width="600" height="800" loading="lazy"></a>
+        <figcaption><b>Caretaker.</b> Low-poly worker with a single palette texture, built parametrically so the proportions can be re-issued for a new character in minutes.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-tall">
+        <a href="img/brute.jpg" target="_blank" rel="noopener"><img src="img/brute.jpg" alt="Low-poly green horned brute creature, three-quarter view" width="600" height="800" loading="lazy"></a>
+        <figcaption><b>Brute.</b> Creature silhouette test: horns, mass in the shoulders, faceted shading kept on purpose.</figcaption>
+      </figure>
+      <figure class="span-4 ratio-tall">
+        <a href="img/midpoly.jpg" target="_blank" rel="noopener"><img src="img/midpoly.jpg" alt="Untextured mid-poly human base mesh, three-quarter view" width="540" height="760" loading="lazy"></a>
+        <figcaption><b>Mid-poly base.</b> 2,566 triangles, fully symmetric, twist and shoulder junctions checked from both sides before any detail goes on.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="how" id="how">
+    <h2>How a piece gets built</h2>
+    <ul>
+      <li>Blockout to real-world scale first, on the client's grid, with pivots agreed before detail.</li>
+      <li>Trim sheets or a shared atlas over per-asset textures whenever a location shares materials.</li>
+      <li>LODs authored, not decimated, so UVs and silhouettes hold up at distance.</li>
+      <li>Collision, second UV channel and naming to the engine's convention on every export.</li>
+      <li>Repetitive passes (variants, LOD chains, export checks) run as Blender scripts, so batches stay consistent.</li>
+      <li>Every delivery re-imported into an empty scene and checked before it is sent.</li>
+    </ul>
+  </div>
+
+  <div class="contact">
+    <a class="btn btn-solid" href="mailto:theangelvallejr@gmail.com">Email about a project</a>
+    <a class="btn btn-ghost" href="../">See the rest of my work</a>
+  </div>
+
+  <footer>
+    <span>Angel Valle Jr. · San Francisco</span>
+    <span>Games published as <a href="https://lowpolysaint.itch.io" target="_blank" rel="noopener">lowpolysaint</a> · <a href="https://github.com/avjcodes" target="_blank" rel="noopener">github.com/avjcodes</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
