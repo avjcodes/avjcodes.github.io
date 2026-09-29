@@ -1114,10 +1114,47 @@ function clearHighlight(){
   if (lastInspected){ try { lastInspected.removeAttribute('data-sd-inspect'); } catch (e){} }
   lastInspected = null;
 }
+/* The sandbox pins its base to about:srcdoc (below), so relative asset paths in the copy
+   would stop resolving: photos break and fonts fall back. Resolve every resource path
+   against this page's folder first. In-page links are left alone on purpose. */
+function absolutizeAssets(doc){
+  function abs(raw){ try { return new URL(raw, location.href).href; } catch (e){ return raw; } }
+  function fixCss(css){
+    return css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/g, function(m, q, u){
+      return /^(data:|blob:|https?:|#)/i.test(u) ? m : 'url(' + q + abs(u) + q + ')';
+    });
+  }
+  var i, el, list = doc.querySelectorAll('[src], [poster], link[href]');
+  for (i = 0; i < list.length; i++){
+    el = list[i];
+    ['src', 'poster'].forEach(function(a){
+      var v = el.getAttribute(a);
+      if (v && !/^(data:|blob:|https?:|about:)/i.test(v)) el.setAttribute(a, abs(v));
+    });
+    if (el.tagName === 'LINK'){
+      var h = el.getAttribute('href');
+      if (h && h.charAt(0) !== '#' && !/^(data:|https?:)/i.test(h)) el.setAttribute('href', abs(h));
+    }
+  }
+  list = doc.querySelectorAll('[srcset]');
+  for (i = 0; i < list.length; i++){
+    el = list[i];
+    el.setAttribute('srcset', el.getAttribute('srcset').split(',').map(function(part){
+      var bits = part.trim().split(/\s+/);
+      if (bits[0] && !/^(data:|https?:)/i.test(bits[0])) bits[0] = abs(bits[0]);
+      return bits.join(' ');
+    }).join(', '));
+  }
+  list = doc.querySelectorAll('style');
+  for (i = 0; i < list.length; i++) list[i].textContent = fixCss(list[i].textContent);
+  list = doc.querySelectorAll('[style]');
+  for (i = 0; i < list.length; i++) list[i].setAttribute('style', fixCss(list[i].getAttribute('style')));
+}
 function loadSandbox(mutatedDoc){
   return new Promise(function(resolve){
     var frame = $('prevFrame');
     var head = mutatedDoc.querySelector('head');
+    absolutizeAssets(mutatedDoc);
     if (head){
       var st = mutatedDoc.createElement('style');
       st.setAttribute('data-sd', '');
