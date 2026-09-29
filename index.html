@@ -23,7 +23,7 @@
 <title>Angel Valle Jr. · Apps, tools and games</title>
 <link rel="preload" href="assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/ClashDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
-<script>document.documentElement.classList.add('js');</script>
+<script>document.documentElement.classList.add('js');(function(){try{var d=document.documentElement,f=/[?&]intro\b/.test(location.search);if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!f&&(location.hash||localStorage.getItem('avj-intro')==='seen'))return;d.classList.add('intro-on');}catch(e){}})();</script>
 <style>
   /* ================= Fonts ================= */
   @font-face {
@@ -1062,9 +1062,56 @@
   .feature-media{display:block}
   .feature-film{display:block;border-radius:14px;overflow:hidden;border:1px solid rgba(240,194,122,.28);background:#0b1016;box-shadow:0 30px 70px -40px rgba(0,0,0,.8);aspect-ratio:16/9}
   .feature-film video{display:block;width:100%;height:100%;object-fit:cover}
-  .feature + header.hero{padding-top:clamp(44px,7vw,80px)}
+  .feature{scroll-margin-top:88px}
   @media (max-width:820px){.feature{grid-template-columns:1fr}.feature-media{order:-1;margin:0 0 4px}}
   @media (prefers-reduced-motion:reduce){.fbtn{transition:none}.fbtn-solid:hover{transform:none}}
+
+  /* ================= Hero reel ================= */
+  .reel{grid-column:2;grid-row:1/span 4;align-self:center;margin:0}
+  .reel-box{position:relative;border-radius:16px;overflow:hidden;background:#17161f;border:1px solid var(--hairline);box-shadow:var(--shadow-card-hover);aspect-ratio:16/9}
+  .reel-box video{display:block;width:100%;height:100%;object-fit:cover}
+  .reel-play{position:absolute;left:50%;top:50%;width:78px;height:78px;margin:-39px 0 0 -39px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;
+    background:var(--accent-600);color:var(--on-accent);box-shadow:0 10px 30px rgba(192,54,44,.45);transition:transform .15s ease,box-shadow .15s ease}
+  .reel-play svg{margin-left:4px}
+  .reel-play:hover{transform:scale(1.06);box-shadow:0 14px 38px rgba(192,54,44,.55)}
+  .reel-play:focus-visible{outline:3px solid var(--accent-ring);outline-offset:4px}
+  .reel.playing .reel-play{opacity:0;pointer-events:none}
+  .reel-cap{display:flex;justify-content:space-between;gap:12px;margin-top:12px;font:500 11.5px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  .reel-dur{font-variant-numeric:tabular-nums;color:var(--accent-600)}
+  @media (max-width:820px){.reel{grid-column:1;grid-row:auto;margin:6px 0 4px}.hero .kicker{order:1}.hero h1{order:2}.hero .reel{order:3}.hero .sub{order:4}.hero .cta{order:5}}
+  @media (max-width:520px){.nav-cs{display:none}}
+
+  /* ================= Nav: where you are ================= */
+  .nav-links a[aria-current="true"]{color:var(--ink);background:var(--accent-09);box-shadow:inset 0 -2px 0 var(--accent-500)}
+
+  /* ================= Intro: the box opens, the reel comes out ================= */
+  html.intro-on body{overflow:hidden}
+  html.intro-on nav, html.intro-on .wrap, html.intro-on footer{opacity:0}
+  html.intro-out nav, html.intro-out .wrap, html.intro-out footer{transition:opacity .6s ease}
+  #intro{position:fixed;inset:0;z-index:200;background:var(--bg);display:grid;place-items:center;transition:opacity .45s ease;cursor:pointer}
+  #intro.fade{opacity:0}
+  #intro .hint{position:absolute;bottom:28px;left:0;right:0;text-align:center;font:500 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);opacity:0;animation:intro-hint .4s ease .5s forwards}
+  @keyframes intro-hint{to{opacity:.8}}
+  .icube-wrap{perspective:760px;opacity:0;transform:scale(.6);animation:icube-in .55s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes icube-in{to{opacity:1;transform:none}}
+  .icube{width:64px;height:64px;position:relative;transform-style:preserve-3d;transform:rotateX(-26deg) rotateY(40deg);animation:icube-turn .9s cubic-bezier(.2,.8,.2,1) forwards}
+  @keyframes icube-turn{from{transform:rotateX(-26deg) rotateY(-50deg)}to{transform:rotateX(-26deg) rotateY(40deg)}}
+  .icube i{position:absolute;inset:0;transform-origin:50% 100%;transition:transform .5s cubic-bezier(.5,0,.2,1),opacity .5s ease;box-shadow:inset 0 0 0 1px rgba(23,22,31,.12)}
+  .icube .f1{background:#d84a33;transform:translateZ(32px)}
+  .icube .f2{background:#b3301f;transform:rotateY(180deg) translateZ(32px)}
+  .icube .f3{background:#c0362c;transform:rotateY(90deg) translateZ(32px)}
+  .icube .f4{background:#e45c3f;transform:rotateY(-90deg) translateZ(32px)}
+  .icube .top{background:#f0704a;transform-origin:50% 50%;transform:rotateX(90deg) translateZ(32px)}
+  .icube .bot{background:#9c2a1b;transform-origin:50% 50%;transform:rotateX(-90deg) translateZ(32px)}
+  .icube.open .f1{transform:translateZ(32px) rotateX(-100deg)}
+  .icube.open .f2{transform:rotateY(180deg) translateZ(32px) rotateX(-100deg)}
+  .icube.open .f3{transform:rotateY(90deg) translateZ(32px) rotateX(-100deg)}
+  .icube.open .f4{transform:rotateY(-90deg) translateZ(32px) rotateX(-100deg)}
+  .icube.open .top{transform:rotateX(90deg) translateZ(90px);opacity:0}
+  .icube-wrap.gone{opacity:0 !important;transition:opacity .3s ease}
+  .intro-frame{position:fixed;z-index:201;border-radius:16px;background:#17161f center/cover no-repeat;transform-origin:0 0;box-shadow:0 30px 70px -30px rgba(23,22,31,.5);
+    transition:transform .75s cubic-bezier(.2,.8,.2,1),border-radius .75s ease,opacity .35s ease}
+
 </style>
 </head>
 <body>
@@ -1073,6 +1120,7 @@
   <div class="nav-inner">
     <a class="monogram" href="#top"><span class="dot" aria-hidden="true"></span><span class="full">ANGEL VALLE JR.</span><span class="short">AVJ</span></a>
     <div class="nav-links">
+      <a href="#estate" class="nav-cs">Case study</a>
       <a href="#work">Work</a>
       <a href="#lab">Lab</a>
       <a href="#games">Games</a>
@@ -1085,6 +1133,33 @@
 </nav>
 
 <div class="wrap" id="top">
+
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
+    <h1 class="reveal" style="--d:1">I build useful software <span class="accent">and weird little games.</span></h1>
+    <p class="sub reveal" style="--d:2">Custom-built, tested and shipped by me, start to finish.</p>
+    <div class="cta reveal" style="--d:3">
+      <a class="btn btn-solid" href="#work">View work <span aria-hidden="true">&#8595;</span></a>
+      <a class="btn btn-ghost" href="#contact">Work with me <span aria-hidden="true">&#8594;</span></a>
+    </div>
+    <figure class="reel" id="reel">
+      <div class="reel-box">
+        <video id="reelVideo" preload="none" playsinline poster="assets/reel/reel-poster.jpg" width="1280" height="720" aria-label="An 18-second reel of six real builds running: the estate intake, Site Doctor, Kestrel, Fog Line Cycles, Ninth Hill and The Brass Pelican"><source src="assets/reel/reel.mp4" type="video/mp4"></video>
+        <button class="reel-play" type="button" id="reelPlay" aria-label="Play the 18-second reel"><svg width="22" height="22" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.2 1.6v8.8L10.4 6z" fill="currentColor"/></svg></button>
+      </div>
+      <figcaption class="reel-cap"><span>Six real builds, running</span><span class="reel-dur">0:18</span></figcaption>
+    </figure>
+  </header>
+  <script>
+    // Load the hero piece after first paint so text and CTAs never wait on WebGL.
+    (function(){
+      var c=document.getElementById('hero-field'); if(!c||!window.WebGLRenderingContext) return;
+      var go=function(){ import('./assets/hero-field.js').then(function(m){ m.mountHeroField(c); }).catch(function(){ c.parentNode.style.display='none'; }); };
+      ('requestIdleCallback' in window) ? requestIdleCallback(go,{timeout:1500}) : setTimeout(go,300);
+    })();
+  </script>
 
   <!-- ============ FEATURED CASE STUDY ============ -->
   <section class="feature" id="estate" aria-labelledby="estate-title">
@@ -1100,29 +1175,6 @@
     </div>
     <a class="feature-media" href="https://avjcodes.github.io/estate-intake/" tabindex="-1" aria-hidden="true"><span class="feature-film"><video data-loop muted loop playsinline preload="none" poster="assets/loops/estate-loop-poster.jpg" width="1280" height="720"><source src="assets/loops/estate-loop.mp4" type="video/mp4"></video></span></a>
   </section>
-
-  <!-- ============ HERO ============ -->
-  <header class="hero">
-    <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
-    <h1 class="reveal" style="--d:1">I build useful software <span class="accent">and weird little games.</span></h1>
-    <p class="sub reveal" style="--d:2">Custom-built, tested and shipped by me, start to finish.</p>
-    <div class="cta reveal" style="--d:3">
-      <a class="btn btn-solid" href="#work">View work <span aria-hidden="true">&#8595;</span></a>
-      <a class="btn btn-ghost" href="#contact">Work with me <span aria-hidden="true">&#8594;</span></a>
-    </div>
-    <div class="hero-field" aria-hidden="true">
-      <canvas id="hero-field"></canvas>
-      <span class="note">procedural, ~100 lines · <a href="https://github.com/avjcodes/avjcodes.github.io/blob/main/assets/hero-field.js">code ↗</a></span>
-    </div>
-  </header>
-  <script>
-    // Load the hero piece after first paint so text and CTAs never wait on WebGL.
-    (function(){
-      var c=document.getElementById('hero-field'); if(!c||!window.WebGLRenderingContext) return;
-      var go=function(){ import('./assets/hero-field.js').then(function(m){ m.mountHeroField(c); }).catch(function(){ c.parentNode.style.display='none'; }); };
-      ('requestIdleCallback' in window) ? requestIdleCallback(go,{timeout:1500}) : setTimeout(go,300);
-    })();
-  </script>
 
   <!-- ============ NOW ============ -->
   <section id="now" aria-label="What I'm doing now">
@@ -1699,6 +1751,57 @@
       if(e.isIntersecting){ if(v.preload==='none'){ v.preload='auto'; v.load(); } var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
       else { v.pause(); } }); }, {threshold:0.4});
     vids.forEach(function(v){ io.observe(v); });
+  })();
+</script>
+<script>
+  // Reel: plays only when asked. Controls appear once it starts.
+  (function(){
+    var fig=document.getElementById('reel'), v=document.getElementById('reelVideo'), b=document.getElementById('reelPlay');
+    if(!fig||!v||!b) return;
+    b.addEventListener('click',function(){ v.controls=true; fig.classList.add('playing'); var p=v.play(); if(p&&p.catch) p.catch(function(){}); });
+    v.addEventListener('ended',function(){ fig.classList.remove('playing'); v.controls=false; b.setAttribute('aria-label','Play the reel again'); });
+  })();
+
+  // Nav: highlight the section you're in.
+  (function(){
+    if(!('IntersectionObserver' in window)) return;
+    var links={}; [].forEach.call(document.querySelectorAll('.nav-links a[href^="#"]'),function(a){ links[a.getAttribute('href').slice(1)]=a; });
+    var ids=Object.keys(links).filter(function(id){ return document.getElementById(id); });
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(!e.isIntersecting) return;
+      ids.forEach(function(id){ links[id].removeAttribute('aria-current'); }); links[e.target.id].setAttribute('aria-current','true'); }); },
+      {rootMargin:'-35% 0px -60% 0px'});
+    ids.forEach(function(id){ io.observe(document.getElementById(id)); });
+  })();
+
+  // Intro: a small box opens and the reel grows out of it. First visit only; any input skips it.
+  (function(){
+    var root=document.documentElement; if(!root.classList.contains('intro-on')) return;
+    var ov=document.createElement('div'); ov.id='intro'; ov.setAttribute('aria-hidden','true');
+    ov.innerHTML='<div class="icube-wrap"><div class="icube"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="f4"></i><i class="top"></i><i class="bot"></i></div></div><p class="hint">Click to skip</p>';
+    document.body.appendChild(ov);
+    var cube=ov.querySelector('.icube'), wrap=ov.querySelector('.icube-wrap'), frame=null, timers=[], done=false;
+    function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+    function finish(){ if(done) return; done=true; timers.forEach(clearTimeout);
+      root.classList.add('intro-out'); root.classList.remove('intro-on'); ov.classList.add('fade');
+      if(frame) frame.style.opacity='0';
+      setTimeout(function(){ ov.remove(); if(frame) frame.remove(); root.classList.remove('intro-out'); },500);
+      try{ localStorage.setItem('avj-intro','seen'); }catch(e){}
+      ['click','keydown','wheel','touchstart'].forEach(function(t){ window.removeEventListener(t,finish,true); }); }
+    ['click','keydown','wheel','touchstart'].forEach(function(t){ window.addEventListener(t,finish,true); });
+    later(function(){ cube.classList.add('open'); }, 700);
+    later(function(){
+      var box=document.querySelector('.reel-box'); if(!box){ finish(); return; }
+      var to=box.getBoundingClientRect(), from=cube.getBoundingClientRect();
+      if(to.bottom<0||to.top>innerHeight){ finish(); return; }
+      frame=document.createElement('div'); frame.className='intro-frame';
+      frame.style.cssText='left:'+to.left+'px;top:'+to.top+'px;width:'+to.width+'px;height:'+to.height+'px;background-image:url(assets/reel/reel-poster.jpg);';
+      var sx=from.width/to.width, cx=from.left+from.width/2-(to.left+to.width*sx/2), cy=from.top+from.height/2-(to.top+to.height*sx/2);
+      frame.style.transform='translate('+cx+'px,'+cy+'px) scale('+sx+')'; frame.style.borderRadius='40px';
+      document.body.appendChild(frame); frame.getBoundingClientRect();
+      wrap.classList.add('gone');
+      frame.style.transform='none'; frame.style.borderRadius='16px';
+    }, 1050);
+    later(finish, 1900);
   })();
 </script>
 </body>
