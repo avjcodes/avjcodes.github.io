@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Angel Valle Jr. San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
+<meta name="description" content="Experiments, internal tooling and the ship log.">
 <meta property="og:title" content="Angel Valle Jr. · Apps, tools and games">
 <meta property="og:description" content="San Francisco developer. Apps, tools and games. Custom-built, tested and shipped start to finish.">
 <meta property="og:url" content="https://avjcodes.github.io/">
@@ -20,7 +20,7 @@
 <link rel="canonical" href="https://avjcodes.github.io/">
 <meta name="theme-color" content="#f6f6f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0b0b10" media="(prefers-color-scheme: dark)">
-<title>Angel Valle Jr. · Apps, tools and games</title>
+<title>Lab · Angel Valle Jr.</title>
 <link rel="preload" href="assets/fonts/ClashDisplay-Semibold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/ClashDisplay-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add('js');</script>
@@ -1105,11 +1105,11 @@
 
 <nav aria-label="Page">
   <div class="nav-inner">
-    <a class="monogram" href="#top"><span class="dot" aria-hidden="true"></span><span class="full">ANGEL VALLE JR.</span><span class="short">AVJ</span></a>
+    <a class="monogram" href="index.html"><span class="dot" aria-hidden="true"></span><span class="full">ANGEL VALLE JR.</span><span class="short">AVJ</span></a>
     <div class="nav-links">
-      <a href="#estate" class="nav-cs">Case study</a>
-      <a href="#work">Work</a>
-      <a href="lab.html">Lab</a>
+      <a href="index.html#estate" class="nav-cs">Case study</a>
+      <a href="index.html#work">Work</a>
+      <a href="lab.html" aria-current="page">Lab</a>
       <a href="games.html">Games</a>
       <a href="#contact">Contact</a>
       <button type="button" id="palette-open" class="palette-btn" aria-haspopup="dialog" aria-label="Open quick menu">
@@ -1122,264 +1122,92 @@
 <div class="wrap" id="top">
 
 
-  <!-- ============ HERO ============ -->
-  <header class="hero">
-    <p class="kicker reveal">Angel Valle Jr. · San Francisco</p>
-    <h1 class="reveal" style="--d:1">I build useful software <span class="accent">and weird little games.</span></h1>
-    <p class="sub reveal" style="--d:2">Custom-built, tested and shipped by me, start to finish.</p>
-    <div class="cta reveal" style="--d:3">
-      <a class="btn btn-solid" href="#work">View work <span aria-hidden="true">&#8595;</span></a>
-      <a class="btn btn-ghost" href="#contact">Work with me <span aria-hidden="true">&#8594;</span></a>
-    </div>
-    <figure class="reel" id="reel">
-      <div class="reel-box">
-        <video id="reelVideo" preload="none" playsinline poster="assets/reel/reel-poster.jpg" width="1280" height="720" aria-label="A 33-second film of six real builds running: the estate intake, Site Doctor, Kestrel, Fog Line Cycles, Ninth Hill and The Brass Pelican"><source src="assets/reel/reel.mp4" type="video/mp4"></video>
-        <button class="reel-play" type="button" id="reelPlay" aria-label="Play the 33-second film"><svg width="22" height="22" viewBox="0 0 12 12" aria-hidden="true"><path d="M3.2 1.6v8.8L10.4 6z" fill="currentColor"/></svg></button>
-      </div>
-      <figcaption class="reel-cap"><span>Six real builds, with sound</span><span class="reel-dur">0:33</span></figcaption>
-    </figure>
-  </header>
-  <script>
-    // Load the hero piece after first paint so text and CTAs never wait on WebGL.
-    (function(){
-      var c=document.getElementById('hero-field'); if(!c||!window.WebGLRenderingContext) return;
-      var go=function(){ import('./assets/hero-field.js').then(function(m){ m.mountHeroField(c); }).catch(function(){ c.parentNode.style.display='none'; }); };
-      ('requestIdleCallback' in window) ? requestIdleCallback(go,{timeout:1500}) : setTimeout(go,300);
-    })();
-  </script>
-
-  <!-- ============ FEATURED CASE STUDY ============ -->
-  <section class="feature" id="estate" aria-labelledby="estate-title">
-    <div class="feature-body">
-      <p class="feature-kicker">New case study · Sep 2026</p>
-      <h2 id="estate-title">Estate Plan Intake</h2>
-      <p class="feature-lead">A concept for a flat-fee California trust and will intake, built for a parent on a phone after the kids are asleep.</p>
-      <p class="feature-desc">Plain questions, one topic at a time. As you answer, your family tree draws itself: your partner, your kids, the guardian you pick for anyone under 18, and the trust closing around all of them when the plan is sent. The write-up covers the research, three design decisions, and where AI fits behind the attorney.</p>
-      <div class="feature-cta">
-        <a class="fbtn fbtn-solid" href="https://avjcodes.github.io/estate-intake/">Open the case study <span aria-hidden="true">&#8594;</span></a>
-        <a class="fbtn fbtn-ghost" href="https://avjcodes.github.io/estate-intake/#sfilm"><svg width="11" height="11" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.8v8.4L10 6z" fill="#F0C27A"/></svg>Watch the film <span class="fdur">0:37</span></a>
-      </div>
-    </div>
-    <a class="feature-media" href="https://avjcodes.github.io/estate-intake/" tabindex="-1" aria-hidden="true"><span class="feature-film"><video data-loop muted loop playsinline preload="none" poster="assets/loops/estate-loop-poster.jpg" width="1280" height="720"><source src="assets/loops/estate-loop.mp4" type="video/mp4"></video></span></a>
-  </section>
-
-  <!-- ============ NOW ============ -->
-  <section id="now" aria-label="What I'm doing now">
-    <p class="eyebrow reveal">00 · Now</p>
-    <ul class="now-list reveal" style="--d:1">
-      <li><span class="now-label">Shipping</span><span>small tools and client builds</span></li>
-      <li><span class="now-label">Shipped</span><span>Estate Plan Intake, a product design case study</span></li>
-      <li><span class="now-label">Studying</span><span>Computer Science at WGU</span></li>
-    </ul>
-  </section>
-
-  <!-- ============ SELECTED WORK ============ -->
-  <section id="work">
-    <p class="eyebrow reveal">01 · Selected work</p>
-    <h2 class="reveal" style="--d:1">What's live, what's a sample</h2>
-    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category. Open a case study on any card for the how and the why.</p>
-
-    <div class="tier-head reveal">
-      <span class="tier-title">Design and front end</span>
-      <span class="tier-sub">sites and storefronts you can open</span>
-    </div>
-    <div class="work-grid">
-      <article data-vt="nightshift" class="card reveal" style="--d:0" id="nightshift">
-        <a class="card-thumb" href="https://avjcodes.github.io/nightshift-supply/" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/nightshift-poster.jpg" width="1280" height="720" aria-label="Night Shift Supply: the punch-clock home, then the 22:00 coach jacket shot under sodium streetlight"><source src="assets/loops/nightshift-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Brand / storefront</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="https://avjcodes.github.io/nightshift-supply/">Night Shift Supply <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A storefront for a made-up workwear label for people who work nights. The home page is a punch clock: each hour of the shift is one garment, shot under sodium streetlight.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://avjcodes.github.io/nightshift-supply/">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The idea</span>I spent ten years working nights in hospitality. Workwear brands sell to the day shift. This one is built around the hours the rest of us are asleep.</p>
-            <p class="blk"><span class="blk-label">The build</span>The punch clock is the navigation, with a live hand on the current time. Each hour opens one short screen for one garment, then a lookbook and product pages. Short pages instead of one long scroll.</p>
-            <p class="blk"><span class="blk-label">An honest note</span>The label is fictional. I designed the brand, wrote the copy and directed the garments and photography, which were generated with AI. The site says so in its footer.</p>
-          </div>
-        </details>
+  <!-- ============ LAB ============ -->
+  <section id="lab" class="subpage">
+    <p class="eyebrow reveal">Lab</p>
+    <h1 class="sub-h1 reveal" style="--d:1">The lab</h1>
+    <p class="section-note reveal" style="--d:2">Experiments, prototypes and internal tooling. Rougher on purpose.</p>
+    <div class="lab-grid">
+      <article class="lab-item reveal" style="--d:2">
+        <p class="lab-tag">Internal tool</p>
+        <h3>Portfolio QA pipeline</h3>
+        <p>Automated review passes check claims, responsive layouts, accessibility regressions, broken links, and content consistency before deployment.</p>
       </article>
 
-      <article data-vt="longshore" class="card reveal" style="--d:1" id="longshore">
-        <a class="card-thumb" href="meridian-article.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/longshore-poster.jpg" width="1280" height="720" aria-label="Longshore: the magazine masthead, then a slow scroll into the harbor photograph"><source src="assets/loops/longshore-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Editorial / email</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="meridian-article.html">Longshore <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A magazine-grade feature for an invented publication, then the same story as a weekly newsletter that survives Outlook. Same type on the web and in the inbox.</p>
-        <div class="rcpt-row"><a class="rcpt" href="meridian-article.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>ARTICLE</a><a class="rcpt" href="meridian-newsletter.html">NEWSLETTER<span class="rno" aria-hidden="true">&#8599;</span></a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The build</span>A long-form article with real, credited photographs, then the newsletter built as Mailchimp-ready email HTML: table layout, inline styles, and a button that still works in Outlook.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>One set of type and color tokens drives both, so the article and the email read as the same publication.</p>
-          </div>
-        </details>
-      </article>
-
-      <article data-vt="pelican" class="card reveal" style="--d:2" id="pelican">
-        <a class="card-thumb" href="brass-pelican.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/pelican-poster.jpg" width="1280" height="720" aria-label="The Brass Pelican: the engraved seal over a warmly lit back bar, with tonight's card below"><source src="assets/loops/pelican-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Site the owner runs / events</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="brass-pelican.html">The Brass Pelican <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A cocktail bar site that knows what is on tonight: events generate from weekly templates relative to today, an owner demo adds a real show to the calendar in under a minute, and every night is published as event data search engines can read. Built because three real bars I researched had empty calendars on their sites.</p>
-        <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
-      </article>
-
-      <article data-vt="fogline" class="card reveal" style="--d:2" id="fogline">
-        <a class="card-thumb" href="fogline-cycles.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/fogline-poster.jpg" width="1280" height="720" aria-label="Fog Line Cycles: customer work tag beside the shop schedule board"><source src="assets/loops/fogline-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
-        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <figure class="case-shot">
-              <img loading="lazy" src="assets/fogline-preview.webp" alt="Both sides of one Fog Line booking: the customer's printable work tag on the left, and the same booking sitting on the shop's schedule board on the right">
-              <figcaption>Real capture of the working demo.</figcaption>
-            </figure>
-            <p class="blk"><span class="blk-label">The problem</span>Repair shops book work over the phone and track it on paper tags. The customer finds out what it costs at the counter, and the shop copies the same details onto three different pieces of paper.</p>
-            <p class="blk"><span class="blk-label">The build</span>Customer side: service selection, availability that only offers slots the shop has open, bike intake with a photo, and estimate authorization before any work starts. Booking done, you get a printable work tag. Shop side: flip to the shop demo and your booking is on the schedule board with your bike's details.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>One dataset drives both views, so the customer flow and the shop board can never disagree about a booking. Work orders carry the authorized estimate with them, because "who approved this" is the question that starts arguments at real counters.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, zero dependencies. Invented shop, and the page says so.</p>
-          </div>
-        </details>
+      <article class="lab-item reveal" style="--d:3">
+        <p class="lab-tag">Internal tool</p>
+        <h3>AI video to sprite pipeline</h3>
+        <p>The generation-to-game-asset workflow sprite-chroma-key ships from: generate animation frames with video AI over green, key per frame, pack sheets. The keyer is the public piece; the pipeline is the reason it exists.</p>
       </article>
     </div>
 
     <div class="tier-head reveal">
-      <span class="tier-title">AI and data</span>
-      <span class="tier-sub">systems that do the work</span>
+      <span class="tier-title">Developer tools</span>
+      <span class="tier-sub">the write-ups behind two repos</span>
     </div>
     <div class="work-grid">
-      <article data-vt="sitedoctor" class="card reveal" style="--d:0" id="sitedoctor">
-        <a class="card-thumb" href="site-doctor.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/sitedoctor-poster.jpg" width="1280" height="720" aria-label="Site Doctor mid-run: activity log, findings summary and prioritized fix list"><source src="assets/loops/sitedoctor-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
-        <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
-        <div class="rcpt-row"><a class="rcpt" href="site-doctor.html">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+      <article class="card reveal" style="--d:6">
+        <a class="card-thumb contain" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/sprite-raw-vs-keyed.png" alt="Raw green-screen sprite frame beside the keyed result" width="630" height="402"></a>
+        <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
+        <h3><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</p>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
-            <figure class="case-shot">
-              <img loading="lazy" src="assets/site-doctor-preview.png" alt="Site Doctor mid-run against a sabotaged copy of Fog Line Cycles: the activity log shows sandbox-verified fix checks, the summary counts 1 critical and 2 major findings across 13 tool calls, and the prioritized fix list names each fault">
-              <figcaption>Real capture of the working demo.</figcaption>
+            <p class="blk"><span class="blk-label">The problem</span>My sprite pipeline generates animation frames with video AI. The green background is never quite the same green twice. Normal chroma keying assumes one color: it either left green fringes or ate the sprite's edges.</p>
+            <p class="blk"><span class="blk-label">Why I built it</span>I needed clean sprites for my own games and got tired of hand-fixing edges frame by frame.</p>
+            <p class="blk"><span class="blk-label">The build</span>Samples the border pixels of each frame independently, takes the circular mean of the saturated hues to find that frame's actual background color, removes pixels near that hue, despills the green rim glow, then erodes the alpha edge.</p>
+            <figure class="ba-figure">
+              <img src="assets/sprite-raw-vs-keyed.png" alt="Real tool output: a raw AI-generated sprite frame on a green background beside the same frame after keying, background removed cleanly" loading="lazy" width="630" height="402">
+              <img src="assets/sprite-edge-detail.png" alt="Edge close-up: a fixed-color key leaves green fringe and dropout holes along the sprite's outline; the measured key from this tool cuts a clean edge" loading="lazy" width="1328" height="660">
+              <figcaption>Real output, from the tool's listing images: raw frame vs keyed, and the edge detail a fixed-color key gets wrong.</figcaption>
             </figure>
-            <p class="blk"><span class="blk-label">The problem</span>Most site audits produce a checklist without knowing which failures matter. A broken footer link and a broken booking button both show up as "broken link," but only one of them costs the business money.</p>
-            <p class="blk"><span class="blk-label">The build</span>A planner selects deterministic inspection tools, gathers evidence from real page fetches, traces the critical flow end to end in a sandboxed copy of the page, and prioritizes findings by severity times business impact. There's also a Break the Site mode: sabotage a sandboxed copy yourself, then watch the same tools find the faults without being told what you broke.</p>
-            <p class="blk"><span class="blk-label">What makes it agentic</span>The loop, not the tools: it identifies what needs investigation, chooses a tool, examines the output, updates its state, forms hypotheses, runs further tests to confirm or kill them, verifies candidate fixes in the sandbox, and stops when the work runs out or it hits an honest iteration cap.</p>
-            <p class="blk"><span class="blk-label">Failure behavior</span>Whatever it could not test is reported as an uncertainty instead of invented certainty: external links it won't follow, contrast over background images it can't resolve, work left in the queue when the cap hits.</p>
-            <p class="blk"><span class="blk-label">An honest note</span>No language model runs in the browser demo. The planner is a deterministic policy engine occupying the seat a model takes in production, and every measurement comes from a tool either way. The page says all of this itself.</p>
-            <p class="blk"><span class="blk-label">Built with</span>Plain JavaScript, same-origin fetch plus <code>DOMParser</code>, sandboxed iframe instrumentation. Zero dependencies, no backend.</p>
+            <p class="blk"><span class="blk-label">What didn't work</span>Keying against a fixed green value. The generated frames varied enough in hue that edge cleanup was inconsistent across a single sheet. Per-frame sampling replaced it.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>Tests run on synthetic frames instead of image fixtures, so the repo stays small and the tests stay deterministic.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Python, NumPy, Pillow. MIT.</p>
           </div>
         </details>
       </article>
 
-      <article data-vt="kestrel" class="card reveal" style="--d:1" id="kestrel">
-        <a class="card-thumb" href="kestrel-assistant.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/kestrel-poster.jpg" width="1280" height="720" aria-label="Kestrel assistant answering a deposit question and citing its source document"><source src="assets/loops/kestrel-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
-        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+      <article class="card reveal" style="--d:7">
+        <div class="card-top"><span class="ptype">Developer tool</span><span class="badge badge-live">Live</span></div>
+        <h3><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A structure linter for Obsidian vaults: broken wikilinks, missing anchors, orphan notes, frontmatter rules.</p>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
-            <figure class="case-shot">
-              <img loading="lazy" src="assets/kestrel-preview.png" alt="Kestrel tenant desk: the deposit question answered as an excerpt card from the Move-Out Checklist, with the policy library on the right lighting up the cited section">
-              <figcaption>Real capture of the working demo.</figcaption>
-            </figure>
-            <p class="blk"><span class="blk-label">Why I built it</span>To show clients what a real document-grounded assistant looks like without hand-waving. The page IS the demo.</p>
-            <p class="blk"><span class="blk-label">The build</span>Sixteen policy chunks embedded in the page; your question is scored against them client-side; the best chunks become the answer, with the source document cited under every reply.</p>
-            <p class="blk"><span class="blk-label">Failure behavior, by design</span>Ask something outside the documents and it says "I don't have that in my documents, so I won't guess" and gives you the office contact instead. An assistant that guesses is worse than no assistant.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, no libraries, no API. The production version of this pattern runs on an LLM with the same retrieval discipline.</p>
-          </div>
-        </details>
-      </article>
-
-      <article data-vt="ninthhill" class="card reveal" style="--d:3" id="ninthhill">
-        <a class="card-thumb" href="ninthhill-dashboard.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/ninthhill-poster.jpg" width="1280" height="720" aria-label="Ninth Hill dashboard: the Monday report after the pipeline replaced the spreadsheet"><source src="assets/loops/ninthhill-loop.mp4" type="video/mp4"></video></a>
-        <div class="card-top"><span class="ptype">Data pipeline / dashboard</span><span class="badge badge-sample">Sample</span></div>
-        <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
-        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <figure class="case-shot">
-              <img loading="lazy" src="assets/ninthhill-preview.png" alt="Ninth Hill before and after: the messy hand-typed order spreadsheet on the left, the KPI cards and weekly revenue chart the pipeline builds from the same data on the right">
-              <figcaption>Real capture of the working demo.</figcaption>
-            </figure>
-            <p class="blk"><span class="blk-label">The problem</span>Recurring business data arrives messy. At Ninth Hill, the invented roaster here, a week of order emails gets retyped into a spreadsheet every Monday: three hours of work, the same coffee spelled three ways, and a totals row that doesn't add up. The report costs more than it tells.</p>
-            <p class="blk"><span class="blk-label">The workflow</span><code>RAW ROWS &rarr; VALIDATE / AGGREGATE &rarr; KPIS &rarr; CHARTS</code>. In this demo the whole pipeline runs in the page: 567 raw wholesale rows are aggregated, recomputed and rendered live at load, nothing precomputed. The messy-spreadsheet ingestion story the page tells is the depicted production shape (a script cleans recurring exports into one dataset). No scheduler exists in the demo, so none is claimed.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>No chart library. Every number on screen is derived from the visible dataset, and the claimed insight (a seasonal blend overtaking decaf) is genuinely in the data, checked to the week.</p>
-            <p class="blk"><span class="blk-label">Built with</span>One HTML file, nothing to install, the awful spreadsheet included.</p>
-          </div>
-        </details>
-      </article>
-
-      <article class="card reveal" style="--d:4">
-        <a class="card-thumb contain" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/proofloop-preview.png" alt="ProofLoop mark: a looped circuit with a checkpoint node, labeled Plan, Run, Check, beside the wordmark" width="1200" height="675"></a>
-        <div class="card-top"><span class="ptype">Developer tool / agent safety</span><span class="badge badge-live">Live</span></div>
-        <h3><a href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">proofloop <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
-        <p class="overview">Runs AI agents inside hard limits on cost, time and steps, with a separate model that checks whether the answer actually met the goal.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
-        <details class="case-details">
-          <summary>Case study</summary>
-          <div class="case-body">
-            <p class="blk"><span class="blk-label">The problem</span>AI agents rarely do the same thing twice. That makes them hard to trust with anything that costs money or touches real data. The run that worked in testing is not the one you get in production.</p>
-            <p class="blk"><span class="blk-label">Why I built it</span>I run agents across my own projects every day. I wanted a harness that stops a run cold instead of letting it wander, and that shows me how much its behavior actually varies instead of me assuming it's stable.</p>
-            <p class="blk"><span class="blk-label">The build</span>Three stages. A planner turns the goal into an ordered plan that can only name tools I registered. An executor validates every argument and checks the cost, time and step budget before each move. A separate checker model decides whether the result satisfies the goal. Runs halt when they hit a limit instead of warning and continuing, and every decision lands in structured JSON logs.</p>
-            <p class="blk"><span class="blk-label">Technical decisions</span>An eval command runs the same goal several times and reports how much the answers diverge, so nondeterminism gets measured instead of assumed. Failed runs propose lessons, but a lesson only reaches the planner after I approve it by hand. Nothing it learns gets reused without a person in the loop.</p>
-            <p class="blk"><span class="blk-label">Built with</span>Python and the Anthropic API. Tests run against mocked calls, so the suite stays fast and deterministic.</p>
+            <p class="blk"><span class="blk-label">The problem</span>My second brain is a few hundred markdown notes. Links rot quietly: a renamed note, a deleted heading, an alias that stopped matching. Obsidian shows you one broken link when you trip over it. I wanted all of them in one pass.</p>
+            <p class="blk"><span class="blk-label">The build</span>Implements Obsidian's actual link-resolution rules (full path, path suffix, basename, aliases, case-insensitive, heading and block anchors), then lints every note. Exit codes and a <code>--json</code> mode so it runs in CI.</p>
+            <p class="blk"><span class="blk-label">Technical decisions</span>Code fences, inline code, and comments are masked before link scanning, so example links in documentation don't count as real ones. That one choice removed most false positives.</p>
+            <p class="blk"><span class="blk-label">Built with</span>TypeScript on Node's native type stripping. No dependencies, no build step. MIT.</p>
           </div>
         </details>
       </article>
     </div>
-
-    <div class="tier-head reveal" id="live">
-      <span class="tier-title">More tools</span>
-      <span class="tier-sub">public repos, open now</span>
-    </div>
-    <ul class="tool-list reveal" style="--d:1">
-      <li>
-        <span class="tool-name"><a href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">vaultlint</a></span>
-        <span class="tool-desc">A structure linter for Obsidian vaults: broken links, missing anchors, orphan notes, frontmatter rules.</span>
-        <a class="rcpt" href="https://github.com/avjcodes/vaultlint" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
-      </li>
-      <li>
-        <span class="tool-name"><a href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">sprite-chroma-key</a></span>
-        <span class="tool-desc">Removes green screens from AI-generated sprite sheets where the background color drifts between frames.</span>
-        <a class="rcpt" href="https://github.com/avjcodes/sprite-chroma-key" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
-      </li>
-      <li>
-        <span class="tool-name"><a href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">steam-comp-tracker</a></span>
-        <span class="tool-desc">Tracks comparable Steam games over time: review velocity, price moves, tag overlap.</span>
-        <a class="rcpt" href="https://github.com/avjcodes/steam-comp-tracker" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
-      </li>
-      <li>
-        <span class="tool-name"><a href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">markdown-task-dashboard</a></span>
-        <span class="tool-desc">A local dashboard for solo projects with a real deadline.</span>
-        <a class="rcpt" href="https://github.com/avjcodes/markdown-task-dashboard" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
-      </li>
-      <li>
-        <span class="tool-name"><a href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">pourcost</a></span>
-        <span class="tool-desc">Bar math from the command line: pour cost percent, menu pricing, inventory value.</span>
-        <a class="rcpt" href="https://github.com/avjcodes/pourcost" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a>
-      </li>
-    </ul>
   </section>
 
-  <!-- ============ ABOUT ============ -->
-  <section id="about">
-    <p class="eyebrow reveal">02 · About</p>
-    <h2 class="reveal" style="--d:1">The short version</h2>
-    <div class="about-card reveal" style="--d:2">
-      <p>I'm a developer in San Francisco. I build and fix things for people: websites, tools, automations, and agentic systems that carry real work on their own. I do the whole job myself, design through deployment. I'm also studying Computer Science at WGU.</p>
-    </div>
+  <!-- ============ SHIP LOG ============ -->
+  <section id="shiplog">
+    <p class="eyebrow reveal">Log</p>
+    <h2 class="reveal" style="--d:1">Ship log</h2>
+    <p class="section-note reveal" style="--d:2">Milestones, not commit noise. All dates 2026.</p>
+    <ul class="shiplog reveal" style="--d:3">
+      <li><span class="log-date">SEP 28</span><span>Shipped Estate Plan Intake, a product design case study with a clickable phone prototype and a 37-second film</span></li>
+      <li><span class="log-date">AUG 21</span><span>Shipped Site Doctor, an agentic QA demo, and made Sleight of Claw playable on this page</span></li>
+      <li><span class="log-date">AUG 20</span><span>Portfolio launched: this site, plus four openable sample builds</span></li>
+      <li><span class="log-date">AUG 11</span><span>Sleight of Claw updated on itch (published Aug 9)</span></li>
+      <li><span class="log-date">JUL 22</span><span>markdown-task-dashboard: writeback + template-repo release</span></li>
+      <li><span class="log-date">JUL 21</span><span>Shipped three tools in one day: steam-comp-tracker, pourcost, vaultlint</span></li>
+      <li><span class="log-date">JUL 19</span><span>Shipped sprite-chroma-key and markdown-task-dashboard</span></li>
+    </ul>
   </section>
 
   <!-- ============ CONTACT ============ -->
   <section id="contact">
     <div class="contact-card reveal">
-      <p class="eyebrow" style="justify-content:center">03 · Contact</p>
+      <p class="eyebrow" style="justify-content:center">Contact</p>
       <h2 style="margin-top:12px">Have something in mind?</h2>
       <p class="line">Tell me what you're trying to build. Rough notes are fine. If I'm not the right fit, my first reply will say so.</p>
       <p class="line">Most interested in internal tools, agentic workflows, business automation, and odd software problems.</p>
@@ -1420,8 +1248,8 @@
       <li><a class="palette-item" href="https://lowpolysaint.itch.io/sleight-of-claw" target="_blank" rel="noopener"><span>Play a game</span><span class="dest">itch.io</span></a></li>
       <li><a class="palette-item" href="https://github.com/avjcodes" target="_blank" rel="noopener"><span>Inspect my code</span><span class="dest">github.com/avjcodes</span></a></li>
       <li><a class="palette-item" href="https://www.linkedin.com/in/angel-valle-jr/" target="_blank" rel="noopener"><span>LinkedIn</span><span class="dest">linkedin.com</span></a></li>
-      <li><a class="palette-item" href="#now"><span>See what I'm building</span><span class="dest">#now</span></a></li>
-      <li><a class="palette-item" href="#work"><span>View samples</span><span class="dest">#work</span></a></li>
+      <li><a class="palette-item" href="index.html#now"><span>See what I'm building</span><span class="dest">#now</span></a></li>
+      <li><a class="palette-item" href="index.html#work"><span>View samples</span><span class="dest">#work</span></a></li>
       <li><a class="palette-item" href="lab.html"><span>View the lab</span><span class="dest">lab</span></a></li>
       <li><a class="palette-item" href="games.html"><span>See the games</span><span class="dest">games</span></a></li>
       <li><a class="palette-item" href="mailto:theangelvallejr@gmail.com"><span>Email me</span><span class="dest">email</span></a></li>
