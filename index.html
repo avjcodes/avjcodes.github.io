@@ -452,6 +452,7 @@
     border: 1px dashed var(--hairline);
     background: var(--surface-2);
   }
+  .badge-private { color: var(--ink); border: 1px solid var(--ink-3); background: transparent; }
   .ptype {
     font-family: var(--mono);
     font-size: 0.64rem;
@@ -1177,7 +1178,7 @@
   <section id="work">
     <p class="eyebrow reveal">01 · Selected work</p>
     <h2 class="reveal" style="--d:1">What's live, what's a sample</h2>
-    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. No third category. Open a case study on any card for the how and the why.</p>
+    <p class="section-note reveal" style="--d:2">Live means public and real, right now. Samples are invented businesses I built to show the work. Private means real software I use and have not released. Open a case study on any card for the how and the why.</p>
 
     <div class="tier-head reveal">
       <span class="tier-title">Design and front end</span>
@@ -1250,12 +1251,31 @@
       <span class="tier-sub">systems that do the work</span>
     </div>
     <div class="work-grid">
-      <article data-vt="sitedoctor" class="card reveal" style="--d:0" id="sitedoctor">
+      <article class="card reveal" style="--d:0" id="framehouse">
+        <a class="card-thumb" href="#top" tabindex="-1" aria-hidden="true"><img loading="lazy" src="assets/framehouse-preview.jpg" alt="Framehouse: a film paused in the review screen with a timed comment beside it" width="1280" height="720"></a>
+        <div class="card-top"><span class="ptype">Desktop app / film studio</span><span class="badge badge-private">Private</span></div>
+        <h3><a href="#top">Framehouse <span class="arrow" aria-hidden="true">&#8593;</span></a></h3>
+        <p class="overview">A desktop studio I built for making product films like the one at the top of this page. It records the real product, lays the shots out on a storyboard and cuts them to a beat. That reel was rebuilt in it, shot for shot.</p>
+        <div class="rcpt-row"><a class="rcpt" href="#top">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8593;</span>WATCH THE FILM IT MADE</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>The first version of that reel was one long hand-written script. Changing a single shot meant editing code and waiting for the whole film to render again.</p>
+            <p class="blk"><span class="blk-label">The build</span>A Windows app. You set up a product, record the real thing running, arrange shots on a storyboard, snap the cuts to the music's beats, leave review comments, keep versions, and export in landscape, portrait and square.</p>
+            <p class="blk"><span class="blk-label">Working with AI</span>It has a connector, so Claude can read a project, make an edit and render a draft while I review. Every change it makes is logged, and I can undo it.</p>
+            <p class="blk"><span class="blk-label">Proof</span>More than 2,200 automated tests. The rebuilt reel matches the hand-made one on every cut.</p>
+            <p class="blk"><span class="blk-label">Why it is private</span>I use it for my own work and for clients. The app and its code are not public.</p>
+            <p class="blk"><span class="blk-label">Built with</span>Electron, React and TypeScript.</p>
+          </div>
+        </details>
+      </article>
+
+      <article data-vt="sitedoctor" class="card reveal" style="--d:1" id="sitedoctor">
         <a class="card-thumb" href="site-doctor.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/sitedoctor-poster.jpg" width="1280" height="720" aria-label="Site Doctor mid-run: activity log, findings summary and prioritized fix list"><source src="assets/loops/sitedoctor-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
         <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
-        <div class="rcpt-row"><a class="rcpt" href="site-doctor.html">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+        <div class="rcpt-row"><a class="rcpt" href="site-doctor.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1278,7 +1298,7 @@
         <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
-        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1299,7 +1319,7 @@
         <div class="card-top"><span class="ptype">Data pipeline / dashboard</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
-        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1320,7 +1340,7 @@
         <div class="card-top"><span class="ptype">Developer tool / agent safety</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">proofloop <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">Runs AI agents inside hard limits on cost, time and steps, with a separate model that checks whether the answer actually met the goal.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">09</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
