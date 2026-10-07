@@ -1100,6 +1100,26 @@
   .sub-h1 { margin-top: 12px; font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; letter-spacing: -.02em; line-height: 1.08; }
   .subpage { padding-top: clamp(40px, 7vw, 72px); }
   .nav-links a[aria-current="page"] { color: var(--ink); background: var(--accent-09); box-shadow: inset 0 -2px 0 var(--accent-500); }
+
+  /* ================= Looks pass: the reel's windows and its dark grid, on the page ================= */
+  .card-thumb.win { aspect-ratio: auto; display: flex; flex-direction: column; background: #1b1a22; }
+  .card-thumb.win video { aspect-ratio: 16 / 9; height: auto; }
+  .chrome { display: flex; align-items: center; gap: 6px; height: 28px; padding: 0 13px; background: #1b1a22; position: relative; flex: none; }
+  .chrome i { width: 7px; height: 7px; border-radius: 50%; background: #3a3946; }
+  .chrome i:first-child { background: #e2553a; }
+  .chrome b { position: absolute; left: 50%; transform: translateX(-50%); font: 500 10.5px/1 var(--mono); letter-spacing: .02em; color: #9d9cab; background: #26252e; padding: 5px 14px; border-radius: 999px; white-space: nowrap; max-width: 68%; overflow: hidden; text-overflow: ellipsis; }
+  @media (min-width: 1320px) { .hero { margin-right: -150px; grid-template-columns: minmax(0, 544px) minmax(0, 1fr); gap: 36px; } }
+  header.hero { position: relative; padding-top: clamp(52px, 8vw, 92px); padding-bottom: clamp(44px, 6vw, 72px); margin-bottom: clamp(30px, 4vw, 48px); }
+  header.hero::before { content: ""; position: absolute; top: 0; bottom: 0; left: -100vw; right: -100vw; z-index: -1; background-color: #0f0f15;
+    background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 44px 44px; }
+  .hero h1 { color: #f3f2f7; }
+  .hero h1 .accent { color: #f0704a; }
+  .hero .kicker { color: #9d9cab; }
+  .hero .sub { color: #b4b3c0; }
+  .hero .btn-ghost { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.2); color: #f3f2f7; }
+  .hero .reel-box { border-color: rgba(255,255,255,.14); box-shadow: 0 30px 80px -30px rgba(0,0,0,.8); }
+  .hero .reel-cap { color: #9d9cab; }
+  .hero .reel-dur { color: #f0704a; }
 </style>
 </head>
 <body>
@@ -1186,7 +1206,7 @@
     </div>
     <div class="work-grid">
       <article data-vt="nightshift" class="card reveal" style="--d:0" id="nightshift">
-        <a class="card-thumb" href="https://avjcodes.github.io/nightshift-supply/" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/nightshift-poster.jpg" width="1280" height="720" aria-label="Night Shift Supply: the punch-clock home, then the 22:00 coach jacket shot under sodium streetlight"><source src="assets/loops/nightshift-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="https://avjcodes.github.io/nightshift-supply/" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/nightshift-supply</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/nightshift-poster.jpg" width="1280" height="720" aria-label="Night Shift Supply: the punch-clock home, then the 22:00 coach jacket shot under sodium streetlight"><source src="assets/loops/nightshift-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Brand / storefront</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="https://avjcodes.github.io/nightshift-supply/">Night Shift Supply <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A storefront for a made-up workwear label for people who work nights. The home page is a punch clock: each hour of the shift is one garment, shot under sodium streetlight.</p>
@@ -1202,7 +1222,7 @@
       </article>
 
       <article data-vt="longshore" class="card reveal" style="--d:1" id="longshore">
-        <a class="card-thumb" href="meridian-article.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/longshore-poster.jpg" width="1280" height="720" aria-label="Longshore: the magazine masthead, then a slow scroll into the harbor photograph"><source src="assets/loops/longshore-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="meridian-article.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/meridian-article</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/longshore-poster.jpg" width="1280" height="720" aria-label="Longshore: the magazine masthead, then a slow scroll into the harbor photograph"><source src="assets/loops/longshore-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Editorial / email</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="meridian-article.html">Longshore <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A magazine-grade feature for an invented publication, then the same story as a weekly newsletter that survives Outlook. Same type on the web and in the inbox.</p>
@@ -1217,7 +1237,7 @@
       </article>
 
       <article data-vt="pelican" class="card reveal" style="--d:2" id="pelican">
-        <a class="card-thumb" href="brass-pelican.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/pelican-poster.jpg" width="1280" height="720" aria-label="The Brass Pelican: the engraved seal over a warmly lit back bar, with tonight's card below"><source src="assets/loops/pelican-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="brass-pelican.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/brass-pelican</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/pelican-poster.jpg" width="1280" height="720" aria-label="The Brass Pelican: the engraved seal over a warmly lit back bar, with tonight's card below"><source src="assets/loops/pelican-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Site the owner runs / events</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="brass-pelican.html">The Brass Pelican <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A cocktail bar site that knows what is on tonight: events generate from weekly templates relative to today, an owner demo adds a real show to the calendar in under a minute, and every night is published as event data search engines can read. Built because three real bars I researched had empty calendars on their sites.</p>
@@ -1225,7 +1245,7 @@
       </article>
 
       <article data-vt="fogline" class="card reveal" style="--d:2" id="fogline">
-        <a class="card-thumb" href="fogline-cycles.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/fogline-poster.jpg" width="1280" height="720" aria-label="Fog Line Cycles: customer work tag beside the shop schedule board"><source src="assets/loops/fogline-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="fogline-cycles.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/fogline-cycles</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/fogline-poster.jpg" width="1280" height="720" aria-label="Fog Line Cycles: customer work tag beside the shop schedule board"><source src="assets/loops/fogline-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
@@ -1271,7 +1291,7 @@
       </article>
 
       <article data-vt="sitedoctor" class="card reveal" style="--d:1" id="sitedoctor">
-        <a class="card-thumb" href="site-doctor.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/sitedoctor-poster.jpg" width="1280" height="720" aria-label="Site Doctor mid-run: activity log, findings summary and prioritized fix list"><source src="assets/loops/sitedoctor-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="site-doctor.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/site-doctor</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/sitedoctor-poster.jpg" width="1280" height="720" aria-label="Site Doctor mid-run: activity log, findings summary and prioritized fix list"><source src="assets/loops/sitedoctor-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
         <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
@@ -1294,7 +1314,7 @@
       </article>
 
       <article data-vt="kestrel" class="card reveal" style="--d:1" id="kestrel">
-        <a class="card-thumb" href="kestrel-assistant.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/kestrel-poster.jpg" width="1280" height="720" aria-label="Kestrel assistant answering a deposit question and citing its source document"><source src="assets/loops/kestrel-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="kestrel-assistant.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/kestrel-assistant</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/kestrel-poster.jpg" width="1280" height="720" aria-label="Kestrel assistant answering a deposit question and citing its source document"><source src="assets/loops/kestrel-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
@@ -1315,7 +1335,7 @@
       </article>
 
       <article data-vt="ninthhill" class="card reveal" style="--d:3" id="ninthhill">
-        <a class="card-thumb" href="ninthhill-dashboard.html" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/ninthhill-poster.jpg" width="1280" height="720" aria-label="Ninth Hill dashboard: the Monday report after the pipeline replaced the spreadsheet"><source src="assets/loops/ninthhill-loop.mp4" type="video/mp4"></video></a>
+        <a class="card-thumb win" href="ninthhill-dashboard.html" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/ninthhill-dashboard</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/ninthhill-poster.jpg" width="1280" height="720" aria-label="Ninth Hill dashboard: the Monday report after the pipeline replaced the spreadsheet"><source src="assets/loops/ninthhill-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Data pipeline / dashboard</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
