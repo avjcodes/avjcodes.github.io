@@ -1120,6 +1120,10 @@
   .hero .reel-box { border-color: rgba(255,255,255,.14); box-shadow: 0 30px 80px -30px rgba(0,0,0,.8); }
   .hero .reel-cap { color: #9d9cab; }
   .hero .reel-dur { color: #f0704a; }
+
+  /* A project's live page is always one obvious tap away */
+  .rcpt.rcpt-live { border: 1px solid var(--accent-ring); background: var(--accent-09); color: var(--accent-600); padding: 11px 14px; border-radius: 10px; min-height: 44px; display: inline-flex; align-items: center; }
+  .rcpt.rcpt-live:hover { background: var(--accent-14); }
 </style>
 </head>
 <body>
@@ -1210,7 +1214,7 @@
         <div class="card-top"><span class="ptype">Brand / storefront</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="https://avjcodes.github.io/nightshift-supply/">Night Shift Supply <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A storefront for a made-up workwear label for people who work nights. The home page is a punch clock: each hour of the shift is one garment, shot under sodium streetlight.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://avjcodes.github.io/nightshift-supply/">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="https://avjcodes.github.io/nightshift-supply/">RECEIPT<span class="rno">01</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1226,7 +1230,7 @@
         <div class="card-top"><span class="ptype">Editorial / email</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="meridian-article.html">Longshore <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A magazine-grade feature for an invented publication, then the same story as a weekly newsletter that survives Outlook. Same type on the web and in the inbox.</p>
-        <div class="rcpt-row"><a class="rcpt" href="meridian-article.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>ARTICLE</a><a class="rcpt" href="meridian-newsletter.html">NEWSLETTER<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="meridian-article.html">RECEIPT<span class="rno">02</span><span class="rdir" aria-hidden="true">&#8599;</span>Read the live article</a><a class="rcpt" href="meridian-newsletter.html">NEWSLETTER<span class="rno" aria-hidden="true">&#8599;</span></a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1241,7 +1245,7 @@
         <div class="card-top"><span class="ptype">Site the owner runs / events</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="brass-pelican.html">The Brass Pelican <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A cocktail bar site that knows what is on tonight: events generate from weekly templates relative to today, an owner demo adds a real show to the calendar in under a minute, and every night is published as event data search engines can read. Built because three real bars I researched had empty calendars on their sites.</p>
-        <div class="rcpt-row"><a class="rcpt" href="brass-pelican.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="brass-pelican.html">RECEIPT<span class="rno">03</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
       </article>
 
       <article data-vt="fogline" class="card reveal" style="--d:2" id="fogline">
@@ -1249,7 +1253,7 @@
         <div class="card-top"><span class="ptype">Booking / operations</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="fogline-cycles.html">Fog Line Cycles <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A repair-shop booking system, both sides of it: the customer books the repair, the shop watches it land on the schedule board.</p>
-        <div class="rcpt-row"><a class="rcpt" href="fogline-cycles.html">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="fogline-cycles.html">RECEIPT<span class="rno">04</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1271,12 +1275,28 @@
       <span class="tier-sub">systems that do the work</span>
     </div>
     <div class="work-grid">
-      <article class="card reveal" style="--d:0" id="framehouse">
+      <article class="card reveal" style="--d:0" id="countersign">
+        <a class="card-thumb win" href="countersign/" tabindex="-1" aria-hidden="true"><span class="chrome"><i></i><i></i><i></i><b>avjcodes.github.io/countersign</b></span><video data-loop muted loop playsinline preload="none" poster="assets/loops/countersign-poster.jpg" width="1280" height="720" aria-label="Countersign: a separate check passes a drafted quote, then routes it to a sales manager and finance to sign"><source src="assets/loops/countersign-loop.mp4" type="video/mp4"></video></a>
+        <div class="card-top"><span class="ptype">AI agent / approvals</span><span class="badge badge-sample">Sample</span></div>
+        <h3><a href="countersign/">Countersign <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
+        <p class="overview">A sales rep types a deal in plain words and an AI agent drafts the quote. Separate code then works the price out again and sends it to the people who have to sign. The agent writes the quote. It does not get to approve it.</p>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="countersign/">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
+        <details class="case-details">
+          <summary>Case study</summary>
+          <div class="case-body">
+            <p class="blk"><span class="blk-label">The problem</span>An agent can write a quote in seconds. Somebody still has to check the math and decide who is allowed to approve it.</p>
+            <p class="blk"><span class="blk-label">The build</span>You type the deal. The agent drafts the quote. A check that shares no code with the agent recalculates every line, and anything outside the rules is held for the right person. Every step lands on a trail you can read.</p>
+            <p class="blk"><span class="blk-label">An honest note</span>A working concept. The company and the prices are made up, and the page says so.</p>
+          </div>
+        </details>
+      </article>
+
+      <article class="card reveal" style="--d:1" id="framehouse">
         <a class="card-thumb" href="#top" tabindex="-1" aria-hidden="true"><video data-loop muted loop playsinline preload="none" poster="assets/loops/framehouse-poster.jpg" width="1280" height="720" aria-label="Framehouse: the storyboard of the portfolio reel, with shot cards and a beat-marked timeline, then the film playing in review"><source src="assets/loops/framehouse-loop.mp4" type="video/mp4"></video></a>
         <div class="card-top"><span class="ptype">Desktop app / film studio</span><span class="badge badge-private">Private</span></div>
         <h3><a href="#top">Framehouse <span class="arrow" aria-hidden="true">&#8593;</span></a></h3>
         <p class="overview">A desktop studio I built for making product films like the one at the top of this page. It records the real product, lays the shots out on a storyboard and cuts them to a beat. That reel was rebuilt in it, shot for shot.</p>
-        <div class="rcpt-row"><a class="rcpt" href="#top">RECEIPT<span class="rno">05</span><span class="rdir" aria-hidden="true">&#8593;</span>WATCH THE FILM IT MADE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="#top">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8593;</span>WATCH THE FILM IT MADE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1295,7 +1315,7 @@
         <div class="card-top"><span class="ptype">Agent system / web QA</span><span class="badge badge-live">Live</span></div>
         <h3><a href="site-doctor.html">Site Doctor <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">An autonomous QA loop that inspects websites, chooses testing tools, traces user flows, prioritizes failures, and verifies proposed fixes in a sandbox. It does not generate websites. It tries to break them. The software is real; the pages it audits are the sample sites below.</p>
-        <div class="rcpt-row"><a class="rcpt" href="site-doctor.html">RECEIPT<span class="rno">06</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="site-doctor.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a><a class="rcpt" href="https://github.com/avjcodes/avjcodes.github.io/blob/main/site-doctor.html" target="_blank" rel="noopener">CODE<span class="rno" aria-hidden="true">&#8599;</span></a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1318,7 +1338,7 @@
         <div class="card-top"><span class="ptype">Document retrieval / business system</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="kestrel-assistant.html">Kestrel Property Management <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">A document-grounded help assistant for an invented property manager. Retrieval runs live in your browser.</p>
-        <div class="rcpt-row"><a class="rcpt" href="kestrel-assistant.html">RECEIPT<span class="rno">07</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="kestrel-assistant.html">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1339,7 +1359,7 @@
         <div class="card-top"><span class="ptype">Data pipeline / dashboard</span><span class="badge badge-sample">Sample</span></div>
         <h3><a href="ninthhill-dashboard.html">Ninth Hill Coffee Roasters <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">The Monday report, before and after: a deliberately awful spreadsheet next to the dashboard that replaced it.</p>
-        <div class="rcpt-row"><a class="rcpt" href="ninthhill-dashboard.html">RECEIPT<span class="rno">08</span><span class="rdir" aria-hidden="true">&#8599;</span>OPEN</a></div>
+        <div class="rcpt-row"><a class="rcpt rcpt-live" href="ninthhill-dashboard.html">RECEIPT<span class="rno">09</span><span class="rdir" aria-hidden="true">&#8599;</span>Open the live page</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
@@ -1360,7 +1380,7 @@
         <div class="card-top"><span class="ptype">Developer tool / agent safety</span><span class="badge badge-live">Live</span></div>
         <h3><a href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">proofloop <span class="arrow" aria-hidden="true">&#8599;</span></a></h3>
         <p class="overview">Runs AI agents inside hard limits on cost, time and steps, with a separate model that checks whether the answer actually met the goal.</p>
-        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">09</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
+        <div class="rcpt-row"><a class="rcpt" href="https://github.com/avjcodes/proofloop" target="_blank" rel="noopener">RECEIPT<span class="rno">10</span><span class="rdir" aria-hidden="true">&#8599;</span>CODE</a></div>
         <details class="case-details">
           <summary>Case study</summary>
           <div class="case-body">
