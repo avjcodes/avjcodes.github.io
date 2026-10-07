@@ -30,12 +30,12 @@
     if (!e.viewTransition) return;
     var el = target(get());
     name(el, true);
-    e.viewTransition.finished.finally(function () { name(el, false); });
+    var done = function () { name(el, false); }; e.viewTransition.finished.then(done, done);
   });
   window.addEventListener('pagereveal', function (e) {
     if (!e.viewTransition) return;
     var el = target(get());
     name(el, true);
-    e.viewTransition.finished.finally(function () { name(el, false); });
+    var done = function () { name(el, false); }; e.viewTransition.finished.then(done, done);
   });
 })();
